@@ -21,7 +21,7 @@ type LucideIconComponent = React.ComponentType<{
 
 // Get Lucide icon by name
 function getLucideIcon(iconName: string): LucideIconComponent | null {
-  const icons = LucideIcons as Record<string, LucideIconComponent>;
+  const icons = LucideIcons as unknown as Record<string, LucideIconComponent>;
   return icons[iconName] || null;
 }
 

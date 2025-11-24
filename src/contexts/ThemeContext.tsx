@@ -81,7 +81,7 @@ export function ThemeProvider({ children }: ThemeProviderProps) {
       if (error) throw error;
 
       if (data?.value) {
-        const loadedTheme = data.value as ThemeConfig;
+        const loadedTheme = data.value as unknown as ThemeConfig;
         setThemeState(loadedTheme);
         setSavedTheme(loadedTheme);
       }
@@ -115,7 +115,7 @@ export function ThemeProvider({ children }: ThemeProviderProps) {
         .from('settings')
         .upsert({
           key: 'theme_config',
-          value: updatedTheme,
+          value: updatedTheme as any,
         });
 
       if (error) throw error;
@@ -186,7 +186,7 @@ export function ThemeProvider({ children }: ThemeProviderProps) {
       if (error) throw error;
 
       if (data?.value) {
-        setIcons(data.value as IconRegistry);
+        setIcons(data.value as unknown as IconRegistry);
       }
     } catch (error) {
       console.error('Failed to load icons:', error);
@@ -218,7 +218,7 @@ export function ThemeProvider({ children }: ThemeProviderProps) {
       try {
         const { error } = await supabase.from('settings').upsert({
           key: 'custom_icons',
-          value: updatedIcons,
+          value: updatedIcons as any,
         });
 
         if (error) throw error;
@@ -244,7 +244,7 @@ export function ThemeProvider({ children }: ThemeProviderProps) {
       if (error) throw error;
 
       if (data?.value) {
-        setBrandAssets(data.value as BrandAsset[]);
+        setBrandAssets(data.value as unknown as BrandAsset[]);
       }
     } catch (error) {
       console.error('Failed to load brand assets:', error);
@@ -279,7 +279,7 @@ export function ThemeProvider({ children }: ThemeProviderProps) {
       try {
         const { error } = await supabase.from('settings').upsert({
           key: 'brand_assets',
-          value: updatedAssets,
+          value: updatedAssets as any,
         });
 
         if (error) throw error;

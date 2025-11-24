@@ -1,4 +1,4 @@
-import React, { createContext, useContext, useState, useCallback } from "react";
+import { createContext, useContext, useState, useCallback, ReactNode } from "react";
 
 interface LoadingState {
   [key: string]: boolean;
@@ -13,7 +13,7 @@ interface LoadingContextType {
 
 const LoadingContext = createContext<LoadingContextType | undefined>(undefined);
 
-export const LoadingProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
+export const LoadingProvider = ({ children }: { children: ReactNode }) => {
   const [loadingStates, setLoadingStates] = useState<LoadingState>({});
 
   const setLoading = useCallback((key: string, isLoading: boolean) => {

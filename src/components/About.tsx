@@ -14,14 +14,14 @@ const About = () => {
                 Bringing Nature's Best to You
               </h2>
               <p className="text-lg text-muted-foreground mb-6 leading-relaxed">
-                At Nippy's CBD Shop, we believe in the power of nature to support wellness. 
-                Founded by wellness enthusiasts who experienced the transformative benefits of CBD firsthand, 
-                we're dedicated to making premium, trustworthy CBD products accessible to everyone.
+                At Ideal Smoke Supply, we believe in providing the finest vaping and smoking products.
+                Founded by enthusiasts who understand the importance of quality and reliability,
+                we're dedicated to making premium vaping products accessible to everyone.
               </p>
               <p className="text-lg text-muted-foreground mb-8 leading-relaxed">
-                Every product in our collection is carefully selected and tested to ensure it meets our 
-                rigorous standards for quality, purity, and effectiveness. We partner with certified organic 
-                hemp farms and use sustainable practices because we care about your health and our planet.
+                Every product in our collection is carefully selected and tested to ensure it meets our
+                rigorous standards for quality, performance, and safety. We partner with trusted manufacturers
+                and use best practices because we care about your satisfaction and experience.
               </p>
               <Button 
                 size="lg"
@@ -40,8 +40,8 @@ const About = () => {
                   
                   <div className="mt-8 pt-8 border-t border-border">
                     <div className="text-5xl md:text-6xl font-bold text-primary mb-4">100%</div>
-                    <div className="text-xl text-foreground font-semibold mb-2">Organic Hemp</div>
-                    <div className="text-muted-foreground">Sustainably sourced</div>
+                    <div className="text-xl text-foreground font-semibold mb-2">Authentic Products</div>
+                    <div className="text-muted-foreground">Quality guaranteed</div>
                   </div>
                 </div>
               </div>

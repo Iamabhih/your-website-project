@@ -32,8 +32,8 @@ export default function Support() {
                 <CardTitle>Email Us</CardTitle>
               </CardHeader>
               <CardContent className="text-center">
-                <a href="mailto:support@nippyscbd.com" className="text-primary hover:underline">
-                  support@nippyscbd.com
+                <a href="mailto:support@idealsmokesupply.com" className="text-primary hover:underline">
+                  support@idealsmokesupply.com
                 </a>
               </CardContent>
             </Card>

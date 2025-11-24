@@ -26,7 +26,7 @@ async function sendEmail(apiKey: string, to: string, subject: string, html: stri
       'Authorization': `Bearer ${apiKey}`,
     },
     body: JSON.stringify({
-      from: 'CBD Shop <onboarding@resend.dev>',
+      from: 'Ideal Smoke Supply <onboarding@resend.dev>',
       to: [to],
       subject: subject,
       html: html,
@@ -113,7 +113,7 @@ serve(async (req) => {
               </div>
 
               <p style="margin-top: 30px;">If you have any questions, please don't hesitate to contact our support team.</p>
-              <p>Best regards,<br>CBD Shop Team</p>
+              <p>Best regards,<br>Ideal Smoke Supply Team</p>
             </div>
             <div class="footer">
               <p>This is an automated email. Please do not reply directly to this message.</p>

@@ -64,7 +64,7 @@ export default function Auth() {
     <div className="min-h-screen flex items-center justify-center bg-muted/30 px-4">
       <Card className="w-full max-w-md">
         <CardHeader>
-          <CardTitle>Welcome to Nippy's CBD</CardTitle>
+          <CardTitle>Welcome to Ideal Smoke Supply</CardTitle>
           <CardDescription>Sign in to your account or create a new one</CardDescription>
         </CardHeader>
         <CardContent>

@@ -1,4 +1,4 @@
-# 247NIPPY E-Commerce Platform
+# Ideal Smoke Supply E-Commerce Platform
 
 A full-stack e-commerce platform built with React, TypeScript, and Supabase, featuring Telegram bot integration, PayFast payment processing, and comprehensive admin management.
 
@@ -672,7 +672,7 @@ Merchant Key: [Your merchant key]
 
 ```bash
 git clone <repository-url>
-cd 247nippy
+cd ideal-smoke-supply
 npm install
 ```
 
@@ -1260,8 +1260,8 @@ supabase db push
 
 For issues and questions:
 - GitHub Issues: [repo-issues-url]
-- Email: support@247nippy.com
-- Telegram: @247nippy_bot
+- Email: support@idealsmokesupply.com
+- Telegram: @idealsmokesupply_bot
 
 ## 🙏 Acknowledgments
 

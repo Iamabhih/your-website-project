@@ -319,6 +319,69 @@ export type Database = {
         }
         Relationships: []
       }
+      error_tracking: {
+        Row: {
+          affected_users_count: number | null
+          browser_info: Json | null
+          column_number: number | null
+          error_hash: string
+          error_message: string
+          error_type: string | null
+          first_seen: string | null
+          id: string
+          is_resolved: boolean | null
+          last_seen: string | null
+          line_number: number | null
+          occurrence_count: number | null
+          resolution_notes: string | null
+          resolved_at: string | null
+          resolved_by: string | null
+          severity: string | null
+          source_file: string | null
+          stack_trace: string | null
+        }
+        Insert: {
+          affected_users_count?: number | null
+          browser_info?: Json | null
+          column_number?: number | null
+          error_hash: string
+          error_message: string
+          error_type?: string | null
+          first_seen?: string | null
+          id?: string
+          is_resolved?: boolean | null
+          last_seen?: string | null
+          line_number?: number | null
+          occurrence_count?: number | null
+          resolution_notes?: string | null
+          resolved_at?: string | null
+          resolved_by?: string | null
+          severity?: string | null
+          source_file?: string | null
+          stack_trace?: string | null
+        }
+        Update: {
+          affected_users_count?: number | null
+          browser_info?: Json | null
+          column_number?: number | null
+          error_hash?: string
+          error_message?: string
+          error_type?: string | null
+          first_seen?: string | null
+          id?: string
+          is_resolved?: boolean | null
+          last_seen?: string | null
+          line_number?: number | null
+          occurrence_count?: number | null
+          resolution_notes?: string | null
+          resolved_at?: string | null
+          resolved_by?: string | null
+          severity?: string | null
+          source_file?: string | null
+          stack_trace?: string | null
+        }
+        Relationships: []
+      }
       guest_wishlist: {
         Row: {
           created_at: string | null
@@ -783,6 +846,54 @@ export type Database = {
         }
         Relationships: []
       }
+      system_logs: {
+        Row: {
+          category: string
+          created_at: string | null
+          id: string
+          ip_address: string | null
+          log_type: string
+          message: string
+          metadata: Json | null
+          session_id: string | null
+          source: string
+          stack_trace: string | null
+          url: string | null
+          user_agent: string | null
+          user_id: string | null
+        }
+        Insert: {
+          category: string
+          created_at?: string | null
+          id?: string
+          ip_address?: string | null
+          log_type: string
+          message: string
+          metadata?: Json | null
+          session_id?: string | null
+          source: string
+          stack_trace?: string | null
+          url?: string | null
+          user_agent?: string | null
+          user_id?: string | null
+        }
+        Update: {
+          category?: string
+          created_at?: string | null
+          id?: string
+          ip_address?: string | null
+          log_type?: string
+          message?: string
+          metadata?: Json | null
+          session_id?: string | null
+          source?: string
+          stack_trace?: string | null
+          url?: string | null
+          user_agent?: string | null
+          user_id?: string | null
+        }
+        Relationships: []
+      }
       telegram_customers: {
         Row: {
           chat_id: string
@@ -884,6 +995,10 @@ export type Database = {
           _user_id: string
         }
         Returns: boolean
+      }
+      increment_error_occurrence: {
+        Args: { error_hash_param: string }
+        Returns: undefined
       }
       migrate_guest_wishlist: {
         Args: { _session_id: string; _user_id: string }

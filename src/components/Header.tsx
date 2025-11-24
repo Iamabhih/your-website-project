@@ -1,9 +1,10 @@
 import { useState } from 'react';
 import { Link } from 'react-router-dom';
-import { ShoppingCart, Menu, X, User, LogOut } from 'lucide-react';
+import { ShoppingCart, Menu, X, User, LogOut, Heart } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { useCartStore } from '@/stores/cartStore';
 import { useAuth } from '@/hooks/useAuth';
+import { useWishlist } from '@/hooks/useWishlist';
 import CartDrawer from './CartDrawer';
 
 export default function Header() {
@@ -11,6 +12,7 @@ export default function Header() {
   const [cartOpen, setCartOpen] = useState(false);
   const getTotalItems = useCartStore((state) => state.getTotalItems);
   const { user, isAdmin, signOut } = useAuth();
+  const { wishlistItems } = useWishlist();
 
   const navigation = [
     { name: 'Shop', href: '/shop' },
@@ -69,6 +71,18 @@ export default function Header() {
                   </Button>
                 </Link>
               )}
+
+              {/* Wishlist Button */}
+              <Link to="/wishlist">
+                <Button variant="ghost" size="sm" className="relative">
+                  <Heart className="h-5 w-5" />
+                  {wishlistItems.length > 0 && (
+                    <span className="absolute -top-1 -right-1 h-5 w-5 rounded-full bg-primary text-xs text-primary-foreground flex items-center justify-center">
+                      {wishlistItems.length}
+                    </span>
+                  )}
+                </Button>
+              </Link>
 
               {/* Cart Button */}
               <Button

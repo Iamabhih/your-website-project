@@ -4,6 +4,7 @@ import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardFooter } from '@/components/ui/card';
 import { useCartStore } from '@/stores/cartStore';
 import { toast } from 'sonner';
+import WishlistButton from '@/components/WishlistButton';
 
 interface ProductCardProps {
   id: string;
@@ -43,10 +44,16 @@ export default function ProductCard({
                 alt={name}
                 className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-300"
               />
+              <div className="absolute top-2 right-2 z-10">
+                <WishlistButton productId={id} />
+              </div>
             </div>
           ) : (
-            <div className="h-64 bg-muted rounded-t-lg flex items-center justify-center">
+            <div className="relative h-64 bg-muted rounded-t-lg flex items-center justify-center">
               <span className="text-muted-foreground">No image</span>
+              <div className="absolute top-2 right-2 z-10">
+                <WishlistButton productId={id} />
+              </div>
             </div>
           )}
           

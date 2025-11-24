@@ -5,6 +5,7 @@ import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import { ErrorBoundary } from "@/components/ErrorBoundary";
 import { LoadingProvider } from "@/contexts/LoadingContext";
+import { ThemeProvider } from "@/contexts/ThemeContext";
 import ProtectedRoute from "@/components/ProtectedRoute";
 import { AgeVerificationModal } from "@/components/AgeVerificationModal";
 import Index from "./pages/Index";
@@ -48,6 +49,9 @@ import Categories from "./pages/admin/Categories";
 import Returns from "./pages/admin/Returns";
 import Inventory from "./pages/admin/Inventory";
 import AccountProfile from "./pages/AccountProfile";
+import ThemeBuilder from "./pages/admin/ThemeBuilder";
+import CustomIcons from "./pages/admin/CustomIcons";
+import Branding from "./pages/admin/Branding";
 import PrivacyPolicy from "./pages/PrivacyPolicy";
 import TermsOfService from "./pages/TermsOfService";
 import ReturnPolicy from "./pages/ReturnPolicy";
@@ -70,12 +74,13 @@ const queryClient = new QueryClient({
 const App = () => (
   <ErrorBoundary>
     <QueryClientProvider client={queryClient}>
-      <LoadingProvider>
-        <TooltipProvider>
-          <AgeVerificationModal />
-          <Toaster />
-          <Sonner />
-          <BrowserRouter>
+      <ThemeProvider>
+        <LoadingProvider>
+          <TooltipProvider>
+            <AgeVerificationModal />
+            <Toaster />
+            <Sonner />
+            <BrowserRouter>
             <ChatWidget />
             <Routes>
               <Route path="/" element={<Index />} />
@@ -120,12 +125,16 @@ const App = () => (
               <Route path="/account/telegram" element={<TelegramLink />} />
               <Route path="/admin/banner" element={<ProtectedRoute requireAdmin><BannerManagement /></ProtectedRoute>} />
               <Route path="/admin/pwa" element={<ProtectedRoute requireAdmin><PWASettings /></ProtectedRoute>} />
+              <Route path="/admin/theme" element={<ProtectedRoute requireAdmin><ThemeBuilder /></ProtectedRoute>} />
+              <Route path="/admin/branding" element={<ProtectedRoute requireAdmin><Branding /></ProtectedRoute>} />
+              <Route path="/admin/icons" element={<ProtectedRoute requireAdmin><CustomIcons /></ProtectedRoute>} />
               <Route path="/admin/system-logs" element={<ProtectedRoute requireAdmin><SystemLogs /></ProtectedRoute>} />
               <Route path="*" element={<NotFound />} />
             </Routes>
-          </BrowserRouter>
-        </TooltipProvider>
-      </LoadingProvider>
+            </BrowserRouter>
+          </TooltipProvider>
+        </LoadingProvider>
+      </ThemeProvider>
     </QueryClientProvider>
   </ErrorBoundary>
 );

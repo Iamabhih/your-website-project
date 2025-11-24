@@ -22,6 +22,9 @@ import {
   RotateCcw,
   Warehouse,
   Bot,
+  Palette,
+  ImageIcon,
+  Brush,
 } from "lucide-react";
 import {
   Sidebar,
@@ -88,6 +91,15 @@ const menuItems = [
     items: [
       { title: "Banner Management", url: "/admin/banner", icon: Megaphone },
       { title: "PWA Settings", url: "/admin/pwa", icon: Smartphone },
+    ],
+  },
+  {
+    title: "Appearance",
+    icon: Palette,
+    items: [
+      { title: "Theme Builder", url: "/admin/theme", icon: Brush },
+      { title: "Branding", url: "/admin/branding", icon: ImageIcon },
+      { title: "Custom Icons", url: "/admin/icons", icon: ImageIcon },
     ],
   },
   {

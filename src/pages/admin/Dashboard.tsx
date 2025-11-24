@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 import { supabase } from '@/integrations/supabase/client';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { DollarSign, ShoppingCart, Users, Package, Settings, BarChart3, Tag, Star } from 'lucide-react';
+import { DollarSign, ShoppingCart, Users, Package, Settings, BarChart3, Tag, Star, MessageCircle, Send } from 'lucide-react';
 import Header from '@/components/Header';
 import Footer from '@/components/Footer';
 
@@ -155,6 +155,21 @@ export default function AdminDashboard() {
                   <Star className="h-8 w-8 mb-2 text-primary" />
                   <h3 className="font-semibold">Reviews</h3>
                   <p className="text-sm text-muted-foreground">Moderate reviews</p>
+                </a>
+                <a href="/admin/telegram-chats" className="p-4 border rounded-lg hover:bg-muted/50 transition-colors">
+                  <MessageCircle className="h-8 w-8 mb-2 text-primary" />
+                  <h3 className="font-semibold">Telegram Chats</h3>
+                  <p className="text-sm text-muted-foreground">Manage conversations</p>
+                </a>
+                <a href="/admin/telegram-customers" className="p-4 border rounded-lg hover:bg-muted/50 transition-colors">
+                  <Users className="h-8 w-8 mb-2 text-primary" />
+                  <h3 className="font-semibold">Telegram Customers</h3>
+                  <p className="text-sm text-muted-foreground">View bot users</p>
+                </a>
+                <a href="/admin/telegram-broadcast" className="p-4 border rounded-lg hover:bg-muted/50 transition-colors">
+                  <Send className="h-8 w-8 mb-2 text-primary" />
+                  <h3 className="font-semibold">Broadcast</h3>
+                  <p className="text-sm text-muted-foreground">Send messages</p>
                 </a>
                 <a href="/admin/delivery-options" className="p-4 border rounded-lg hover:bg-muted/50 transition-colors">
                   <Package className="h-8 w-8 mb-2 text-primary" />

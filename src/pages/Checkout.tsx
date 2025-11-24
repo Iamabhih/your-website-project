@@ -58,66 +58,62 @@ export default function Checkout() {
 
     setLoading(true);
 
-    const formData = new FormData(e.currentTarget);
-    const orderData = {
-      items: items.map(item => ({
-        id: item.id,
-        name: item.name,
+    try {
+      const formData = new FormData(e.currentTarget);
+      
+      const orderData = {
+        customer_name: formData.get('name') as string,
+        customer_email: formData.get('email') as string,
+        customer_phone: formData.get('phone') as string,
+        delivery_address: formData.get('address') as string,
+        delivery_method: selectedDelivery.name,
+        delivery_notes: formData.get('notes') as string || null,
+        delivery_price: selectedDelivery.cost,
+        total_amount: getTotalPrice() + selectedDelivery.cost,
+      };
+
+      const orderItems = items.map(item => ({
+        product_id: item.id,
+        product_name: item.name,
         price: item.price,
         quantity: item.quantity,
         image_url: item.image_url,
-      })),
-      customerName: formData.get('name') as string,
-      customerEmail: formData.get('email') as string,
-      customerPhone: formData.get('phone') as string,
-      deliveryAddress: formData.get('address') as string,
-      deliveryMethod: selectedDelivery.name,
-      deliveryNotes: formData.get('notes') as string || '',
-      deliveryPrice: selectedDelivery.cost,
-      totalAmount: getTotalPrice() + selectedDelivery.cost,
-    };
+      }));
 
-    // Create order in database
-    const { data: order, error } = await supabase
-      .from('orders')
-      .insert({
-        customer_name: orderData.customerName,
-        customer_email: orderData.customerEmail,
-        customer_phone: orderData.customerPhone,
-        delivery_address: orderData.deliveryAddress,
-        delivery_method: orderData.deliveryMethod,
-        delivery_notes: orderData.deliveryNotes,
-        delivery_price: orderData.deliveryPrice,
-        total_amount: orderData.totalAmount,
-        status: 'pending',
-        payment_status: 'pending',
-      })
-      .select()
-      .single();
+      // Call PayFast payment function
+      const { data, error } = await supabase.functions.invoke('create-payfast-payment', {
+        body: { orderData, items: orderItems }
+      });
 
-    if (error || !order) {
-      toast.error('Failed to create order');
+      if (error) throw error;
+
+      if (data.success && data.paymentUrl && data.paymentData) {
+        // Clear cart before redirecting to payment
+        clearCart();
+        
+        // Create a form and submit it to PayFast
+        const form = document.createElement('form');
+        form.method = 'POST';
+        form.action = data.paymentUrl;
+
+        Object.entries(data.paymentData).forEach(([key, value]) => {
+          const input = document.createElement('input');
+          input.type = 'hidden';
+          input.name = key;
+          input.value = value as string;
+          form.appendChild(input);
+        });
+
+        document.body.appendChild(form);
+        form.submit();
+      } else {
+        throw new Error('Failed to initialize payment');
+      }
+    } catch (error: any) {
+      console.error('Order error:', error);
+      toast.error(error.message || 'Failed to place order. Please try again.');
       setLoading(false);
-      return;
     }
-
-    // Create order items
-    const orderItems = items.map(item => ({
-      order_id: order.id,
-      product_id: item.id,
-      product_name: item.name,
-      quantity: item.quantity,
-      price: item.price,
-      image_url: item.image_url,
-    }));
-
-    await supabase.from('order_items').insert(orderItems);
-
-    // Clear cart and redirect
-    clearCart();
-    toast.success('Order placed successfully!');
-    navigate(`/order-confirmation/${order.id}`);
-    setLoading(false);
   };
 
   const subtotal = getTotalPrice();

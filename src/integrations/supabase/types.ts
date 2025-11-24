@@ -190,6 +190,102 @@ export type Database = {
         }
         Relationships: []
       }
+      coupon_usage: {
+        Row: {
+          coupon_id: string
+          customer_email: string
+          discount_amount: number
+          id: string
+          order_id: string
+          used_at: string | null
+          user_id: string | null
+        }
+        Insert: {
+          coupon_id: string
+          customer_email: string
+          discount_amount: number
+          id?: string
+          order_id: string
+          used_at?: string | null
+          user_id?: string | null
+        }
+        Update: {
+          coupon_id?: string
+          customer_email?: string
+          discount_amount?: number
+          id?: string
+          order_id?: string
+          used_at?: string | null
+          user_id?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "coupon_usage_coupon_id_fkey"
+            columns: ["coupon_id"]
+            isOneToOne: false
+            referencedRelation: "coupons"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "coupon_usage_order_id_fkey"
+            columns: ["order_id"]
+            isOneToOne: false
+            referencedRelation: "orders"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      coupons: {
+        Row: {
+          code: string
+          created_at: string | null
+          description: string | null
+          discount_type: string
+          discount_value: number
+          id: string
+          is_active: boolean | null
+          max_discount_amount: number | null
+          min_purchase_amount: number | null
+          per_customer_limit: number | null
+          updated_at: string | null
+          usage_limit: number | null
+          valid_from: string | null
+          valid_until: string | null
+        }
+        Insert: {
+          code: string
+          created_at?: string | null
+          description?: string | null
+          discount_type: string
+          discount_value: number
+          id?: string
+          is_active?: boolean | null
+          max_discount_amount?: number | null
+          min_purchase_amount?: number | null
+          per_customer_limit?: number | null
+          updated_at?: string | null
+          usage_limit?: number | null
+          valid_from?: string | null
+          valid_until?: string | null
+        }
+        Update: {
+          code?: string
+          created_at?: string | null
+          description?: string | null
+          discount_type?: string
+          discount_value?: number
+          id?: string
+          is_active?: boolean | null
+          max_discount_amount?: number | null
+          min_purchase_amount?: number | null
+          per_customer_limit?: number | null
+          updated_at?: string | null
+          usage_limit?: number | null
+          valid_from?: string | null
+          valid_until?: string | null
+        }
+        Relationships: []
+      }
       delivery_options: {
         Row: {
           cost: number
@@ -222,6 +318,35 @@ export type Database = {
           updated_at?: string | null
         }
         Relationships: []
+      }
+      guest_wishlist: {
+        Row: {
+          created_at: string | null
+          id: string
+          product_id: string
+          session_id: string
+        }
+        Insert: {
+          created_at?: string | null
+          id?: string
+          product_id: string
+          session_id: string
+        }
+        Update: {
+          created_at?: string | null
+          id?: string
+          product_id?: string
+          session_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "guest_wishlist_product_id_fkey"
+            columns: ["product_id"]
+            isOneToOne: false
+            referencedRelation: "products"
+            referencedColumns: ["id"]
+          },
+        ]
       }
       order_items: {
         Row: {
@@ -442,6 +567,59 @@ export type Database = {
           },
         ]
       }
+      product_reviews: {
+        Row: {
+          comment: string
+          created_at: string | null
+          customer_email: string
+          customer_name: string
+          id: string
+          is_approved: boolean | null
+          is_verified_purchase: boolean | null
+          product_id: string
+          rating: number
+          title: string | null
+          updated_at: string | null
+          user_id: string | null
+        }
+        Insert: {
+          comment: string
+          created_at?: string | null
+          customer_email: string
+          customer_name: string
+          id?: string
+          is_approved?: boolean | null
+          is_verified_purchase?: boolean | null
+          product_id: string
+          rating: number
+          title?: string | null
+          updated_at?: string | null
+          user_id?: string | null
+        }
+        Update: {
+          comment?: string
+          created_at?: string | null
+          customer_email?: string
+          customer_name?: string
+          id?: string
+          is_approved?: boolean | null
+          is_verified_purchase?: boolean | null
+          product_id?: string
+          rating?: number
+          title?: string | null
+          updated_at?: string | null
+          user_id?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "product_reviews_product_id_fkey"
+            columns: ["product_id"]
+            isOneToOne: false
+            referencedRelation: "products"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       product_subscriptions: {
         Row: {
           created_at: string | null
@@ -544,6 +722,7 @@ export type Database = {
           category: string
           created_at: string | null
           description: string | null
+          has_variants: boolean | null
           id: string
           image_url: string | null
           min_quantity: number | null
@@ -557,6 +736,7 @@ export type Database = {
           category: string
           created_at?: string | null
           description?: string | null
+          has_variants?: boolean | null
           id?: string
           image_url?: string | null
           min_quantity?: number | null
@@ -570,6 +750,7 @@ export type Database = {
           category?: string
           created_at?: string | null
           description?: string | null
+          has_variants?: boolean | null
           id?: string
           image_url?: string | null
           min_quantity?: number | null
@@ -662,17 +843,59 @@ export type Database = {
         }
         Relationships: []
       }
+      wishlist: {
+        Row: {
+          created_at: string | null
+          id: string
+          product_id: string
+          user_id: string
+        }
+        Insert: {
+          created_at?: string | null
+          id?: string
+          product_id: string
+          user_id: string
+        }
+        Update: {
+          created_at?: string | null
+          id?: string
+          product_id?: string
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "wishlist_product_id_fkey"
+            columns: ["product_id"]
+            isOneToOne: false
+            referencedRelation: "products"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
     }
     Views: {
       [_ in never]: never
     }
     Functions: {
+      get_order_statistics: { Args: never; Returns: Json }
       has_role: {
         Args: {
           _role: Database["public"]["Enums"]["app_role"]
           _user_id: string
         }
         Returns: boolean
+      }
+      migrate_guest_wishlist: {
+        Args: { _session_id: string; _user_id: string }
+        Returns: number
+      }
+      validate_coupon: {
+        Args: {
+          _cart_total: number
+          _coupon_code: string
+          _customer_email: string
+        }
+        Returns: Json
       }
     }
     Enums: {

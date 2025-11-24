@@ -504,6 +504,76 @@ serve(async (req) => {
         await handleTrackOrder(supabase, chatId, orderId, messageId);
       } else if (data === "menu_support") {
         await handleSupport(supabase, chatId, messageId);
+      } else if (data.startsWith("category_")) {
+        const category = data.split("category_")[1];
+        
+        const { data: products } = await supabase
+          .from("products")
+          .select("*")
+          .eq("category", category)
+          .limit(10);
+        
+        let message = `📁 <b>${category}</b>\n\n`;
+        
+        if (!products || products.length === 0) {
+          message += "No products in this category.";
+        } else {
+          products.forEach((product: any, i: number) => {
+            message += `${i + 1}. <b>${product.name}</b>\n`;
+            message += `   💰 R${product.price}\n`;
+            message += `   ${product.stock_quantity > 0 ? "✅ In Stock" : "❌ Out of Stock"}\n\n`;
+          });
+        }
+        
+        const keyboard = createInlineKeyboard([
+          [{ text: "🔙 All Categories", callback_data: "menu_categories" }],
+          [{ text: "🏠 Main Menu", callback_data: "menu_main" }],
+        ]);
+        
+        await editMessageText(chatId, messageId, message, keyboard);
+      } else if (data.startsWith("toggle_")) {
+        const { data: customer } = await supabase
+          .from("telegram_customers")
+          .select("notification_preferences")
+          .eq("chat_id", chatId)
+          .single();
+        
+        const prefs = customer?.notification_preferences || {
+          orders: true,
+          promotions: true,
+          stock_alerts: true,
+        };
+        
+        const prefKey = data.split("toggle_")[1];
+        prefs[prefKey] = !prefs[prefKey];
+        
+        await supabase
+          .from("telegram_customers")
+          .update({ notification_preferences: prefs })
+          .eq("chat_id", chatId);
+        
+        await answerCallbackQuery(callback_query.id, "✅ Preference updated!");
+        
+        // Refresh the preferences view
+        let message = "🔔 <b>Notification Preferences</b>\n\n";
+        message += `📦 Order Updates: ${prefs.orders ? "✅ Enabled" : "❌ Disabled"}\n`;
+        message += `🎁 Promotions: ${prefs.promotions ? "✅ Enabled" : "❌ Disabled"}\n`;
+        message += `📢 Stock Alerts: ${prefs.stock_alerts ? "✅ Enabled" : "❌ Disabled"}\n`;
+        
+        const keyboard = createInlineKeyboard([
+          [
+            { text: prefs.orders ? "🔕 Disable Orders" : "🔔 Enable Orders", callback_data: "toggle_orders" },
+          ],
+          [
+            { text: prefs.promotions ? "🔕 Disable Promos" : "🔔 Enable Promos", callback_data: "toggle_promotions" },
+          ],
+          [
+            { text: prefs.stock_alerts ? "🔕 Disable Stock" : "🔔 Enable Stock", callback_data: "toggle_stock" },
+          ],
+          [{ text: "🏠 Main Menu", callback_data: "menu_main" }],
+        ]);
+        
+        await editMessageText(chatId, messageId, message, keyboard);
       }
 
       return new Response(JSON.stringify({ success: true }), {
@@ -536,7 +606,37 @@ serve(async (req) => {
 
       // Handle commands
       if (text.startsWith("/start")) {
-        await handleStart(supabase, chatId, username);
+        // Check for deep link account linking
+        if (text.includes("link_")) {
+          const linkingCode = text.split("link_")[1];
+          
+          // Call the account linking function
+          const { data: linkResult, error: linkError } = await supabase.functions.invoke(
+            "telegram-link-account",
+            {
+              body: {
+                linkingCode: linkingCode,
+                chatId: chatId,
+                email: customer?.email,
+              },
+            }
+          );
+
+          if (linkError || !linkResult?.success) {
+            await sendTelegramMessage(
+              chatId,
+              "❌ Failed to link account. Please try again or contact support."
+            );
+          } else {
+            await sendTelegramMessage(
+              chatId,
+              `✅ <b>Account Successfully Linked!</b>\n\nYour Telegram account is now connected to ${linkResult.email}\n\nYou'll receive:\n🔔 Order status updates\n📦 Shipping notifications\n🎁 Exclusive promotions\n📢 Stock alerts\n\nUse the menu below to get started:`,
+              { replyMarkup: getMainMenuKeyboard() }
+            );
+          }
+        } else {
+          await handleStart(supabase, chatId, username);
+        }
       } else if (text.startsWith("/help")) {
         await handleStart(supabase, chatId, username);
       } else if (text.startsWith("/products")) {
@@ -547,6 +647,51 @@ serve(async (req) => {
         await handleTrackOrder(supabase, chatId);
       } else if (text.startsWith("/support")) {
         await handleSupport(supabase, chatId);
+      } else if (text.startsWith("/categories")) {
+        // Get all unique categories
+        const { data: categories } = await supabase
+          .from("products")
+          .select("category")
+          .not("category", "is", null);
+        
+        const uniqueCategories = [...new Set(categories?.map((p: any) => p.category))];
+        
+        let message = "📂 <b>Product Categories</b>\n\nChoose a category to browse:\n\n";
+        const buttons = uniqueCategories.map((cat: string) => ([
+          { text: `📁 ${cat}`, callback_data: `category_${cat}` }
+        ]));
+        buttons.push([{ text: "🏠 Main Menu", callback_data: "menu_main" }]);
+        
+        await sendTelegramMessage(chatId, message, {
+          replyMarkup: createInlineKeyboard(buttons),
+        });
+      } else if (text.startsWith("/notifications")) {
+        // Manage notification preferences
+        const prefs = customer?.notification_preferences || {
+          orders: true,
+          promotions: true,
+          stock_alerts: true,
+        };
+        
+        let message = "🔔 <b>Notification Preferences</b>\n\n";
+        message += `📦 Order Updates: ${prefs.orders ? "✅ Enabled" : "❌ Disabled"}\n`;
+        message += `🎁 Promotions: ${prefs.promotions ? "✅ Enabled" : "❌ Disabled"}\n`;
+        message += `📢 Stock Alerts: ${prefs.stock_alerts ? "✅ Enabled" : "❌ Disabled"}\n`;
+        
+        const keyboard = createInlineKeyboard([
+          [
+            { text: prefs.orders ? "🔕 Disable Orders" : "🔔 Enable Orders", callback_data: "toggle_orders" },
+          ],
+          [
+            { text: prefs.promotions ? "🔕 Disable Promos" : "🔔 Enable Promos", callback_data: "toggle_promotions" },
+          ],
+          [
+            { text: prefs.stock_alerts ? "🔕 Disable Stock" : "🔔 Enable Stock", callback_data: "toggle_stock" },
+          ],
+          [{ text: "🏠 Main Menu", callback_data: "menu_main" }],
+        ]);
+        
+        await sendTelegramMessage(chatId, message, { replyMarkup: keyboard });
       } else if (customer?.awaiting_email_for === "orders" && text.includes("@")) {
         // Email provided for order tracking
         await handleMyOrders(supabase, chatId, text);

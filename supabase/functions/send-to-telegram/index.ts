@@ -60,6 +60,45 @@ serve(async (req) => {
       );
     }
 
+    // Handle admin reply to support message
+    if (body.event === 'admin_reply') {
+      const { chatId, message } = body;
+      
+      if (!chatId || !message) {
+        return new Response(
+          JSON.stringify({ error: "Missing chatId or message" }),
+          {
+            status: 400,
+            headers: { ...corsHeaders, "Content-Type": "application/json" },
+          }
+        );
+      }
+
+      const response = await fetch(`${TELEGRAM_API}/sendMessage`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          chat_id: chatId,
+          text: `📨 <b>Support Reply</b>\n\n${message}`,
+          parse_mode: "HTML",
+        }),
+      });
+
+      const result = await response.json();
+      
+      if (!result.ok) {
+        throw new Error(`Telegram API error: ${JSON.stringify(result)}`);
+      }
+
+      return new Response(
+        JSON.stringify({ success: true, message: 'Reply sent successfully' }),
+        {
+          status: 200,
+          headers: { ...corsHeaders, "Content-Type": "application/json" },
+        }
+      );
+    }
+
     const { sessionId, message, visitorName, visitorEmail } = body;
 
     // Get or create chat session

@@ -896,39 +896,146 @@ export type Database = {
       }
       telegram_customers: {
         Row: {
+          awaiting_email_for: string | null
+          awaiting_order_id: boolean | null
           chat_id: string
           created_at: string | null
+          customer_email: string | null
           email: string | null
           first_name: string | null
           id: string
           last_interaction: string | null
           last_name: string | null
+          notification_preferences: Json | null
           phone: string | null
           preferences: Json | null
           username: string | null
         }
         Insert: {
+          awaiting_email_for?: string | null
+          awaiting_order_id?: boolean | null
           chat_id: string
           created_at?: string | null
+          customer_email?: string | null
           email?: string | null
           first_name?: string | null
           id?: string
           last_interaction?: string | null
           last_name?: string | null
+          notification_preferences?: Json | null
           phone?: string | null
           preferences?: Json | null
           username?: string | null
         }
         Update: {
+          awaiting_email_for?: string | null
+          awaiting_order_id?: boolean | null
           chat_id?: string
           created_at?: string | null
+          customer_email?: string | null
           email?: string | null
           first_name?: string | null
           id?: string
           last_interaction?: string | null
           last_name?: string | null
+          notification_preferences?: Json | null
           phone?: string | null
           preferences?: Json | null
+          username?: string | null
+        }
+        Relationships: []
+      }
+      telegram_notification_settings: {
+        Row: {
+          created_at: string | null
+          description: string | null
+          id: string
+          is_enabled: boolean
+          setting_key: string
+          updated_at: string | null
+        }
+        Insert: {
+          created_at?: string | null
+          description?: string | null
+          id?: string
+          is_enabled?: boolean
+          setting_key: string
+          updated_at?: string | null
+        }
+        Update: {
+          created_at?: string | null
+          description?: string | null
+          id?: string
+          is_enabled?: boolean
+          setting_key?: string
+          updated_at?: string | null
+        }
+        Relationships: []
+      }
+      telegram_order_notifications: {
+        Row: {
+          chat_id: string
+          id: string
+          message_text: string
+          notification_type: string
+          order_id: string
+          sent_at: string | null
+        }
+        Insert: {
+          chat_id: string
+          id?: string
+          message_text: string
+          notification_type: string
+          order_id: string
+          sent_at?: string | null
+        }
+        Update: {
+          chat_id?: string
+          id?: string
+          message_text?: string
+          notification_type?: string
+          order_id?: string
+          sent_at?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "telegram_order_notifications_order_id_fkey"
+            columns: ["order_id"]
+            isOneToOne: false
+            referencedRelation: "orders"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      telegram_support_messages: {
+        Row: {
+          admin_reply: string | null
+          chat_id: string
+          created_at: string | null
+          id: string
+          message_text: string
+          replied_at: string | null
+          status: string
+          username: string | null
+        }
+        Insert: {
+          admin_reply?: string | null
+          chat_id: string
+          created_at?: string | null
+          id?: string
+          message_text: string
+          replied_at?: string | null
+          status?: string
+          username?: string | null
+        }
+        Update: {
+          admin_reply?: string | null
+          chat_id?: string
+          created_at?: string | null
+          id?: string
+          message_text?: string
+          replied_at?: string | null
+          status?: string
           username?: string | null
         }
         Relationships: []

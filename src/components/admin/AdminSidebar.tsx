@@ -17,6 +17,7 @@ import {
   Upload,
   LogOut,
   Activity,
+  Store,
 } from "lucide-react";
 import {
   Sidebar,
@@ -95,8 +96,11 @@ const menuItems = [
   },
   {
     title: "Settings",
-    url: "/admin/settings",
     icon: Settings,
+    items: [
+      { title: "Store Settings", url: "/admin/store-settings", icon: Store },
+      { title: "System Settings", url: "/admin/settings", icon: Settings },
+    ],
   },
 ];
 

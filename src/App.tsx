@@ -39,6 +39,7 @@ import ProductImport from "./pages/admin/ProductImport";
 import BannerManagement from "./pages/admin/BannerManagement";
 import PWASettings from "./pages/admin/PWASettings";
 import SystemLogs from "./pages/admin/SystemLogs";
+import StoreSettings from "./pages/admin/StoreSettings";
 import TelegramLink from "./pages/TelegramLink";
 import ChatWidget from "./components/ChatWidget";
 import Newsletter from "./pages/admin/Newsletter";
@@ -100,6 +101,7 @@ const App = () => (
               <Route path="/admin/reviews" element={<ProtectedRoute requireAdmin><AdminReviews /></ProtectedRoute>} />
               <Route path="/admin/delivery-options" element={<ProtectedRoute requireAdmin><AdminDeliveryOptions /></ProtectedRoute>} />
               <Route path="/admin/settings" element={<ProtectedRoute requireAdmin><AdminSettings /></ProtectedRoute>} />
+              <Route path="/admin/store-settings" element={<ProtectedRoute requireAdmin><StoreSettings /></ProtectedRoute>} />
               <Route path="/admin/newsletter" element={<ProtectedRoute requireAdmin><Newsletter /></ProtectedRoute>} />
               <Route path="/admin/telegram-chats" element={<ProtectedRoute requireAdmin><TelegramChats /></ProtectedRoute>} />
               <Route path="/admin/telegram-customers" element={<ProtectedRoute requireAdmin><TelegramCustomers /></ProtectedRoute>} />

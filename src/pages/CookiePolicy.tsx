@@ -1,6 +1,7 @@
 import { Link } from "react-router-dom";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
+import { PolicyContactInfo } from "@/components/PolicyContactInfo";
 import { ArrowLeft } from "lucide-react";
 
 export default function CookiePolicy() {
@@ -164,13 +165,7 @@ export default function CookiePolicy() {
               <p className="text-foreground/90">
                 If you have questions about our use of cookies:
               </p>
-              <div className="bg-muted p-4 rounded-lg mt-4">
-                <p className="text-foreground/90">
-                  <strong>Email:</strong> privacy@idealsmokesupply.com<br />
-                  <strong>Phone:</strong> +27 XX XXX XXXX<br />
-                  <strong>Website:</strong> www.idealsmokesupply.com
-                </p>
-              </div>
+              <PolicyContactInfo />
             </section>
 
             <div className="bg-primary/10 border-l-4 border-primary p-4 rounded">

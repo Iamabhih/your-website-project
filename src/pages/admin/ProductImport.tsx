@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { supabase } from '@/integrations/supabase/client';
@@ -8,6 +9,7 @@ import Footer from '@/components/Footer';
 import { Upload, CheckCircle, XCircle } from 'lucide-react';
 
 export default function ProductImport() {
+  const navigate = useNavigate();
   const [importing, setImporting] = useState(false);
   const [result, setResult] = useState<any>(null);
 
@@ -149,7 +151,7 @@ export default function ProductImport() {
                 <Button 
                   variant="outline" 
                   className="w-full"
-                  onClick={() => window.location.href = '/admin/products'}
+                  onClick={() => navigate('/admin/products')}
                 >
                   View Imported Products
                 </Button>

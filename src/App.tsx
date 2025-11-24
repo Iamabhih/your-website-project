@@ -6,6 +6,7 @@ import { BrowserRouter, Routes, Route } from "react-router-dom";
 import { ErrorBoundary } from "@/components/ErrorBoundary";
 import { LoadingProvider } from "@/contexts/LoadingContext";
 import ProtectedRoute from "@/components/ProtectedRoute";
+import { AgeVerificationModal } from "@/components/AgeVerificationModal";
 import Index from "./pages/Index";
 import NotFound from "./pages/NotFound";
 import Shop from "./pages/Shop";
@@ -60,6 +61,7 @@ const App = () => (
     <QueryClientProvider client={queryClient}>
       <LoadingProvider>
         <TooltipProvider>
+          <AgeVerificationModal />
           <Toaster />
           <Sonner />
           <BrowserRouter>

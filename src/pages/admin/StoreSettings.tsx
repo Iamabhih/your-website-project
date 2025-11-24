@@ -1,4 +1,4 @@
-import * as React from 'react';
+import { useState, useEffect } from 'react';
 import { AdminLayout } from '@/components/admin/AdminLayout';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Input } from '@/components/ui/input';
@@ -41,10 +41,10 @@ import { useStoreSettings, useUpdateStoreSettings, StoreSettings, defaultSetting
 export default function AdminStoreSettings() {
   const { data: settings, isLoading, error } = useStoreSettings();
   const updateMutation = useUpdateStoreSettings();
-  const [formData, setFormData] = React.useState<StoreSettings>(defaultSettings);
-  const [hasChanges, setHasChanges] = React.useState(false);
+  const [formData, setFormData] = useState<StoreSettings>(defaultSettings);
+  const [hasChanges, setHasChanges] = useState(false);
 
-  React.useEffect(() => {
+  useEffect(() => {
     if (settings) {
       setFormData(settings);
     }

@@ -1,4 +1,4 @@
-import * as React from 'react';
+import { useState, useEffect } from 'react';
 import { supabase } from '@/integrations/supabase/client';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
@@ -62,28 +62,28 @@ const STATUS_OPTIONS = [
 ];
 
 export default function AdminOrders() {
-  const [orders, setOrders] = React.useState<Order[]>([]);
-  const [filteredOrders, setFilteredOrders] = React.useState<Order[]>([]);
-  const [loading, setLoading] = React.useState(true);
-  const [filterStatus, setFilterStatus] = React.useState('all');
-  const [filterPayment, setFilterPayment] = React.useState('all');
-  const [searchQuery, setSearchQuery] = React.useState('');
-  const [dateRange, setDateRange] = React.useState('all');
-  const [currentPage, setCurrentPage] = React.useState(1);
+  const [orders, setOrders] = useState<Order[]>([]);
+  const [filteredOrders, setFilteredOrders] = useState<Order[]>([]);
+  const [loading, setLoading] = useState(true);
+  const [filterStatus, setFilterStatus] = useState('all');
+  const [filterPayment, setFilterPayment] = useState('all');
+  const [searchQuery, setSearchQuery] = useState('');
+  const [dateRange, setDateRange] = useState('all');
+  const [currentPage, setCurrentPage] = useState(1);
 
   // Order detail modal
-  const [selectedOrder, setSelectedOrder] = React.useState<Order | null>(null);
-  const [orderItems, setOrderItems] = React.useState<OrderItem[]>([]);
-  const [loadingItems, setLoadingItems] = React.useState(false);
+  const [selectedOrder, setSelectedOrder] = useState<Order | null>(null);
+  const [orderItems, setOrderItems] = useState<OrderItem[]>([]);
+  const [loadingItems, setLoadingItems] = useState(false);
 
   // Bulk operations
-  const [selectedOrders, setSelectedOrders] = React.useState<Set<string>>(new Set());
+  const [selectedOrders, setSelectedOrders] = useState<Set<string>>(new Set());
 
-  React.useEffect(() => {
+  useEffect(() => {
     loadOrders();
   }, []);
 
-  React.useEffect(() => {
+  useEffect(() => {
     filterOrders();
   }, [orders, filterStatus, filterPayment, searchQuery, dateRange]);
 

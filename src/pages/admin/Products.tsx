@@ -1,4 +1,4 @@
-import * as React from 'react';
+import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { supabase } from '@/integrations/supabase/client';
 import { Button } from '@/components/ui/button';
@@ -48,31 +48,31 @@ const ITEMS_PER_PAGE = 12;
 
 export default function AdminProducts() {
   const navigate = useNavigate();
-  const [products, setProducts] = React.useState<Product[]>([]);
-  const [filteredProducts, setFilteredProducts] = React.useState<Product[]>([]);
-  const [loading, setLoading] = React.useState(true);
-  const [open, setOpen] = React.useState(false);
-  const [editingProduct, setEditingProduct] = React.useState<Product | null>(null);
-  const [submitting, setSubmitting] = React.useState(false);
+  const [products, setProducts] = useState<Product[]>([]);
+  const [filteredProducts, setFilteredProducts] = useState<Product[]>([]);
+  const [loading, setLoading] = useState(true);
+  const [open, setOpen] = useState(false);
+  const [editingProduct, setEditingProduct] = useState<Product | null>(null);
+  const [submitting, setSubmitting] = useState(false);
 
   // Filters
-  const [searchQuery, setSearchQuery] = React.useState('');
-  const [categoryFilter, setCategoryFilter] = React.useState('all');
-  const [stockFilter, setStockFilter] = React.useState('all');
-  const [categories, setCategories] = React.useState<string[]>([]);
+  const [searchQuery, setSearchQuery] = useState('');
+  const [categoryFilter, setCategoryFilter] = useState('all');
+  const [stockFilter, setStockFilter] = useState('all');
+  const [categories, setCategories] = useState<string[]>([]);
 
   // Pagination
-  const [currentPage, setCurrentPage] = React.useState(1);
+  const [currentPage, setCurrentPage] = useState(1);
 
   // Bulk operations
-  const [selectedProducts, setSelectedProducts] = React.useState<Set<string>>(new Set());
-  const [viewMode, setViewMode] = React.useState<'grid' | 'table'>('grid');
+  const [selectedProducts, setSelectedProducts] = useState<Set<string>>(new Set());
+  const [viewMode, setViewMode] = useState<'grid' | 'table'>('grid');
 
-  React.useEffect(() => {
+  useEffect(() => {
     loadProducts();
   }, []);
 
-  React.useEffect(() => {
+  useEffect(() => {
     filterProducts();
   }, [products, searchQuery, categoryFilter, stockFilter]);
 

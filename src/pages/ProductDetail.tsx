@@ -7,6 +7,16 @@ import { useCartStore } from '@/stores/cartStore';
 import { toast } from 'sonner';
 import Header from '@/components/Header';
 import Footer from '@/components/Footer';
+import ProductVariantSelector from '@/components/ProductVariantSelector';
+import WishlistButton from '@/components/WishlistButton';
+import ProductStructuredData from '@/components/ProductStructuredData';
+
+interface ProductVariant {
+  id: string;
+  variant_name: string;
+  price_adjustment: number;
+  stock_quantity: number;
+}
 
 interface Product {
   id: string;
@@ -18,12 +28,14 @@ interface Product {
   pack_info: string | null;
   min_quantity: number;
   stock_quantity: number;
+  has_variants: boolean;
 }
 
 export default function ProductDetail() {
   const { id } = useParams();
   const [product, setProduct] = useState<Product | null>(null);
   const [loading, setLoading] = useState(true);
+  const [selectedVariant, setSelectedVariant] = useState<ProductVariant | null>(null);
   const addItem = useCartStore((state) => state.addItem);
 
   useEffect(() => {
@@ -47,14 +59,43 @@ export default function ProductDetail() {
 
   const handleAddToCart = () => {
     if (!product) return;
+
+    // Check if product has variants and one is selected
+    if (product.has_variants) {
+      if (!selectedVariant) {
+        toast.error('Please select all product options');
+        return;
+      }
+      if (selectedVariant.stock_quantity === 0) {
+        toast.error('This variant is out of stock');
+        return;
+      }
+    }
+
+    const finalPrice = selectedVariant
+      ? product.price + selectedVariant.price_adjustment
+      : product.price;
+
+    const itemName = selectedVariant
+      ? `${product.name} - ${selectedVariant.variant_name}`
+      : product.name;
+
     addItem({
       id: product.id,
-      name: product.name,
-      price: product.price,
+      name: itemName,
+      price: finalPrice,
       image_url: product.image_url || undefined,
       min_quantity: product.min_quantity,
     });
-    toast.success(`${product.name} added to cart`);
+    toast.success(`${itemName} added to cart`);
+  };
+
+  const canAddToCart = () => {
+    if (!product) return false;
+    if (product.has_variants) {
+      return selectedVariant !== null && selectedVariant.stock_quantity > 0;
+    }
+    return product.stock_quantity > 0;
   };
 
   if (loading) {
@@ -89,7 +130,8 @@ export default function ProductDetail() {
   return (
     <div className="min-h-screen flex flex-col">
       <Header />
-      
+      <ProductStructuredData product={product} />
+
       <main className="flex-1 py-12">
         <div className="container mx-auto px-4 sm:px-6 lg:px-8">
           <Link to="/shop" className="inline-flex items-center text-muted-foreground hover:text-foreground mb-8">
@@ -123,11 +165,20 @@ export default function ProductDetail() {
                 )}
               </div>
 
-              <div>
-                <span className="text-4xl font-bold text-primary">
-                  R {product.price.toFixed(2)}
-                </span>
-              </div>
+              {/* Price or Variant Selector */}
+              {product.has_variants ? (
+                <ProductVariantSelector
+                  productId={product.id}
+                  basePrice={product.price}
+                  onVariantChange={setSelectedVariant}
+                />
+              ) : (
+                <div>
+                  <span className="text-4xl font-bold text-primary">
+                    R {product.price.toFixed(2)}
+                  </span>
+                </div>
+              )}
 
               <div>
                 <h2 className="text-lg font-semibold mb-2">Description</h2>
@@ -144,10 +195,22 @@ export default function ProductDetail() {
                 </div>
               )}
 
-              <Button size="lg" className="w-full" onClick={handleAddToCart}>
-                <ShoppingCart className="mr-2 h-5 w-5" />
-                Add to Cart
-              </Button>
+              <div className="flex gap-3">
+                <Button
+                  size="lg"
+                  className="flex-1"
+                  onClick={handleAddToCart}
+                  disabled={!canAddToCart()}
+                >
+                  <ShoppingCart className="mr-2 h-5 w-5" />
+                  {canAddToCart() ? 'Add to Cart' : 'Out of Stock'}
+                </Button>
+                <WishlistButton
+                  productId={product.id}
+                  variantId={selectedVariant?.id}
+                  size="lg"
+                />
+              </div>
             </div>
           </div>
         </div>

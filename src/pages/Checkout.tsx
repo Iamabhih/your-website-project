@@ -8,7 +8,9 @@ import { Label } from '@/components/ui/label';
 import { Textarea } from '@/components/ui/textarea';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+import { Badge } from '@/components/ui/badge';
 import { toast } from 'sonner';
+import { Lock, ShieldCheck, Truck, Package, Tag, CheckCircle2 } from 'lucide-react';
 import Header from '@/components/Header';
 import Footer from '@/components/Footer';
 
@@ -28,6 +30,12 @@ export default function Checkout() {
   const [loading, setLoading] = useState(false);
   const [loadingDelivery, setLoadingDelivery] = useState(true);
   const [error, setError] = useState<string | null>(null);
+
+  // Coupon state
+  const [couponCode, setCouponCode] = useState('');
+  const [appliedCoupon, setAppliedCoupon] = useState<any>(null);
+  const [couponLoading, setCouponLoading] = useState(false);
+  const [discount, setDiscount] = useState(0);
 
   useEffect(() => {
     if (items.length === 0) {
@@ -66,6 +74,45 @@ export default function Checkout() {
     } finally {
       setLoadingDelivery(false);
     }
+  };
+
+  const applyCoupon = async () => {
+    if (!couponCode.trim()) {
+      toast.error('Please enter a coupon code');
+      return;
+    }
+
+    setCouponLoading(true);
+    try {
+      const { data, error } = await supabase.rpc('validate_coupon', {
+        p_code: couponCode.trim().toUpperCase(),
+        p_customer_email: '', // Will be filled at order time
+        p_order_amount: getTotalPrice() + (selectedDelivery?.cost || 0)
+      });
+
+      if (error) throw error;
+
+      if (!data || !data.valid) {
+        toast.error(data?.message || 'Invalid coupon code');
+        return;
+      }
+
+      setAppliedCoupon(data.coupon);
+      setDiscount(data.discount_amount);
+      toast.success(`Coupon applied! You saved R${data.discount_amount.toFixed(2)}`);
+    } catch (error: any) {
+      console.error('Coupon validation error:', error);
+      toast.error('Failed to apply coupon');
+    } finally {
+      setCouponLoading(false);
+    }
+  };
+
+  const removeCoupon = () => {
+    setAppliedCoupon(null);
+    setDiscount(0);
+    setCouponCode('');
+    toast.success('Coupon removed');
   };
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
@@ -114,7 +161,9 @@ export default function Checkout() {
         delivery_method: selectedDelivery.name,
         delivery_notes: formData.get('notes') as string || null,
         delivery_price: selectedDelivery.cost,
-        total_amount: getTotalPrice() + selectedDelivery.cost,
+        total_amount: getTotalPrice() + selectedDelivery.cost - discount,
+        coupon_code: appliedCoupon?.code || null,
+        discount_amount: discount || null,
       };
 
       const orderItems = items.map(item => ({
@@ -176,7 +225,7 @@ export default function Checkout() {
 
   const subtotal = getTotalPrice();
   const deliveryCost = selectedDelivery?.cost || 0;
-  const total = subtotal + deliveryCost;
+  const total = subtotal + deliveryCost - discount;
 
   return (
     <div className="min-h-screen flex flex-col">
@@ -276,7 +325,27 @@ export default function Checkout() {
               </Card>
             </div>
 
-            <div>
+            <div className="space-y-4">
+              {/* Trust Badges */}
+              <Card>
+                <CardContent className="py-4">
+                  <div className="flex flex-wrap gap-3 text-xs text-muted-foreground justify-center">
+                    <div className="flex items-center gap-1">
+                      <Lock className="h-3 w-3" />
+                      <span>Secure Checkout</span>
+                    </div>
+                    <div className="flex items-center gap-1">
+                      <ShieldCheck className="h-3 w-3" />
+                      <span>Data Protected</span>
+                    </div>
+                    <div className="flex items-center gap-1">
+                      <Truck className="h-3 w-3" />
+                      <span>Fast Delivery</span>
+                    </div>
+                  </div>
+                </CardContent>
+              </Card>
+
               <Card className="sticky top-4">
                 <CardHeader>
                   <CardTitle>Order Summary</CardTitle>
@@ -293,6 +362,56 @@ export default function Checkout() {
                     ))}
                   </div>
 
+                  {/* Coupon Section */}
+                  <div className="border-t pt-4">
+                    {appliedCoupon ? (
+                      <div className="space-y-2">
+                        <div className="flex items-center justify-between p-2 bg-green-50 dark:bg-green-900/20 rounded-lg">
+                          <div className="flex items-center gap-2">
+                            <Tag className="h-4 w-4 text-green-600" />
+                            <span className="text-sm font-medium">{appliedCoupon.code}</span>
+                          </div>
+                          <Button
+                            type="button"
+                            variant="ghost"
+                            size="sm"
+                            onClick={removeCoupon}
+                          >
+                            Remove
+                          </Button>
+                        </div>
+                        <p className="text-xs text-green-600 flex items-center gap-1">
+                          <CheckCircle2 className="h-3 w-3" />
+                          Coupon applied successfully!
+                        </p>
+                      </div>
+                    ) : (
+                      <div className="space-y-2">
+                        <Label htmlFor="coupon" className="text-sm flex items-center gap-1">
+                          <Tag className="h-3 w-3" />
+                          Have a coupon code?
+                        </Label>
+                        <div className="flex gap-2">
+                          <Input
+                            id="coupon"
+                            placeholder="Enter code"
+                            value={couponCode}
+                            onChange={(e) => setCouponCode(e.target.value.toUpperCase())}
+                            onKeyPress={(e) => e.key === 'Enter' && (e.preventDefault(), applyCoupon())}
+                          />
+                          <Button
+                            type="button"
+                            variant="outline"
+                            onClick={applyCoupon}
+                            disabled={couponLoading}
+                          >
+                            {couponLoading ? 'Checking...' : 'Apply'}
+                          </Button>
+                        </div>
+                      </div>
+                    )}
+                  </div>
+
                   <div className="border-t pt-4 space-y-2">
                     <div className="flex justify-between">
                       <span>Subtotal</span>
@@ -302,15 +421,31 @@ export default function Checkout() {
                       <span>Delivery</span>
                       <span>R {deliveryCost.toFixed(2)}</span>
                     </div>
+                    {discount > 0 && (
+                      <div className="flex justify-between text-green-600">
+                        <span>Discount</span>
+                        <span>-R {discount.toFixed(2)}</span>
+                      </div>
+                    )}
                     <div className="flex justify-between text-lg font-bold border-t pt-2">
                       <span>Total</span>
                       <span>R {total.toFixed(2)}</span>
                     </div>
+                    {discount > 0 && (
+                      <p className="text-xs text-green-600 text-right">
+                        You saved R {discount.toFixed(2)}!
+                      </p>
+                    )}
                   </div>
 
                   <Button type="submit" className="w-full" size="lg" disabled={loading}>
-                    {loading ? 'Processing...' : 'Place Order'}
+                    <Lock className="h-4 w-4 mr-2" />
+                    {loading ? 'Processing...' : 'Place Secure Order'}
                   </Button>
+
+                  <p className="text-xs text-center text-muted-foreground">
+                    Your payment information is secure and encrypted
+                  </p>
                 </CardContent>
               </Card>
             </div>

@@ -16,6 +16,7 @@ import Delivery from "./pages/Delivery";
 import Support from "./pages/Support";
 import PaymentSuccess from "./pages/PaymentSuccess";
 import PaymentCancelled from "./pages/PaymentCancelled";
+import Wishlist from "./pages/Wishlist";
 import AdminDashboard from "./pages/admin/Dashboard";
 import AdminProducts from "./pages/admin/Products";
 import AdminOrders from "./pages/admin/Orders";
@@ -53,6 +54,7 @@ const App = () => (
           <Route path="/checkout" element={<Checkout />} />
           <Route path="/order-confirmation/:id" element={<OrderConfirmation />} />
           <Route path="/my-orders" element={<MyOrders />} />
+          <Route path="/wishlist" element={<Wishlist />} />
           <Route path="/auth" element={<Auth />} />
           <Route path="/delivery" element={<Delivery />} />
           <Route path="/support" element={<Support />} />

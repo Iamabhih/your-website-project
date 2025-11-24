@@ -7,6 +7,8 @@ import Header from '@/components/Header';
 import Footer from '@/components/Footer';
 import { Link } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
+import { ChevronDown, ChevronUp } from 'lucide-react';
+import OrderTracking from '@/components/OrderTracking';
 
 interface Order {
   id: string;
@@ -21,6 +23,7 @@ export default function MyOrders() {
   const { user } = useAuth();
   const [orders, setOrders] = useState<Order[]>([]);
   const [loading, setLoading] = useState(true);
+  const [expandedOrder, setExpandedOrder] = useState<string | null>(null);
 
   useEffect(() => {
     if (user) {
@@ -117,7 +120,7 @@ export default function MyOrders() {
                       </Badge>
                     </div>
                   </CardHeader>
-                  <CardContent>
+                  <CardContent className="space-y-4">
                     <div className="flex justify-between items-center">
                       <div>
                         <p className="text-sm text-muted-foreground">Total Amount</p>
@@ -128,6 +131,30 @@ export default function MyOrders() {
                         <p className="text-sm font-semibold capitalize">{order.payment_status}</p>
                       </div>
                     </div>
+
+                    <Button
+                      variant="outline"
+                      className="w-full"
+                      onClick={() => setExpandedOrder(expandedOrder === order.id ? null : order.id)}
+                    >
+                      {expandedOrder === order.id ? (
+                        <>
+                          <ChevronUp className="h-4 w-4 mr-2" />
+                          Hide Tracking
+                        </>
+                      ) : (
+                        <>
+                          <ChevronDown className="h-4 w-4 mr-2" />
+                          View Tracking
+                        </>
+                      )}
+                    </Button>
+
+                    {expandedOrder === order.id && (
+                      <div className="pt-4 border-t">
+                        <OrderTracking orderId={order.id} />
+                      </div>
+                    )}
                   </CardContent>
                 </Card>
               ))}

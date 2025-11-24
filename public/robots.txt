@@ -1,8 +1,22 @@
+# Robots.txt for Ideal Smoke Supply
+# https://www.robotstxt.org/
+
+# Allow major search engines
 User-agent: Googlebot
 Allow: /
+Allow: /shop
+Allow: /product/*
+Disallow: /admin/*
+Disallow: /checkout
+Disallow: /my-orders
 
 User-agent: Bingbot
 Allow: /
+Allow: /shop
+Allow: /product/*
+Disallow: /admin/*
+Disallow: /checkout
+Disallow: /my-orders
 
 User-agent: Twitterbot
 Allow: /
@@ -10,5 +24,26 @@ Allow: /
 User-agent: facebookexternalhit
 Allow: /
 
+# General rules for all other bots
 User-agent: *
 Allow: /
+Allow: /shop
+Allow: /product/*
+Allow: /delivery
+Allow: /support
+
+# Disallow admin and private pages
+Disallow: /admin/*
+Disallow: /admin
+Disallow: /auth
+Disallow: /checkout
+Disallow: /my-orders
+Disallow: /wishlist
+Disallow: /payment-*
+Disallow: /order-confirmation/*
+
+# Sitemap location (update with your actual domain)
+Sitemap: https://your-domain.com/sitemap.xml
+
+# Crawl-delay (adjust based on server capacity)
+Crawl-delay: 1

@@ -13,6 +13,8 @@ import MyOrders from "./pages/MyOrders";
 import Auth from "./pages/Auth";
 import Delivery from "./pages/Delivery";
 import Support from "./pages/Support";
+import PaymentSuccess from "./pages/PaymentSuccess";
+import PaymentCancelled from "./pages/PaymentCancelled";
 import AdminDashboard from "./pages/admin/Dashboard";
 import AdminProducts from "./pages/admin/Products";
 import AdminOrders from "./pages/admin/Orders";
@@ -37,6 +39,8 @@ const App = () => (
           <Route path="/auth" element={<Auth />} />
           <Route path="/delivery" element={<Delivery />} />
           <Route path="/support" element={<Support />} />
+          <Route path="/payment-success" element={<PaymentSuccess />} />
+          <Route path="/payment-cancelled" element={<PaymentCancelled />} />
           <Route path="/admin" element={<AdminDashboard />} />
           <Route path="/admin/products" element={<AdminProducts />} />
           <Route path="/admin/orders" element={<AdminOrders />} />

@@ -1,1 +1,25 @@
 project_id = "dljnlqznteqxszbxdelw"
+
+[functions.send-order-email]
+verify_jwt = false
+
+[functions.create-payfast-payment]
+verify_jwt = false
+
+[functions.telegram-bot]
+verify_jwt = false
+
+[functions.telegram-webhook]
+verify_jwt = false
+
+[functions.send-to-telegram]
+verify_jwt = false
+
+[functions.notify-order-status]
+verify_jwt = false
+
+[functions.check-abandoned-carts]
+verify_jwt = false
+
+[functions.check-inventory]
+verify_jwt = false

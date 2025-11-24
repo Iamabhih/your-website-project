@@ -23,8 +23,8 @@ import {
   Warehouse,
   Bot,
   Palette,
-  ImageIcon,
-  Brush,
+  Image,
+  Smile,
 } from "lucide-react";
 import {
   Sidebar,
@@ -94,15 +94,6 @@ const menuItems = [
     ],
   },
   {
-    title: "Appearance",
-    icon: Palette,
-    items: [
-      { title: "Theme Builder", url: "/admin/theme", icon: Brush },
-      { title: "Branding", url: "/admin/branding", icon: ImageIcon },
-      { title: "Custom Icons", url: "/admin/icons", icon: ImageIcon },
-    ],
-  },
-  {
     title: "Analytics",
     url: "/admin/analytics",
     icon: BarChart3,
@@ -119,6 +110,9 @@ const menuItems = [
     icon: Settings,
     items: [
       { title: "Store Settings", url: "/admin/store-settings", icon: Store },
+      { title: "Theme Builder", url: "/admin/theme", icon: Palette },
+      { title: "Branding", url: "/admin/branding", icon: Image },
+      { title: "Custom Icons", url: "/admin/icons", icon: Smile },
       { title: "System Settings", url: "/admin/settings", icon: Settings },
     ],
   },

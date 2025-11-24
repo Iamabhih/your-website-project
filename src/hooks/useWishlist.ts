@@ -94,8 +94,8 @@ export function useWishlist() {
 
     try {
       const { data } = await supabase.rpc('migrate_guest_wishlist', {
-        p_session_id: sessionId,
-        p_user_id: user.id,
+        _session_id: sessionId,
+        _user_id: user.id,
       });
 
       if (data && data > 0) {
@@ -170,27 +170,34 @@ export function useWishlist() {
   const removeFromWishlist = async (productId: string, variantId?: string) => {
     if (user) {
       // Remove from database
-      let query = supabase
-        .from('wishlist')
-        .delete()
-        .eq('user_id', user.id)
-        .eq('product_id', productId);
+      try {
+        const deleteParams: any = {
+          user_id: user.id,
+          product_id: productId
+        };
+        
+        if (variantId) {
+          const { error } = await supabase
+            .from('wishlist')
+            .delete()
+            .match({ ...deleteParams, variant_id: variantId });
+          
+          if (error) throw error;
+        } else {
+          const { error } = await supabase
+            .from('wishlist')
+            .delete()
+            .match(deleteParams)
+            .is('variant_id', null);
+          
+          if (error) throw error;
+        }
 
-      if (variantId) {
-        query = query.eq('variant_id', variantId);
-      } else {
-        query = query.is('variant_id', null);
-      }
-
-      const { error } = await query;
-
-      if (error) {
+        toast.success('Removed from wishlist');
+        loadWishlist();
+      } catch (error) {
         toast.error('Failed to remove from wishlist');
-        return;
       }
-
-      toast.success('Removed from wishlist');
-      loadWishlist();
     } else {
       // Remove from guest wishlist
       const existingWishlist = localStorage.getItem(GUEST_WISHLIST_KEY);

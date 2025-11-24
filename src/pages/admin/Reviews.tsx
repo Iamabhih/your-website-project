@@ -19,7 +19,7 @@ interface Review {
   comment: string;
   is_verified_purchase: boolean;
   is_approved: boolean;
-  helpful_count: number;
+  helpful_count?: number;
   created_at: string;
   products?: {
     name: string;

@@ -76,7 +76,14 @@ export default function AdminCoupons() {
         .order('created_at', { ascending: false });
 
       if (error) throw error;
-      setCoupons(data || []);
+      
+      // Add used_count to each coupon (will be 0 for now, can be enhanced later)
+      const couponsWithCount = (data || []).map(coupon => ({
+        ...coupon,
+        discount_type: coupon.discount_type as 'fixed' | 'percentage',
+        used_count: 0
+      }));
+      setCoupons(couponsWithCount);
     } catch (error: any) {
       toast.error('Failed to load coupons: ' + error.message);
     } finally {

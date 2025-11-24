@@ -101,8 +101,14 @@ export default function AdminCustomers() {
 
     try {
       // Check if user exists in auth
-      const { data: authUsers } = await supabase.auth.admin.listUsers();
-      const existingUser = authUsers?.users.find(u => u.email === newAdminEmail);
+      const { data: authUsers, error: authError } = await supabase.auth.admin.listUsers();
+      
+      if (authError) {
+        toast.error('Failed to fetch users: ' + authError.message);
+        return;
+      }
+      
+      const existingUser = authUsers?.users?.find((u: any) => u.email === newAdminEmail);
 
       if (!existingUser) {
         toast.error('User not found. Please ask them to sign up first.');

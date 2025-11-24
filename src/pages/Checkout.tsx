@@ -85,21 +85,22 @@ export default function Checkout() {
     setCouponLoading(true);
     try {
       const { data, error } = await supabase.rpc('validate_coupon', {
-        p_code: couponCode.trim().toUpperCase(),
-        p_customer_email: '', // Will be filled at order time
-        p_order_amount: getTotalPrice() + (selectedDelivery?.cost || 0)
+        _coupon_code: couponCode.trim().toUpperCase(),
+        _customer_email: '', // Will be filled at order time
+        _cart_total: getTotalPrice() + (selectedDelivery?.cost || 0)
       });
 
       if (error) throw error;
 
-      if (!data || !data.valid) {
-        toast.error(data?.message || 'Invalid coupon code');
+      const result = data as any;
+      if (!result || !result.valid) {
+        toast.error(result?.message || 'Invalid coupon code');
         return;
       }
 
-      setAppliedCoupon(data.coupon);
-      setDiscount(data.discount_amount);
-      toast.success(`Coupon applied! You saved R${data.discount_amount.toFixed(2)}`);
+      setAppliedCoupon(result.coupon);
+      setDiscount(result.discount_amount);
+      toast.success(`Coupon applied! You saved R${result.discount_amount.toFixed(2)}`);
     } catch (error: any) {
       console.error('Coupon validation error:', error);
       toast.error('Failed to apply coupon');

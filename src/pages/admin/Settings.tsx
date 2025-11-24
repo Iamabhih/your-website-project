@@ -52,9 +52,10 @@ export default function AdminSettings() {
       const settingsObj: Settings = {};
       data?.forEach((item) => {
         try {
-          settingsObj[item.key as keyof Settings] = JSON.parse(item.value);
+          const value = typeof item.value === 'string' ? item.value : JSON.stringify(item.value);
+          settingsObj[item.key as keyof Settings] = value;
         } catch {
-          settingsObj[item.key as keyof Settings] = item.value;
+          settingsObj[item.key as keyof Settings] = String(item.value);
         }
       });
 

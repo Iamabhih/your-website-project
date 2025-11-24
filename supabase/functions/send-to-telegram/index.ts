@@ -40,7 +40,27 @@ serve(async (req) => {
       Deno.env.get("SUPABASE_ANON_KEY") ?? ""
     );
 
-    const { sessionId, message, visitorName, visitorEmail } = await req.json();
+    const body = await req.json();
+    
+    // Handle test message from admin settings
+    if (body.event === 'test') {
+      console.log('Sending test message to Telegram');
+      const testResponse = await sendTelegramMessage(body.message);
+      
+      if (!testResponse.ok) {
+        throw new Error(`Telegram API error: ${JSON.stringify(testResponse)}`);
+      }
+      
+      return new Response(
+        JSON.stringify({ success: true, message: 'Test message sent successfully' }),
+        {
+          status: 200,
+          headers: { ...corsHeaders, "Content-Type": "application/json" },
+        }
+      );
+    }
+
+    const { sessionId, message, visitorName, visitorEmail } = body;
 
     // Get or create chat session
     let session;

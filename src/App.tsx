@@ -35,6 +35,7 @@ import TelegramChats from "./pages/admin/TelegramChats";
 import TelegramCustomers from "./pages/admin/TelegramCustomers";
 import TelegramBroadcast from "./pages/admin/TelegramBroadcast";
 import TelegramSupport from "./pages/admin/TelegramSupport";
+import TelegramSettings from "./pages/admin/TelegramSettings";
 import ProductImport from "./pages/admin/ProductImport";
 import BannerManagement from "./pages/admin/BannerManagement";
 import PWASettings from "./pages/admin/PWASettings";
@@ -107,6 +108,7 @@ const App = () => (
               <Route path="/admin/telegram-customers" element={<ProtectedRoute requireAdmin><TelegramCustomers /></ProtectedRoute>} />
               <Route path="/admin/telegram-broadcast" element={<ProtectedRoute requireAdmin><TelegramBroadcast /></ProtectedRoute>} />
               <Route path="/admin/telegram-support" element={<ProtectedRoute requireAdmin><TelegramSupport /></ProtectedRoute>} />
+              <Route path="/admin/telegram-settings" element={<ProtectedRoute requireAdmin><TelegramSettings /></ProtectedRoute>} />
               <Route path="/account/telegram" element={<TelegramLink />} />
               <Route path="/admin/banner" element={<ProtectedRoute requireAdmin><BannerManagement /></ProtectedRoute>} />
               <Route path="/admin/pwa" element={<ProtectedRoute requireAdmin><PWASettings /></ProtectedRoute>} />

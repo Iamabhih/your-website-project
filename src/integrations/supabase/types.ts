@@ -123,6 +123,7 @@ export type Database = {
         Row: {
           created_at: string | null
           id: string
+          is_read: boolean | null
           message_text: string
           sender_type: string
           session_id: string
@@ -131,6 +132,7 @@ export type Database = {
         Insert: {
           created_at?: string | null
           id?: string
+          is_read?: boolean | null
           message_text: string
           sender_type: string
           session_id: string
@@ -139,6 +141,7 @@ export type Database = {
         Update: {
           created_at?: string | null
           id?: string
+          is_read?: boolean | null
           message_text?: string
           sender_type?: string
           session_id?: string
@@ -159,8 +162,12 @@ export type Database = {
           current_page: string | null
           ended_at: string | null
           id: string
+          is_starred: boolean | null
+          priority: string | null
+          rating: number | null
           started_at: string | null
           status: string | null
+          tags: string[] | null
           telegram_thread_id: string | null
           user_agent: string | null
           visitor_email: string | null
@@ -170,8 +177,12 @@ export type Database = {
           current_page?: string | null
           ended_at?: string | null
           id?: string
+          is_starred?: boolean | null
+          priority?: string | null
+          rating?: number | null
           started_at?: string | null
           status?: string | null
+          tags?: string[] | null
           telegram_thread_id?: string | null
           user_agent?: string | null
           visitor_email?: string | null
@@ -181,8 +192,12 @@ export type Database = {
           current_page?: string | null
           ended_at?: string | null
           id?: string
+          is_starred?: boolean | null
+          priority?: string | null
+          rating?: number | null
           started_at?: string | null
           status?: string | null
+          tags?: string[] | null
           telegram_thread_id?: string | null
           user_agent?: string | null
           visitor_email?: string | null

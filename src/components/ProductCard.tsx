@@ -29,7 +29,7 @@ export default function ProductCard({
 
   const handleAddToCart = (e: React.MouseEvent) => {
     e.preventDefault();
-    addItem({ id, name, price, image_url, min_quantity });
+    addItem({ id, productId: id, name, price, image_url, min_quantity });
     toast.success(`${name} added to cart`);
   };
 

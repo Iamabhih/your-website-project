@@ -51,9 +51,13 @@ export default function AdminSettings() {
       const settingsObj: Settings = {};
       data?.forEach((item) => {
         try {
-          const value = typeof item.value === 'string' ? item.value : JSON.stringify(item.value);
-          settingsObj[item.key as keyof Settings] = value;
+          // Parse the JSON value from database
+          const parsedValue = typeof item.value === 'string' 
+            ? JSON.parse(item.value) 
+            : item.value;
+          settingsObj[item.key as keyof Settings] = parsedValue as string;
         } catch {
+          // If parsing fails, use the value as string
           settingsObj[item.key as keyof Settings] = String(item.value);
         }
       });
@@ -73,7 +77,7 @@ export default function AdminSettings() {
         .from('settings')
         .upsert({
           key,
-          value: JSON.stringify(value),
+          value,
           updated_at: new Date().toISOString()
         }, {
           onConflict: 'key'

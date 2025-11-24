@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react';
 import { supabase } from '@/integrations/supabase/client';
+import type { Database } from '@/integrations/supabase/types';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
@@ -183,7 +184,7 @@ export default function AdminOrders() {
     try {
       const { error } = await supabase
         .from('orders')
-        .update({ status: newStatus })
+        .update({ status: newStatus as Database['public']['Enums']['order_status'] })
         .eq('id', orderId);
 
       if (error) throw error;
@@ -204,7 +205,7 @@ export default function AdminOrders() {
     try {
       const { error } = await supabase
         .from('orders')
-        .update({ status: newStatus })
+        .update({ status: newStatus as Database['public']['Enums']['order_status'] })
         .in('id', Array.from(selectedOrders));
 
       if (error) throw error;

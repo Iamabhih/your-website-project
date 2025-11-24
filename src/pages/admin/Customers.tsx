@@ -69,7 +69,7 @@ interface Customer {
 interface Order {
   id: string;
   created_at: string;
-  total: number;
+  total_amount: number;
   status: string;
   payment_status: string;
 }
@@ -161,7 +161,7 @@ export default function AdminCustomers() {
     try {
       const { data } = await supabase
         .from('orders')
-        .select('id, created_at, total, status, payment_status')
+        .select('id, created_at, total_amount, status, payment_status')
         .eq('user_id', userId)
         .order('created_at', { ascending: false });
 
@@ -847,7 +847,7 @@ export default function AdminCustomers() {
                     <div className="flex justify-between text-sm text-muted-foreground px-3">
                       <span>Total Orders: {customerOrders.length}</span>
                       <span>
-                        Total Spent: R{customerOrders.reduce((sum, o) => sum + o.total, 0).toFixed(2)}
+                        Total Spent: R{customerOrders.reduce((sum, o) => sum + o.total_amount, 0).toFixed(2)}
                       </span>
                     </div>
                     <div className="space-y-2 max-h-60 overflow-y-auto">
@@ -868,7 +868,7 @@ export default function AdminCustomers() {
                             }>
                               {order.status}
                             </Badge>
-                            <span className="font-semibold">R{order.total.toFixed(2)}</span>
+                            <span className="font-semibold">R{order.total_amount.toFixed(2)}</span>
                           </div>
                         </div>
                       ))}

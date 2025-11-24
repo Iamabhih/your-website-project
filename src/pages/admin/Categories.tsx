@@ -181,11 +181,11 @@ export default function Categories() {
     try {
       const { error } = await supabase
         .from('settings')
-        .upsert({
+        .upsert([{
           key: 'category_metadata',
-          value: metadata,
+          value: metadata as any,
           updated_at: new Date().toISOString(),
-        }, { onConflict: 'key' });
+        }], { onConflict: 'key' });
 
       if (error) throw error;
       setCategoryMetadataStore(metadata);

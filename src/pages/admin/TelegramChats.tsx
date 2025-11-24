@@ -235,7 +235,7 @@ export default function TelegramChats() {
       return;
     }
 
-    setSessions(data || []);
+    setSessions((data || []) as ChatSession[]);
   };
 
   const filterSessions = () => {

@@ -156,11 +156,11 @@ export default function TelegramSettings() {
     try {
       const { error } = await supabase
         .from('settings')
-        .upsert({
+        .upsert([{
           key: 'telegram_bot_settings',
-          value: settings,
+          value: settings as any,
           updated_at: new Date().toISOString(),
-        }, {
+        }], {
           onConflict: 'key',
         });
 

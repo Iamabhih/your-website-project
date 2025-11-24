@@ -19,6 +19,7 @@ export default function Wishlist() {
 
     addItem({
       id: item.product.id,
+      productId: item.product.id,
       name: item.product.name,
       price: item.product.price,
       image_url: item.product.image_url || undefined,

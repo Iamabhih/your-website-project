@@ -92,7 +92,7 @@ interface TelegramCustomer {
 interface CustomerOrder {
   id: string;
   created_at: string;
-  total: number;
+  total_amount: number;
   status: string;
 }
 
@@ -186,7 +186,7 @@ export default function TelegramCustomers() {
       if (customerEmail) {
         const { data: orders } = await supabase
           .from('orders')
-          .select('id, created_at, total, status')
+          .select('id, created_at, total_amount, status')
           .eq('customer_email', customerEmail)
           .order('created_at', { ascending: false })
           .limit(10);
@@ -871,7 +871,7 @@ export default function TelegramCustomers() {
                           <Badge variant={order.status === 'delivered' ? 'default' : 'secondary'}>
                             {order.status}
                           </Badge>
-                          <span className="font-semibold">R{order.total.toFixed(2)}</span>
+                          <span className="font-semibold">R{order.total_amount.toFixed(2)}</span>
                         </div>
                       </div>
                     ))}

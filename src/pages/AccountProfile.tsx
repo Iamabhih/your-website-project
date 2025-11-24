@@ -40,7 +40,7 @@ import {
   Edit, Save, Loader2, ShoppingBag, Calendar, CreditCard,
   Trash2, LogOut, Eye, EyeOff, Lock, Check
 } from 'lucide-react';
-import Navbar from '@/components/Navbar';
+import Header from '@/components/Header';
 import Footer from '@/components/Footer';
 
 interface UserProfile {
@@ -256,7 +256,7 @@ export default function AccountProfile() {
 
   return (
     <div className="min-h-screen flex flex-col">
-      <Navbar />
+      <Header />
 
       <main className="flex-1 container mx-auto px-4 py-8">
         <div className="max-w-4xl mx-auto">

@@ -324,11 +324,11 @@ export default function TelegramBroadcast() {
     try {
       const { error } = await supabase
         .from('settings')
-        .upsert({
+        .upsert([{
           key: 'telegram_message_templates',
-          value: { templates: updatedTemplates },
+          value: { templates: updatedTemplates } as any,
           updated_at: new Date().toISOString(),
-        }, {
+        }], {
           onConflict: 'key',
         });
 
@@ -349,11 +349,11 @@ export default function TelegramBroadcast() {
     try {
       const { error } = await supabase
         .from('settings')
-        .upsert({
+        .upsert([{
           key: 'telegram_message_templates',
-          value: { templates: updatedTemplates },
+          value: { templates: updatedTemplates } as any,
           updated_at: new Date().toISOString(),
-        }, {
+        }], {
           onConflict: 'key',
         });
 

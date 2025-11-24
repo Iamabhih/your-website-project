@@ -274,14 +274,14 @@ export const useCartStore = create<CartStore>()(
           const productIds = items.map((item) => item.productId || item.id);
           const { data: products } = await supabase
             .from('products')
-            .select('id, stock')
+            .select('id, stock_quantity')
             .in('id', productIds);
 
           if (products) {
             items.forEach((item) => {
               const product = products.find((p) => p.id === (item.productId || item.id));
-              if (product && product.stock !== null && item.quantity > product.stock) {
-                issues.push({ id: item.id, available: product.stock });
+              if (product && product.stock_quantity !== null && item.quantity > product.stock_quantity) {
+                issues.push({ id: item.id, available: product.stock_quantity });
               }
             });
           }

@@ -82,6 +82,7 @@ export default function ProductDetail() {
 
     addItem({
       id: product.id,
+      productId: product.id,
       name: itemName,
       price: finalPrice,
       image_url: product.image_url || undefined,

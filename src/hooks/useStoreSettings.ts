@@ -220,11 +220,11 @@ async function fetchStoreSettings(): Promise<StoreSettings> {
 async function saveStoreSettings(settings: StoreSettings): Promise<void> {
   const { error } = await supabase
     .from('settings')
-    .upsert({
+    .upsert([{
       key: STORE_SETTINGS_KEY,
-      value: settings,
+      value: settings as any,
       updated_at: new Date().toISOString(),
-    }, {
+    }], {
       onConflict: 'key',
     });
 

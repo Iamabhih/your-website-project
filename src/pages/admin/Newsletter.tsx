@@ -323,11 +323,11 @@ export default function Newsletter() {
 
       await supabase
         .from("settings")
-        .upsert({
+        .upsert([{
           key: "newsletter_campaigns",
-          value: { campaigns: updatedCampaigns },
+          value: { campaigns: updatedCampaigns } as any,
           updated_at: new Date().toISOString(),
-        }, { onConflict: "key" });
+        }], { onConflict: "key" });
 
       setCampaigns(updatedCampaigns);
       setEmailSubject("");
@@ -361,11 +361,11 @@ export default function Newsletter() {
     try {
       const { error } = await supabase
         .from("settings")
-        .upsert({
+        .upsert([{
           key: "newsletter_templates",
-          value: { templates: updatedTemplates },
+          value: { templates: updatedTemplates } as any,
           updated_at: new Date().toISOString(),
-        }, { onConflict: "key" });
+        }], { onConflict: "key" });
 
       if (error) throw error;
 
@@ -390,11 +390,11 @@ export default function Newsletter() {
     try {
       const { error } = await supabase
         .from("settings")
-        .upsert({
+        .upsert([{
           key: "newsletter_templates",
-          value: { templates: updatedTemplates },
+          value: { templates: updatedTemplates } as any,
           updated_at: new Date().toISOString(),
-        }, { onConflict: "key" });
+        }], { onConflict: "key" });
 
       if (error) throw error;
 

@@ -36,6 +36,9 @@ export default function Checkout() {
   const [appliedCoupon, setAppliedCoupon] = useState<any>(null);
   const [couponLoading, setCouponLoading] = useState(false);
   const [discount, setDiscount] = useState(0);
+  
+  // PayFast settings
+  const [payfastSettings, setPayfastSettings] = useState<any>(null);
 
   useEffect(() => {
     if (items.length === 0) {
@@ -43,8 +46,30 @@ export default function Checkout() {
       return;
     }
     loadDeliveryOptions();
+    loadPayfastSettings();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
+
+  const loadPayfastSettings = async () => {
+    try {
+      const { data, error } = await supabase
+        .from('settings')
+        .select('key, value')
+        .in('key', ['payfast_mode', 'payfast_merchant_id', 'payfast_merchant_key']);
+
+      if (error) throw error;
+
+      const settings = data?.reduce((acc, s) => {
+        acc[s.key] = typeof s.value === 'string' ? JSON.parse(s.value) : s.value;
+        return acc;
+      }, {} as Record<string, any>) || {};
+
+      setPayfastSettings(settings);
+    } catch (error) {
+      console.error('Error loading PayFast settings:', error);
+      toast.error('Payment configuration error. Please contact support.');
+    }
+  };
 
   const loadDeliveryOptions = async () => {
     try {
@@ -119,6 +144,12 @@ export default function Checkout() {
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
+    // Validate PayFast settings
+    if (!payfastSettings?.payfast_merchant_id || !payfastSettings?.payfast_merchant_key) {
+      toast.error('Payment system not configured. Please contact support.');
+      return;
+    }
+
     // Validate delivery selection
     if (!selectedDelivery) {
       toast.error('Please select a delivery method');
@@ -154,20 +185,34 @@ export default function Checkout() {
         throw new Error('Please enter a valid email address');
       }
 
-      const orderData = {
-        customer_name: name.trim(),
-        customer_email: email.trim().toLowerCase(),
-        customer_phone: phone.trim(),
-        delivery_address: address.trim(),
-        delivery_method: selectedDelivery.name,
-        delivery_notes: formData.get('notes') as string || null,
-        delivery_price: selectedDelivery.cost,
-        total_amount: getTotalPrice() + selectedDelivery.cost - discount,
-        coupon_code: appliedCoupon?.code || null,
-        discount_amount: discount || null,
-      };
+      const totalAmount = getTotalPrice() + selectedDelivery.cost - discount;
 
+      // Create order in database
+      const { data: order, error: orderError } = await supabase
+        .from('orders')
+        .insert([{
+          customer_name: name.trim(),
+          customer_email: email.trim().toLowerCase(),
+          customer_phone: phone.trim(),
+          delivery_address: address.trim(),
+          delivery_method: selectedDelivery.name,
+          delivery_notes: formData.get('notes') as string || null,
+          delivery_price: selectedDelivery.cost,
+          total_amount: totalAmount,
+          status: 'pending',
+          payment_status: 'pending',
+        }])
+        .select()
+        .single();
+
+      if (orderError || !order) {
+        console.error('Order creation error:', orderError);
+        throw new Error('Failed to create order');
+      }
+
+      // Create order items
       const orderItems = items.map(item => ({
+        order_id: order.id,
         product_id: item.id,
         product_name: item.name,
         price: item.price,
@@ -175,27 +220,36 @@ export default function Checkout() {
         image_url: item.image_url,
       }));
 
-      // Call PayFast payment function
-      const { data, error: invokeError } = await supabase.functions.invoke('create-payfast-payment', {
-        body: { orderData, items: orderItems }
-      });
+      const { error: itemsError } = await supabase
+        .from('order_items')
+        .insert(orderItems);
 
-      if (invokeError) {
-        console.error('Invoke error:', invokeError);
-        throw new Error(`Payment initialization failed: ${invokeError.message}`);
+      if (itemsError) {
+        console.error('Order items error:', itemsError);
       }
 
-      if (!data) {
-        throw new Error('No response from payment service');
-      }
+      // Prepare PayFast payment data
+      const mode = payfastSettings.payfast_mode || 'sandbox';
+      const payfastUrl = mode === 'live'
+        ? 'https://www.payfast.co.za/eng/process'
+        : 'https://sandbox.payfast.co.za/eng/process';
 
-      if (!data.success) {
-        throw new Error(data.error || 'Payment initialization failed');
-      }
-
-      if (!data.paymentUrl || !data.paymentData) {
-        throw new Error('Invalid payment response from server');
-      }
+      const baseUrl = window.location.origin;
+      const paymentData = {
+        merchant_id: payfastSettings.payfast_merchant_id,
+        merchant_key: payfastSettings.payfast_merchant_key,
+        return_url: `${baseUrl}/payment-success?order_id=${order.id}`,
+        cancel_url: `${baseUrl}/payment-cancelled?order_id=${order.id}`,
+        notify_url: `${import.meta.env.VITE_SUPABASE_URL}/functions/v1/payfast-notify`,
+        name_first: name.split(' ')[0] || name,
+        name_last: name.split(' ').slice(1).join(' ') || '',
+        email_address: email.trim().toLowerCase(),
+        cell_number: phone.trim(),
+        m_payment_id: order.id,
+        amount: totalAmount.toFixed(2),
+        item_name: `Order #${order.id.slice(0, 8)}`,
+        item_description: `${items.length} item(s)`,
+      };
 
       // Clear cart before redirecting to payment
       clearCart();
@@ -203,9 +257,9 @@ export default function Checkout() {
       // Create a form and submit it to PayFast
       const form = document.createElement('form');
       form.method = 'POST';
-      form.action = data.paymentUrl;
+      form.action = payfastUrl;
 
-      Object.entries(data.paymentData).forEach(([key, value]) => {
+      Object.entries(paymentData).forEach(([key, value]) => {
         const input = document.createElement('input');
         input.type = 'hidden';
         input.name = key;

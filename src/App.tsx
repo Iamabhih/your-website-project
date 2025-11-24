@@ -5,6 +5,7 @@ import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import { ErrorBoundary } from "@/components/ErrorBoundary";
 import { LoadingProvider } from "@/contexts/LoadingContext";
+import { ThemeProvider } from "next-themes";
 import ProtectedRoute from "@/components/ProtectedRoute";
 import { AgeVerificationModal } from "@/components/AgeVerificationModal";
 import Index from "./pages/Index";
@@ -70,12 +71,13 @@ const queryClient = new QueryClient({
 const App = () => (
   <ErrorBoundary>
     <QueryClientProvider client={queryClient}>
-      <LoadingProvider>
-        <TooltipProvider>
-          <AgeVerificationModal />
-          <Toaster />
-          <Sonner />
-          <BrowserRouter>
+      <ThemeProvider attribute="class" defaultTheme="system" enableSystem>
+        <LoadingProvider>
+          <TooltipProvider>
+            <AgeVerificationModal />
+            <Toaster />
+            <Sonner />
+            <BrowserRouter>
             <ChatWidget />
             <Routes>
               <Route path="/" element={<Index />} />
@@ -126,6 +128,7 @@ const App = () => (
           </BrowserRouter>
         </TooltipProvider>
       </LoadingProvider>
+    </ThemeProvider>
     </QueryClientProvider>
   </ErrorBoundary>
 );

@@ -174,14 +174,14 @@ serve(async (req) => {
         throw new Error("Order not found");
       }
 
-      // Find customer's Telegram chat ID
+      // Find customer's Telegram chat ID from telegram_customers table
       const { data: customer } = await supabase
-        .from("customers")
-        .select("telegram_chat_id")
-        .eq("email", order.customer_email)
+        .from("telegram_customers")
+        .select("chat_id")
+        .eq("customer_email", order.customer_email)
         .maybeSingle();
 
-      if (!customer?.telegram_chat_id) {
+      if (!customer?.chat_id) {
         console.log("Customer does not have Telegram linked");
         return new Response(
           JSON.stringify({
@@ -198,7 +198,7 @@ serve(async (req) => {
       // Send notification
       await sendOrderStatusNotification({
         orderId: order.id,
-        chatId: customer.telegram_chat_id,
+        chatId: customer.chat_id,
         status: order.status,
         trackingNumber: order.order_tracking?.[0]?.tracking_number,
         estimatedDelivery: order.order_tracking?.[0]?.estimated_delivery_date,
@@ -207,7 +207,7 @@ serve(async (req) => {
       // Log notification
       await supabase.from("telegram_order_notifications").insert({
         order_id: order.id,
-        chat_id: customer.telegram_chat_id,
+        chat_id: customer.chat_id,
         notification_type: "status_update",
         message_text: `Order status updated to: ${order.status}`,
       });

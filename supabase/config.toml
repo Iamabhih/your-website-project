@@ -6,8 +6,6 @@ verify_jwt = false
 [functions.send-order-email]
 verify_jwt = false
 
-[functions.create-payfast-payment]
-verify_jwt = false
 
 [functions.telegram-bot]
 verify_jwt = false

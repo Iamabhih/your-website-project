@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 import { supabase } from '@/integrations/supabase/client';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { DollarSign, ShoppingCart, Users, Package, Settings, BarChart3, Tag } from 'lucide-react';
+import { DollarSign, ShoppingCart, Users, Package, Settings, BarChart3, Tag, Star } from 'lucide-react';
 import Header from '@/components/Header';
 import Footer from '@/components/Footer';
 
@@ -150,6 +150,11 @@ export default function AdminDashboard() {
                   <Tag className="h-8 w-8 mb-2 text-primary" />
                   <h3 className="font-semibold">Coupons</h3>
                   <p className="text-sm text-muted-foreground">Manage discounts</p>
+                </a>
+                <a href="/admin/reviews" className="p-4 border rounded-lg hover:bg-muted/50 transition-colors">
+                  <Star className="h-8 w-8 mb-2 text-primary" />
+                  <h3 className="font-semibold">Reviews</h3>
+                  <p className="text-sm text-muted-foreground">Moderate reviews</p>
                 </a>
                 <a href="/admin/delivery-options" className="p-4 border rounded-lg hover:bg-muted/50 transition-colors">
                   <Package className="h-8 w-8 mb-2 text-primary" />

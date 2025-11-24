@@ -31,11 +31,12 @@ export default function AdminDashboard() {
       .single();
 
     if (!orderError && orderStats) {
+      const stats = orderStats as any;
       setStats(prev => ({
         ...prev,
-        totalRevenue: orderStats.total_revenue || 0,
-        totalOrders: orderStats.total_orders || 0,
-        pendingOrders: orderStats.pending_orders || 0,
+        totalRevenue: stats.total_revenue || 0,
+        totalOrders: stats.total_orders || 0,
+        pendingOrders: stats.pending_orders || 0,
       }));
     } else {
       // Fallback: Get limited orders for stats

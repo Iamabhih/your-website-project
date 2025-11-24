@@ -1,4 +1,5 @@
 import { useState, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { supabase } from '@/integrations/supabase/client';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
@@ -24,6 +25,7 @@ interface Product {
 }
 
 export default function AdminProducts() {
+  const navigate = useNavigate();
   const [products, setProducts] = useState<Product[]>([]);
   const [open, setOpen] = useState(false);
   const [editingProduct, setEditingProduct] = useState<Product | null>(null);
@@ -111,7 +113,7 @@ export default function AdminProducts() {
             <div className="flex gap-2">
               <Button 
                 variant="outline" 
-                onClick={() => window.location.href = '/admin/products/import'}
+                onClick={() => navigate('/admin/products/import')}
               >
                 <Upload className="mr-2 h-4 w-4" />
                 Import Products

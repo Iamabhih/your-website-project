@@ -1,4 +1,4 @@
-import { createContext, useContext, useState, useCallback, ReactNode } from "react";
+import * as React from "react";
 
 interface LoadingState {
   [key: string]: boolean;
@@ -11,23 +11,23 @@ interface LoadingContextType {
   isAnyLoading: () => boolean;
 }
 
-const LoadingContext = createContext<LoadingContextType | undefined>(undefined);
+const LoadingContext = React.createContext<LoadingContextType | undefined>(undefined);
 
-export const LoadingProvider = ({ children }: { children: ReactNode }) => {
-  const [loadingStates, setLoadingStates] = useState<LoadingState>({});
+export const LoadingProvider = ({ children }: { children: React.ReactNode }) => {
+  const [loadingStates, setLoadingStates] = React.useState<LoadingState>({});
 
-  const setLoading = useCallback((key: string, isLoading: boolean) => {
+  const setLoading = React.useCallback((key: string, isLoading: boolean) => {
     setLoadingStates(prev => ({
       ...prev,
       [key]: isLoading
     }));
   }, []);
 
-  const isLoading = useCallback((key: string) => {
+  const isLoading = React.useCallback((key: string) => {
     return loadingStates[key] || false;
   }, [loadingStates]);
 
-  const isAnyLoading = useCallback(() => {
+  const isAnyLoading = React.useCallback(() => {
     return Object.values(loadingStates).some(state => state === true);
   }, [loadingStates]);
 
@@ -39,7 +39,7 @@ export const LoadingProvider = ({ children }: { children: ReactNode }) => {
 };
 
 export const useLoading = () => {
-  const context = useContext(LoadingContext);
+  const context = React.useContext(LoadingContext);
   if (!context) {
     throw new Error("useLoading must be used within a LoadingProvider");
   }

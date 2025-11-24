@@ -271,6 +271,88 @@ export type Database = {
           },
         ]
       }
+      order_status_history: {
+        Row: {
+          changed_at: string | null
+          id: string
+          new_status: Database["public"]["Enums"]["order_status"]
+          notes: string | null
+          old_status: Database["public"]["Enums"]["order_status"] | null
+          order_id: string
+        }
+        Insert: {
+          changed_at?: string | null
+          id?: string
+          new_status: Database["public"]["Enums"]["order_status"]
+          notes?: string | null
+          old_status?: Database["public"]["Enums"]["order_status"] | null
+          order_id: string
+        }
+        Update: {
+          changed_at?: string | null
+          id?: string
+          new_status?: Database["public"]["Enums"]["order_status"]
+          notes?: string | null
+          old_status?: Database["public"]["Enums"]["order_status"] | null
+          order_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "order_status_history_order_id_fkey"
+            columns: ["order_id"]
+            isOneToOne: false
+            referencedRelation: "orders"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      order_tracking: {
+        Row: {
+          actual_delivery_date: string | null
+          courier: string | null
+          created_at: string | null
+          estimated_delivery_date: string | null
+          id: string
+          last_location: string | null
+          order_id: string
+          tracking_number: string | null
+          tracking_url: string | null
+          updated_at: string | null
+        }
+        Insert: {
+          actual_delivery_date?: string | null
+          courier?: string | null
+          created_at?: string | null
+          estimated_delivery_date?: string | null
+          id?: string
+          last_location?: string | null
+          order_id: string
+          tracking_number?: string | null
+          tracking_url?: string | null
+          updated_at?: string | null
+        }
+        Update: {
+          actual_delivery_date?: string | null
+          courier?: string | null
+          created_at?: string | null
+          estimated_delivery_date?: string | null
+          id?: string
+          last_location?: string | null
+          order_id?: string
+          tracking_number?: string | null
+          tracking_url?: string | null
+          updated_at?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "order_tracking_order_id_fkey"
+            columns: ["order_id"]
+            isOneToOne: true
+            referencedRelation: "orders"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       orders: {
         Row: {
           created_at: string | null
@@ -394,6 +476,62 @@ export type Database = {
         Relationships: [
           {
             foreignKeyName: "product_subscriptions_product_id_fkey"
+            columns: ["product_id"]
+            isOneToOne: false
+            referencedRelation: "products"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      product_variants: {
+        Row: {
+          color: string | null
+          created_at: string | null
+          flavor: string | null
+          id: string
+          is_active: boolean | null
+          is_default: boolean | null
+          nicotine_strength: string | null
+          price_adjustment: number | null
+          product_id: string
+          size: string | null
+          stock_quantity: number | null
+          updated_at: string | null
+          variant_name: string
+        }
+        Insert: {
+          color?: string | null
+          created_at?: string | null
+          flavor?: string | null
+          id?: string
+          is_active?: boolean | null
+          is_default?: boolean | null
+          nicotine_strength?: string | null
+          price_adjustment?: number | null
+          product_id: string
+          size?: string | null
+          stock_quantity?: number | null
+          updated_at?: string | null
+          variant_name: string
+        }
+        Update: {
+          color?: string | null
+          created_at?: string | null
+          flavor?: string | null
+          id?: string
+          is_active?: boolean | null
+          is_default?: boolean | null
+          nicotine_strength?: string | null
+          price_adjustment?: number | null
+          product_id?: string
+          size?: string | null
+          stock_quantity?: number | null
+          updated_at?: string | null
+          variant_name?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "product_variants_product_id_fkey"
             columns: ["product_id"]
             isOneToOne: false
             referencedRelation: "products"

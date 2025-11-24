@@ -268,16 +268,17 @@ Format: your-email@example.com`;
   let message = `📦 <b>Your Orders</b>\n\n`;
 
   orders.forEach((order: any, index: number) => {
-    const statusEmoji = {
+    const statusEmoji: Record<string, string> = {
       pending: "⏳",
       processing: "⚙️",
       shipped: "🚚",
       delivered: "✅",
       cancelled: "❌",
-    }[order.status] || "📦";
+    };
+    const emoji = statusEmoji[order.status as string] || "📦";
 
     message += `${index + 1}. <b>Order #${order.id.slice(0, 8)}</b>\n`;
-    message += `   ${statusEmoji} Status: <b>${order.status.toUpperCase()}</b>\n`;
+    message += `   ${emoji} Status: <b>${order.status.toUpperCase()}</b>\n`;
     message += `   💰 Total: R${order.total_amount.toFixed(2)}\n`;
     message += `   💳 Payment: ${order.payment_status}\n`;
     message += `   📅 ${new Date(order.created_at).toLocaleDateString("en-ZA")}\n`;
@@ -360,16 +361,17 @@ Format: Just the order ID (e.g., 12345abc)`;
     return;
   }
 
-  const statusEmoji = {
+  const statusEmoji: Record<string, string> = {
     pending: "⏳",
     processing: "⚙️",
     shipped: "🚚",
     delivered: "✅",
     cancelled: "❌",
-  }[order.status] || "📦";
+  };
+  const emoji = statusEmoji[order.status as string] || "📦";
 
   let message = `📦 <b>Order #${order.id.slice(0, 8)}</b>\n\n`;
-  message += `${statusEmoji} <b>Status: ${order.status.toUpperCase()}</b>\n\n`;
+  message += `${emoji} <b>Status: ${order.status.toUpperCase()}</b>\n\n`;
 
   message += `<b>Order Details:</b>\n`;
   message += `💰 Total: R${order.total_amount.toFixed(2)}\n`;

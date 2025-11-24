@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 import { supabase } from '@/integrations/supabase/client';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { DollarSign, ShoppingCart, Users, Package } from 'lucide-react';
+import { DollarSign, ShoppingCart, Users, Package, Settings } from 'lucide-react';
 import Header from '@/components/Header';
 import Footer from '@/components/Footer';
 
@@ -145,6 +145,11 @@ export default function AdminDashboard() {
                   <Package className="h-8 w-8 mb-2 text-primary" />
                   <h3 className="font-semibold">Delivery Options</h3>
                   <p className="text-sm text-muted-foreground">Configure delivery</p>
+                </a>
+                <a href="/admin/settings" className="p-4 border rounded-lg hover:bg-muted/50 transition-colors">
+                  <Settings className="h-8 w-8 mb-2 text-primary" />
+                  <h3 className="font-semibold">System Settings</h3>
+                  <p className="text-sm text-muted-foreground">Configure integrations</p>
                 </a>
               </div>
             </CardContent>

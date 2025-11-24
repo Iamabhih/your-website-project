@@ -8,11 +8,11 @@ const Footer = () => {
           <div className="md:col-span-2">
             <div className="flex items-center gap-2 mb-4">
               <Leaf className="h-8 w-8 text-secondary" />
-              <span className="text-2xl font-bold">Nippy's CBD Shop</span>
+              <span className="text-2xl font-bold">Ideal Smoke Supply</span>
             </div>
             <p className="text-primary-foreground/80 mb-4 leading-relaxed">
-              Your trusted source for premium, lab-tested CBD products. 
-              Bringing you natural wellness solutions since 2019.
+              Your trusted source for premium vaping and smoking products.
+              Bringing you quality vapes, e-liquids, and accessories since 2024.
             </p>
           </div>
           
@@ -38,7 +38,7 @@ const Footer = () => {
         </div>
         
         <div className="border-t border-primary-foreground/20 pt-8 text-center text-primary-foreground/70">
-          <p>&copy; 2024 Nippy's CBD Shop. All rights reserved. These statements have not been evaluated by the FDA.</p>
+          <p>&copy; 2024 Ideal Smoke Supply. All rights reserved.</p>
         </div>
       </div>
     </footer>

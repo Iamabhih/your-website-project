@@ -1,4 +1,4 @@
-# CBD E-Commerce Platform - Setup Guide
+# Ideal Smoke Supply - Setup Guide
 
 ## Overview
 Your complete e-commerce platform is now built with:

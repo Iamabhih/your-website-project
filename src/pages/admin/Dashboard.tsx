@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 import { supabase } from '@/integrations/supabase/client';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { DollarSign, ShoppingCart, Users, Package } from 'lucide-react';
+import { DollarSign, ShoppingCart, Users, Package, Settings, BarChart3, Tag, Star } from 'lucide-react';
 import Header from '@/components/Header';
 import Footer from '@/components/Footer';
 
@@ -125,26 +125,46 @@ export default function AdminDashboard() {
               <CardTitle>Quick Actions</CardTitle>
             </CardHeader>
             <CardContent>
-              <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-4">
+              <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-4">
+                <a href="/admin/analytics" className="p-4 border rounded-lg hover:bg-muted/50 transition-colors">
+                  <BarChart3 className="h-8 w-8 mb-2 text-primary" />
+                  <h3 className="font-semibold">Analytics</h3>
+                  <p className="text-sm text-muted-foreground">View detailed reports</p>
+                </a>
                 <a href="/admin/products" className="p-4 border rounded-lg hover:bg-muted/50 transition-colors">
                   <Package className="h-8 w-8 mb-2 text-primary" />
-                  <h3 className="font-semibold">Manage Products</h3>
+                  <h3 className="font-semibold">Products</h3>
                   <p className="text-sm text-muted-foreground">Add or edit products</p>
                 </a>
                 <a href="/admin/orders" className="p-4 border rounded-lg hover:bg-muted/50 transition-colors">
                   <ShoppingCart className="h-8 w-8 mb-2 text-primary" />
-                  <h3 className="font-semibold">View Orders</h3>
+                  <h3 className="font-semibold">Orders</h3>
                   <p className="text-sm text-muted-foreground">Process orders</p>
                 </a>
                 <a href="/admin/customers" className="p-4 border rounded-lg hover:bg-muted/50 transition-colors">
                   <Users className="h-8 w-8 mb-2 text-primary" />
                   <h3 className="font-semibold">Customers</h3>
-                  <p className="text-sm text-muted-foreground">View customer list</p>
+                  <p className="text-sm text-muted-foreground">Manage customers</p>
+                </a>
+                <a href="/admin/coupons" className="p-4 border rounded-lg hover:bg-muted/50 transition-colors">
+                  <Tag className="h-8 w-8 mb-2 text-primary" />
+                  <h3 className="font-semibold">Coupons</h3>
+                  <p className="text-sm text-muted-foreground">Manage discounts</p>
+                </a>
+                <a href="/admin/reviews" className="p-4 border rounded-lg hover:bg-muted/50 transition-colors">
+                  <Star className="h-8 w-8 mb-2 text-primary" />
+                  <h3 className="font-semibold">Reviews</h3>
+                  <p className="text-sm text-muted-foreground">Moderate reviews</p>
                 </a>
                 <a href="/admin/delivery-options" className="p-4 border rounded-lg hover:bg-muted/50 transition-colors">
                   <Package className="h-8 w-8 mb-2 text-primary" />
-                  <h3 className="font-semibold">Delivery Options</h3>
+                  <h3 className="font-semibold">Delivery</h3>
                   <p className="text-sm text-muted-foreground">Configure delivery</p>
+                </a>
+                <a href="/admin/settings" className="p-4 border rounded-lg hover:bg-muted/50 transition-colors">
+                  <Settings className="h-8 w-8 mb-2 text-primary" />
+                  <h3 className="font-semibold">Settings</h3>
+                  <p className="text-sm text-muted-foreground">Configure system</p>
                 </a>
               </div>
             </CardContent>

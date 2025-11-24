@@ -8,8 +8,8 @@ const benefits = [
   },
   {
     icon: Leaf,
-    title: "100% Organic",
-    description: "Sourced from premium organic hemp farms with sustainable farming practices.",
+    title: "100% Authentic",
+    description: "Sourced from trusted manufacturers with genuine, quality-assured products.",
   },
   {
     icon: Award,
@@ -29,10 +29,10 @@ const Benefits = () => {
       <div className="container mx-auto px-4 sm:px-6 lg:px-8">
         <div className="text-center mb-16 animate-fade-in">
           <h2 className="text-4xl md:text-5xl font-bold text-foreground mb-4">
-            Why Choose Nippy's?
+            Why Choose Ideal Smoke Supply?
           </h2>
           <p className="text-xl text-muted-foreground max-w-2xl mx-auto">
-            We're committed to delivering the highest quality CBD products with complete transparency and care.
+            We're committed to delivering the highest quality vaping products with complete transparency and care.
           </p>
         </div>
 

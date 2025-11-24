@@ -72,7 +72,7 @@ serve(async (req) => {
     if (text.startsWith("/start")) {
       await sendTelegramMessage(
         chatId,
-        `🌿 <b>Welcome to CBD Shop!</b>\n\nI'm your personal CBD assistant. Here's what I can help you with:\n\n/products - Browse our CBD products\n/track - Track your order\n/subscribe - Get notified when products are back in stock\n/help - Show this help message\n\nWhat would you like to do today?`
+        `🔥 <b>Welcome to Ideal Smoke Supply!</b>\n\nI'm your personal vaping assistant. Here's what I can help you with:\n\n/products - Browse our products\n/track - Track your order\n/subscribe - Get notified when products are back in stock\n/help - Show this help message\n\nWhat would you like to do today?`
       );
     } else if (text.startsWith("/help")) {
       await sendTelegramMessage(

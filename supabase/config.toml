@@ -26,3 +26,6 @@ verify_jwt = false
 
 [functions.check-inventory]
 verify_jwt = false
+
+[functions.payfast-notify]
+verify_jwt = false

@@ -16,6 +16,7 @@ import {
   Settings,
   Upload,
   LogOut,
+  Activity,
 } from "lucide-react";
 import {
   Sidebar,
@@ -81,6 +82,13 @@ const menuItems = [
     title: "Analytics",
     url: "/admin/analytics",
     icon: BarChart3,
+  },
+  {
+    title: "System",
+    icon: Activity,
+    items: [
+      { title: "System Logs", url: "/admin/system-logs", icon: Activity },
+    ],
   },
   {
     title: "Settings",

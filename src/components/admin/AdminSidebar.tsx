@@ -18,6 +18,10 @@ import {
   LogOut,
   Activity,
   Store,
+  FolderTree,
+  RotateCcw,
+  Warehouse,
+  Bot,
 } from "lucide-react";
 import {
   Sidebar,
@@ -50,8 +54,11 @@ const menuItems = [
     icon: ShoppingCart,
     items: [
       { title: "Products", url: "/admin/products", icon: Package },
+      { title: "Categories", url: "/admin/categories", icon: FolderTree },
       { title: "Import Products", url: "/admin/products/import", icon: Upload },
+      { title: "Inventory", url: "/admin/inventory", icon: Warehouse },
       { title: "Orders", url: "/admin/orders", icon: ShoppingCart },
+      { title: "Returns & Refunds", url: "/admin/returns", icon: RotateCcw },
       { title: "Abandoned Carts", url: "/admin/abandoned-carts", icon: ShoppingCart },
       { title: "Customers", url: "/admin/customers", icon: Users },
       { title: "Coupons", url: "/admin/coupons", icon: Ticket },
@@ -72,6 +79,7 @@ const menuItems = [
       { title: "Telegram Support", url: "/admin/telegram-support", icon: MessageSquare },
       { title: "Telegram Customers", url: "/admin/telegram-customers", icon: Users2 },
       { title: "Broadcast Messages", url: "/admin/telegram-broadcast", icon: Radio },
+      { title: "Telegram Settings", url: "/admin/telegram-settings", icon: Bot },
     ],
   },
   {

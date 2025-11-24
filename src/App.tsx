@@ -44,6 +44,10 @@ import StoreSettings from "./pages/admin/StoreSettings";
 import TelegramLink from "./pages/TelegramLink";
 import ChatWidget from "./components/ChatWidget";
 import Newsletter from "./pages/admin/Newsletter";
+import Categories from "./pages/admin/Categories";
+import Returns from "./pages/admin/Returns";
+import Inventory from "./pages/admin/Inventory";
+import AccountProfile from "./pages/AccountProfile";
 import PrivacyPolicy from "./pages/PrivacyPolicy";
 import TermsOfService from "./pages/TermsOfService";
 import ReturnPolicy from "./pages/ReturnPolicy";
@@ -82,6 +86,7 @@ const App = () => (
               <Route path="/order-confirmation/:id" element={<OrderConfirmation />} />
               <Route path="/my-orders" element={<MyOrders />} />
               <Route path="/wishlist" element={<Wishlist />} />
+              <Route path="/account" element={<ProtectedRoute><AccountProfile /></ProtectedRoute>} />
               <Route path="/auth" element={<Auth />} />
               <Route path="/delivery" element={<Delivery />} />
               <Route path="/support" element={<Support />} />
@@ -104,6 +109,9 @@ const App = () => (
               <Route path="/admin/settings" element={<ProtectedRoute requireAdmin><AdminSettings /></ProtectedRoute>} />
               <Route path="/admin/store-settings" element={<ProtectedRoute requireAdmin><StoreSettings /></ProtectedRoute>} />
               <Route path="/admin/newsletter" element={<ProtectedRoute requireAdmin><Newsletter /></ProtectedRoute>} />
+              <Route path="/admin/categories" element={<ProtectedRoute requireAdmin><Categories /></ProtectedRoute>} />
+              <Route path="/admin/returns" element={<ProtectedRoute requireAdmin><Returns /></ProtectedRoute>} />
+              <Route path="/admin/inventory" element={<ProtectedRoute requireAdmin><Inventory /></ProtectedRoute>} />
               <Route path="/admin/telegram-chats" element={<ProtectedRoute requireAdmin><TelegramChats /></ProtectedRoute>} />
               <Route path="/admin/telegram-customers" element={<ProtectedRoute requireAdmin><TelegramCustomers /></ProtectedRoute>} />
               <Route path="/admin/telegram-broadcast" element={<ProtectedRoute requireAdmin><TelegramBroadcast /></ProtectedRoute>} />

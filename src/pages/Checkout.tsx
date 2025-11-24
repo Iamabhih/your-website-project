@@ -268,7 +268,6 @@ export default function Checkout() {
                           </div>
                           <p className="font-semibold">R {option.cost.toFixed(2)}</p>
                         </div>
-                        </div>
                       </div>
                       ))}
                     </div>

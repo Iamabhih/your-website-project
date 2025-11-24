@@ -1,5 +1,8 @@
 project_id = "dljnlqznteqxszbxdelw"
 
+[functions.import-products]
+verify_jwt = false
+
 [functions.send-order-email]
 verify_jwt = false
 

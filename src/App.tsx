@@ -29,6 +29,7 @@ import AdminReviews from "./pages/admin/Reviews";
 import TelegramChats from "./pages/admin/TelegramChats";
 import TelegramCustomers from "./pages/admin/TelegramCustomers";
 import TelegramBroadcast from "./pages/admin/TelegramBroadcast";
+import ProductImport from "./pages/admin/ProductImport";
 import ChatWidget from "./components/ChatWidget";
 
 const queryClient = new QueryClient({
@@ -68,6 +69,7 @@ const App = () => (
           <Route path="/admin" element={<ProtectedRoute requireAdmin><AdminDashboard /></ProtectedRoute>} />
           <Route path="/admin/analytics" element={<ProtectedRoute requireAdmin><AdminAnalytics /></ProtectedRoute>} />
           <Route path="/admin/products" element={<ProtectedRoute requireAdmin><AdminProducts /></ProtectedRoute>} />
+          <Route path="/admin/products/import" element={<ProtectedRoute requireAdmin><ProductImport /></ProtectedRoute>} />
           <Route path="/admin/orders" element={<ProtectedRoute requireAdmin><AdminOrders /></ProtectedRoute>} />
           <Route path="/admin/customers" element={<ProtectedRoute requireAdmin><AdminCustomers /></ProtectedRoute>} />
           <Route path="/admin/coupons" element={<ProtectedRoute requireAdmin><AdminCoupons /></ProtectedRoute>} />

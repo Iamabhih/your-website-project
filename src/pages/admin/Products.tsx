@@ -6,7 +6,7 @@ import { Label } from '@/components/ui/label';
 import { Textarea } from '@/components/ui/textarea';
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from '@/components/ui/dialog';
 import { Card, CardContent } from '@/components/ui/card';
-import { Plus, Edit, Trash2 } from 'lucide-react';
+import { Plus, Edit, Trash2, Upload } from 'lucide-react';
 import { toast } from 'sonner';
 import Header from '@/components/Header';
 import Footer from '@/components/Footer';
@@ -108,15 +108,23 @@ export default function AdminProducts() {
         <div className="container mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex justify-between items-center mb-8">
             <h1 className="text-4xl font-bold">Products</h1>
-            <Dialog open={open} onOpenChange={setOpen}>
-              <DialogTrigger asChild>
-                <Button onClick={() => setEditingProduct(null)}>
-                  <Plus className="mr-2 h-4 w-4" />
-                  Add Product
-                </Button>
-              </DialogTrigger>
-              <DialogContent className="max-w-2xl max-h-[90vh] overflow-y-auto">
-                <DialogHeader>
+            <div className="flex gap-2">
+              <Button 
+                variant="outline" 
+                onClick={() => window.location.href = '/admin/products/import'}
+              >
+                <Upload className="mr-2 h-4 w-4" />
+                Import Products
+              </Button>
+              <Dialog open={open} onOpenChange={setOpen}>
+                <DialogTrigger asChild>
+                  <Button onClick={() => setEditingProduct(null)}>
+                    <Plus className="mr-2 h-4 w-4" />
+                    Add Product
+                  </Button>
+                </DialogTrigger>
+                <DialogContent className="max-w-2xl max-h-[90vh] overflow-y-auto">
+                  <DialogHeader>
                   <DialogTitle>
                     {editingProduct ? 'Edit Product' : 'Add New Product'}
                   </DialogTitle>
@@ -164,6 +172,7 @@ export default function AdminProducts() {
                 </form>
               </DialogContent>
             </Dialog>
+            </div>
           </div>
 
           <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6">

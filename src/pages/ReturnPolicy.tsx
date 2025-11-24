@@ -1,6 +1,7 @@
 import { Link } from "react-router-dom";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
+import { PolicyContactInfo } from "@/components/PolicyContactInfo";
 import { ArrowLeft } from "lucide-react";
 
 export default function ReturnPolicy() {
@@ -131,14 +132,7 @@ export default function ReturnPolicy() {
               <p className="text-foreground/90">
                 For return inquiries or assistance:
               </p>
-              <div className="bg-muted p-4 rounded-lg mt-4">
-                <p className="text-foreground/90">
-                  <strong>Email:</strong> returns@idealsmokesupply.com<br />
-                  <strong>Support:</strong> support@idealsmokesupply.com<br />
-                  <strong>Phone:</strong> +27 XX XXX XXXX<br />
-                  <strong>Hours:</strong> Monday - Friday, 9:00 AM - 5:00 PM SAST
-                </p>
-              </div>
+              <PolicyContactInfo />
             </section>
 
             <div className="bg-primary/10 border-l-4 border-primary p-4 rounded">

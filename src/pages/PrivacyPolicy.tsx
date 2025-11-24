@@ -1,6 +1,7 @@
 import { Link } from "react-router-dom";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
+import { PolicyContactInfo } from "@/components/PolicyContactInfo";
 import { ArrowLeft } from "lucide-react";
 
 export default function PrivacyPolicy() {
@@ -115,13 +116,7 @@ export default function PrivacyPolicy() {
               <p className="text-foreground/90">
                 If you have questions about this Privacy Policy or wish to exercise your rights, please contact us:
               </p>
-              <div className="bg-muted p-4 rounded-lg mt-4">
-                <p className="text-foreground/90">
-                  <strong>Email:</strong> privacy@idealsmokesupply.com<br />
-                  <strong>Phone:</strong> +27 XX XXX XXXX<br />
-                  <strong>Address:</strong> [Your Business Address], South Africa
-                </p>
-              </div>
+              <PolicyContactInfo />
             </section>
           </div>
         </div>

@@ -1,6 +1,7 @@
 import { Link } from "react-router-dom";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
+import { PolicyContactInfo } from "@/components/PolicyContactInfo";
 import { ArrowLeft } from "lucide-react";
 
 export default function TermsOfService() {
@@ -130,14 +131,10 @@ export default function TermsOfService() {
 
             <section>
               <h2 className="text-2xl font-semibold text-foreground mb-4">13. Contact Information</h2>
-              <div className="bg-muted p-4 rounded-lg">
-                <p className="text-foreground/90">
-                  For questions about these Terms of Service, contact us:<br />
-                  <strong>Email:</strong> legal@idealsmokesupply.com<br />
-                  <strong>Phone:</strong> +27 XX XXX XXXX<br />
-                  <strong>Address:</strong> [Your Business Address], South Africa
-                </p>
-              </div>
+              <p className="text-foreground/90">
+                For questions about these Terms of Service, contact us:
+              </p>
+              <PolicyContactInfo />
             </section>
           </div>
         </div>

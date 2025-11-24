@@ -5,20 +5,35 @@ import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Textarea } from '@/components/ui/textarea';
-import { Mail, Phone, MessageCircle } from 'lucide-react';
+import { Mail, Phone, MessageCircle, MapPin, Clock } from 'lucide-react';
 import { toast } from 'sonner';
+import { useStoreSettings } from '@/hooks/useStoreSettings';
 
 export default function Support() {
+  const { data: settings } = useStoreSettings();
+
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     toast.success('Message sent! We\'ll get back to you soon.');
     e.currentTarget.reset();
   };
 
+  const storeEmail = settings?.store_email || 'support@idealsmokesupply.com';
+  const storePhone = settings?.store_phone || '+27 12 345 6789';
+  const businessHours = settings?.business_hours_weekday || '08:00 - 17:00';
+
+  const hasAddress = settings?.store_address || settings?.store_city;
+  const fullAddress = [
+    settings?.store_address,
+    settings?.store_city,
+    settings?.store_province,
+    settings?.store_postal_code,
+  ].filter(Boolean).join(', ');
+
   return (
     <div className="min-h-screen flex flex-col">
       <Header />
-      
+
       <main className="flex-1 py-12">
         <div className="container mx-auto px-4 sm:px-6 lg:px-8 max-w-4xl">
           <h1 className="text-4xl md:text-5xl font-bold text-foreground mb-8">
@@ -32,8 +47,8 @@ export default function Support() {
                 <CardTitle>Email Us</CardTitle>
               </CardHeader>
               <CardContent className="text-center">
-                <a href="mailto:support@idealsmokesupply.com" className="text-primary hover:underline">
-                  support@idealsmokesupply.com
+                <a href={`mailto:${storeEmail}`} className="text-primary hover:underline">
+                  {storeEmail}
                 </a>
               </CardContent>
             </Card>
@@ -44,26 +59,38 @@ export default function Support() {
                 <CardTitle>Call Us</CardTitle>
               </CardHeader>
               <CardContent className="text-center">
-                <a href="tel:+27123456789" className="text-primary hover:underline">
-                  +27 12 345 6789
+                <a href={`tel:${storePhone.replace(/\s/g, '')}`} className="text-primary hover:underline">
+                  {storePhone}
                 </a>
               </CardContent>
             </Card>
 
             <Card>
               <CardHeader className="text-center">
-                <MessageCircle className="h-10 w-10 text-primary mx-auto mb-2" />
-                <CardTitle>Live Chat</CardTitle>
+                <Clock className="h-10 w-10 text-primary mx-auto mb-2" />
+                <CardTitle>Business Hours</CardTitle>
               </CardHeader>
-              <CardContent className="text-center">
-                <p className="text-sm text-muted-foreground">
-                  Available Mon-Fri
-                  <br />
-                  9am - 5pm
-                </p>
+              <CardContent className="text-center text-sm text-muted-foreground">
+                <p><strong>Mon-Fri:</strong> {settings?.business_hours_weekday || '08:00 - 17:00'}</p>
+                <p><strong>Sat:</strong> {settings?.business_hours_saturday || '09:00 - 14:00'}</p>
+                <p><strong>Sun:</strong> {settings?.business_hours_sunday || 'Closed'}</p>
               </CardContent>
             </Card>
           </div>
+
+          {hasAddress && (
+            <Card className="mb-8">
+              <CardHeader>
+                <CardTitle className="flex items-center gap-2">
+                  <MapPin className="h-5 w-5" />
+                  Our Location
+                </CardTitle>
+              </CardHeader>
+              <CardContent>
+                <p className="text-muted-foreground">{fullAddress}</p>
+              </CardContent>
+            </Card>
+          )}
 
           <Card>
             <CardHeader>

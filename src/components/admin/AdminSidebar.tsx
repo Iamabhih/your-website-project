@@ -51,6 +51,7 @@ const menuItems = [
       { title: "Products", url: "/admin/products", icon: Package },
       { title: "Import Products", url: "/admin/products/import", icon: Upload },
       { title: "Orders", url: "/admin/orders", icon: ShoppingCart },
+      { title: "Abandoned Carts", url: "/admin/abandoned-carts", icon: ShoppingCart },
       { title: "Customers", url: "/admin/customers", icon: Users },
       { title: "Coupons", url: "/admin/coupons", icon: Ticket },
       { title: "Reviews", url: "/admin/reviews", icon: Star },

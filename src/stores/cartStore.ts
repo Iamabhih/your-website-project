@@ -24,7 +24,7 @@ interface CartStore {
 export const useCartStore = create<CartStore>()(
   persist(
     (set, get) => ({
-      items: [],
+      items: [] as CartItem[],
       
       addItem: (item) => {
         const existingItem = get().items.find((i) => i.id === item.id);

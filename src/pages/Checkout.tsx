@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { supabase } from '@/integrations/supabase/client';
 import { useCartStore } from '@/stores/cartStore';
+import { useCartTracking } from '@/hooks/useCartTracking';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
@@ -25,6 +26,7 @@ interface DeliveryOption {
 export default function Checkout() {
   const navigate = useNavigate();
   const { items, getTotalPrice, clearCart } = useCartStore();
+  const { markCartAsRecovered } = useCartTracking();
   const [deliveryOptions, setDeliveryOptions] = useState<DeliveryOption[]>([]);
   const [selectedDelivery, setSelectedDelivery] = useState<DeliveryOption | null>(null);
   const [loading, setLoading] = useState(false);
@@ -282,7 +284,8 @@ export default function Checkout() {
         item_description: `${items.length} item(s)`,
       };
 
-      // Clear cart before redirecting to payment
+      // Mark cart as recovered and clear it
+      await markCartAsRecovered();
       clearCart();
 
       // Create a form and submit it to PayFast

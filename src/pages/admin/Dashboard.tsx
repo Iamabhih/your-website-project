@@ -9,6 +9,8 @@ interface Stats {
   totalOrders: number;
   totalCustomers: number;
   pendingOrders: number;
+  abandonedCarts: number;
+  abandonedValue: number;
 }
 
 export default function AdminDashboard() {
@@ -17,6 +19,8 @@ export default function AdminDashboard() {
     totalOrders: 0,
     totalCustomers: 0,
     pendingOrders: 0,
+    abandonedCarts: 0,
+    abandonedValue: 0,
   });
 
   useEffect(() => {
@@ -67,6 +71,23 @@ export default function AdminDashboard() {
     if (count !== null) {
       setStats(prev => ({ ...prev, totalCustomers: count }));
     }
+
+    // Get abandoned carts stats (last 24 hours)
+    const oneDayAgo = new Date(Date.now() - 24 * 60 * 60 * 1000).toISOString();
+    const { data: abandonedCarts } = await supabase
+      .from('abandoned_carts')
+      .select('total_amount')
+      .eq('recovered', false)
+      .gte('created_at', oneDayAgo);
+
+    if (abandonedCarts) {
+      const abandonedValue = abandonedCarts.reduce((sum, cart) => sum + Number(cart.total_amount), 0);
+      setStats(prev => ({
+        ...prev,
+        abandonedCarts: abandonedCarts.length,
+        abandonedValue,
+      }));
+    }
   };
 
   const statCards = [
@@ -93,6 +114,12 @@ export default function AdminDashboard() {
       value: stats.pendingOrders,
       icon: Package,
       color: 'text-orange-600',
+    },
+    {
+      title: 'Abandoned Carts (24h)',
+      value: stats.abandonedCarts,
+      icon: ShoppingCart,
+      color: 'text-red-600',
     },
   ];
 
@@ -137,6 +164,14 @@ export default function AdminDashboard() {
                 <ShoppingCart className="h-8 w-8 mb-2 text-primary" />
                 <h3 className="font-semibold">Orders</h3>
                 <p className="text-sm text-muted-foreground">Process orders</p>
+              </a>
+              <a href="/admin/abandoned-carts" className="p-4 border rounded-lg hover:bg-muted/50 transition-colors">
+                <ShoppingCart className="h-8 w-8 mb-2 text-red-600" />
+                <h3 className="font-semibold">Abandoned Carts</h3>
+                <p className="text-sm text-muted-foreground">
+                  {stats.abandonedCarts > 0 && `${stats.abandonedCarts} carts • R${stats.abandonedValue.toFixed(2)}`}
+                  {stats.abandonedCarts === 0 && 'No abandoned carts'}
+                </p>
               </a>
               <a href="/admin/customers" className="p-4 border rounded-lg hover:bg-muted/50 transition-colors">
                 <Users className="h-8 w-8 mb-2 text-primary" />

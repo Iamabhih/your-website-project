@@ -23,6 +23,7 @@ import Wishlist from "./pages/Wishlist";
 import AdminDashboard from "./pages/admin/Dashboard";
 import AdminProducts from "./pages/admin/Products";
 import AdminOrders from "./pages/admin/Orders";
+import AdminAbandonedCarts from "./pages/admin/AbandonedCarts";
 import AdminCustomers from "./pages/admin/Customers";
 import AdminDeliveryOptions from "./pages/admin/DeliveryOptions";
 import AdminSettings from "./pages/admin/Settings";
@@ -82,6 +83,7 @@ const App = () => (
           <Route path="/admin/products" element={<ProtectedRoute requireAdmin><AdminProducts /></ProtectedRoute>} />
           <Route path="/admin/products/import" element={<ProtectedRoute requireAdmin><ProductImport /></ProtectedRoute>} />
           <Route path="/admin/orders" element={<ProtectedRoute requireAdmin><AdminOrders /></ProtectedRoute>} />
+          <Route path="/admin/abandoned-carts" element={<ProtectedRoute requireAdmin><AdminAbandonedCarts /></ProtectedRoute>} />
           <Route path="/admin/customers" element={<ProtectedRoute requireAdmin><AdminCustomers /></ProtectedRoute>} />
           <Route path="/admin/coupons" element={<ProtectedRoute requireAdmin><AdminCoupons /></ProtectedRoute>} />
           <Route path="/admin/reviews" element={<ProtectedRoute requireAdmin><AdminReviews /></ProtectedRoute>} />

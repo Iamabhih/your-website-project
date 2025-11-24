@@ -60,11 +60,8 @@ export default function Checkout() {
         .in('key', ['payfast_mode', 'payfast_merchant_id', 'payfast_merchant_key']);
 
       if (error) {
-        console.error('PayFast settings fetch error:', error);
         throw error;
       }
-
-      console.log('Raw PayFast settings from DB:', data);
 
       const settings = data?.reduce((acc, s) => {
         // Handle both JSON-encoded strings and plain strings
@@ -77,10 +74,6 @@ export default function Checkout() {
         }
         return acc;
       }, {} as Record<string, any>) || {};
-
-      console.log('Parsed PayFast settings:', settings);
-      console.log('Has merchant_id?', !!settings.payfast_merchant_id);
-      console.log('Has merchant_key?', !!settings.payfast_merchant_key);
 
       setPayfastSettings(settings);
     } catch (error) {
@@ -163,25 +156,10 @@ export default function Checkout() {
     e.preventDefault();
 
     // Validate PayFast settings
-    if (!payfastSettings) {
-      console.error('PayFast settings object is null/undefined');
+    if (!payfastSettings || !payfastSettings.payfast_merchant_id || !payfastSettings.payfast_merchant_key) {
       toast.error('Payment system not configured. Please contact support.');
       return;
     }
-
-    if (!payfastSettings.payfast_merchant_id) {
-      console.error('Missing payfast_merchant_id');
-      toast.error('Payment merchant ID not configured. Please contact support.');
-      return;
-    }
-
-    if (!payfastSettings.payfast_merchant_key) {
-      console.error('Missing payfast_merchant_key');
-      toast.error('Payment merchant key not configured. Please contact support.');
-      return;
-    }
-
-    console.log('PayFast validation passed, submitting payment...');
 
     // Validate delivery selection
     if (!selectedDelivery) {

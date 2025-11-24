@@ -6,8 +6,7 @@ import { Badge } from '@/components/ui/badge';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { toast } from 'sonner';
 import { Check, X, Star, ThumbsUp } from 'lucide-react';
-import Header from '@/components/Header';
-import Footer from '@/components/Footer';
+import { AdminLayout } from '@/components/admin/AdminLayout';
 
 interface Review {
   id: string;
@@ -134,12 +133,9 @@ export default function AdminReviews() {
   }
 
   return (
-    <div className="min-h-screen flex flex-col">
-      <Header />
-
-      <main className="flex-1 py-12">
-        <div className="container mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="flex justify-between items-center mb-8">
+    <AdminLayout>
+      <div className="space-y-6">
+        <div className="flex justify-between items-center">
             <h1 className="text-4xl font-bold">Product Reviews</h1>
           </div>
 
@@ -255,10 +251,7 @@ export default function AdminReviews() {
               )}
             </TabsContent>
           </Tabs>
-        </div>
-      </main>
-
-      <Footer />
-    </div>
+      </div>
+    </AdminLayout>
   );
 }

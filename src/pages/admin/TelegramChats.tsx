@@ -10,6 +10,7 @@ import { supabase } from '@/integrations/supabase/client';
 import { useToast } from '@/hooks/use-toast';
 import { ArrowLeft, Send, MessageCircle } from 'lucide-react';
 import { useAuth } from '@/hooks/useAuth';
+import { AdminLayout } from '@/components/admin/AdminLayout';
 
 interface ChatSession {
   id: string;
@@ -175,7 +176,7 @@ export default function TelegramChats() {
   };
 
   return (
-    <div className="container mx-auto py-8 px-4">
+    <AdminLayout>
       <Button
         variant="ghost"
         onClick={() => navigate('/admin')}
@@ -313,10 +314,10 @@ export default function TelegramChats() {
               <div className="flex items-center justify-center h-[500px] text-muted-foreground">
                 Select a chat session to view messages
               </div>
-            )}
-          </CardContent>
-        </Card>
-      </div>
+          )}
+        </CardContent>
+      </Card>
     </div>
+    </AdminLayout>
   );
 }

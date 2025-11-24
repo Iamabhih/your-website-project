@@ -17,8 +17,7 @@ import {
 } from "@/components/ui/alert-dialog";
 import { toast } from 'sonner';
 import { Shield, ShieldOff, Search, UserPlus } from 'lucide-react';
-import Header from '@/components/Header';
-import Footer from '@/components/Footer';
+import { AdminLayout } from '@/components/admin/AdminLayout';
 
 interface Customer {
   id: string;
@@ -151,12 +150,9 @@ export default function AdminCustomers() {
   );
 
   return (
-    <div className="min-h-screen flex flex-col">
-      <Header />
-      
-      <main className="flex-1 py-12">
-        <div className="container mx-auto px-4 sm:px-6 lg:px-8">
-          <h1 className="text-4xl font-bold mb-8">Customer Management</h1>
+    <AdminLayout>
+      <div className="space-y-6">
+        <h1 className="text-4xl font-bold">Customer Management</h1>
 
           {/* Add Admin User Section */}
           <Card className="mb-8">
@@ -281,10 +277,7 @@ export default function AdminCustomers() {
               </Card>
             )}
           </div>
-        </div>
-      </main>
-
-      <Footer />
-    </div>
+      </div>
+    </AdminLayout>
   );
 }

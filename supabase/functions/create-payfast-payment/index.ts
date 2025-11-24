@@ -1,10 +1,7 @@
-import { serve } from "https://deno.land/std@0.168.0/http/server.ts";
+import { serve } from "https://deno.land/std@0.224.0/http/server.ts";
 import { createClient } from "https://esm.sh/@supabase/supabase-js@2";
-
-const corsHeaders = {
-  "Access-Control-Allow-Origin": "*",
-  "Access-Control-Allow-Headers": "authorization, x-client-info, apikey, content-type",
-};
+import { handleCors, getCorsHeaders } from "../_shared/cors.ts";
+import { validateOrderData, validateOrderItems, ValidatorError } from "../_shared/validation.ts";
 
 interface PaymentRequest {
   orderData: {
@@ -28,9 +25,12 @@ interface PaymentRequest {
 }
 
 serve(async (req) => {
-  if (req.method === "OPTIONS") {
-    return new Response(null, { headers: corsHeaders });
-  }
+  // Handle CORS preflight requests
+  const corsResponse = handleCors(req);
+  if (corsResponse) return corsResponse;
+
+  const origin = req.headers.get("origin");
+  const corsHeaders = getCorsHeaders(origin);
 
   try {
     const supabase = createClient(
@@ -41,8 +41,22 @@ serve(async (req) => {
     const { orderData, items }: PaymentRequest = await req.json();
 
     // Validate input
-    if (!orderData.customer_email || !orderData.customer_name || items.length === 0) {
-      throw new Error("Missing required order information");
+    const orderErrors = validateOrderData(orderData);
+    const itemErrors = validateOrderItems(items);
+    const allErrors = [...orderErrors, ...itemErrors];
+
+    if (allErrors.length > 0) {
+      return new Response(
+        JSON.stringify({
+          success: false,
+          error: "Validation failed",
+          details: allErrors
+        }),
+        {
+          status: 400,
+          headers: { ...corsHeaders, "Content-Type": "application/json" },
+        }
+      );
     }
 
     // Get PayFast settings
@@ -56,10 +70,19 @@ serve(async (req) => {
       return acc;
     }, {} as Record<string, any>) || {};
 
-    const mode = settingsMap.payfast_mode || "sandbox";
-    const merchantId = settingsMap.payfast_merchant_id || "10000100";
-    const merchantKey = settingsMap.payfast_merchant_key || "46f0cd694581a";
-    const adminEmail = settingsMap.admin_email || "admin@cbdshop.co.za";
+    // Use environment variables or database settings, but throw error if missing
+    const mode = Deno.env.get("PAYFAST_MODE") || settingsMap.payfast_mode || "sandbox";
+    const merchantId = Deno.env.get("PAYFAST_MERCHANT_ID") || settingsMap.payfast_merchant_id;
+    const merchantKey = Deno.env.get("PAYFAST_MERCHANT_KEY") || settingsMap.payfast_merchant_key;
+    const adminEmail = Deno.env.get("ADMIN_EMAIL") || settingsMap.admin_email;
+
+    if (!merchantId || !merchantKey) {
+      throw new Error("PayFast merchant credentials not configured. Please contact support.");
+    }
+
+    if (!adminEmail) {
+      console.warn("Admin email not configured, skipping admin notification");
+    }
 
     // Create order in database
     const { data: order, error: orderError } = await supabase
@@ -121,33 +144,35 @@ serve(async (req) => {
       console.error("Email error:", emailError);
     }
 
-    // Send notification to admin
-    try {
-      await fetch(`${Deno.env.get("SUPABASE_URL")}/functions/v1/send-order-email`, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          "Authorization": `Bearer ${Deno.env.get("SUPABASE_ANON_KEY")}`,
-        },
-        body: JSON.stringify({
-          to: adminEmail,
-          subject: `New Order #${order.id.slice(0, 8)} - R${orderData.total_amount}`,
-          orderDetails: {
-            orderId: order.id.slice(0, 8),
-            customerName: orderData.customer_name,
-            totalAmount: orderData.total_amount,
-            deliveryMethod: orderData.delivery_method,
-            deliveryAddress: orderData.delivery_address,
-            items: items.map(i => ({
-              name: i.product_name,
-              quantity: i.quantity,
-              price: i.price,
-            })),
+    // Send notification to admin if email is configured
+    if (adminEmail) {
+      try {
+        await fetch(`${Deno.env.get("SUPABASE_URL")}/functions/v1/send-order-email`, {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            "Authorization": `Bearer ${Deno.env.get("SUPABASE_ANON_KEY")}`,
           },
-        }),
-      });
-    } catch (emailError) {
-      console.error("Admin email error:", emailError);
+          body: JSON.stringify({
+            to: adminEmail,
+            subject: `New Order #${order.id.slice(0, 8)} - R${orderData.total_amount}`,
+            orderDetails: {
+              orderId: order.id.slice(0, 8),
+              customerName: orderData.customer_name,
+              totalAmount: orderData.total_amount,
+              deliveryMethod: orderData.delivery_method,
+              deliveryAddress: orderData.delivery_address,
+              items: items.map(i => ({
+                name: i.product_name,
+                quantity: i.quantity,
+                price: i.price,
+              })),
+            },
+          }),
+        });
+      } catch (emailError) {
+        console.error("Admin email error:", emailError);
+      }
     }
 
     // Prepare PayFast payment data

@@ -26,46 +26,91 @@ export default function Checkout() {
   const [deliveryOptions, setDeliveryOptions] = useState<DeliveryOption[]>([]);
   const [selectedDelivery, setSelectedDelivery] = useState<DeliveryOption | null>(null);
   const [loading, setLoading] = useState(false);
+  const [loadingDelivery, setLoadingDelivery] = useState(true);
+  const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
     if (items.length === 0) {
       navigate('/shop');
+      return;
     }
     loadDeliveryOptions();
-  }, [items]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   const loadDeliveryOptions = async () => {
-    const { data } = await supabase
-      .from('delivery_options')
-      .select('*')
-      .eq('is_active', true)
-      .order('cost');
+    try {
+      setLoadingDelivery(true);
+      setError(null);
 
-    if (data) {
-      setDeliveryOptions(data);
-      if (data.length > 0) {
-        setSelectedDelivery(data[0]);
+      const { data, error: fetchError } = await supabase
+        .from('delivery_options')
+        .select('*')
+        .eq('is_active', true)
+        .order('cost');
+
+      if (fetchError) {
+        throw new Error(`Failed to load delivery options: ${fetchError.message}`);
       }
+
+      if (!data || data.length === 0) {
+        throw new Error('No delivery options available. Please contact support.');
+      }
+
+      setDeliveryOptions(data);
+      setSelectedDelivery(data[0]);
+    } catch (err: any) {
+      console.error('Error loading delivery options:', err);
+      setError(err.message || 'Failed to load delivery options');
+      toast.error(err.message || 'Failed to load delivery options');
+    } finally {
+      setLoadingDelivery(false);
     }
   };
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
+
+    // Validate delivery selection
     if (!selectedDelivery) {
       toast.error('Please select a delivery method');
       return;
     }
 
+    // Validate cart
+    if (items.length === 0) {
+      toast.error('Your cart is empty');
+      navigate('/shop');
+      return;
+    }
+
     setLoading(true);
+    setError(null);
 
     try {
       const formData = new FormData(e.currentTarget);
-      
+
+      // Validate form fields
+      const name = formData.get('name') as string;
+      const email = formData.get('email') as string;
+      const phone = formData.get('phone') as string;
+      const address = formData.get('address') as string;
+
+      if (!name || !email || !phone || !address) {
+        throw new Error('Please fill in all required fields');
+      }
+
+      // Validate email format
+      const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+      if (!emailRegex.test(email)) {
+        throw new Error('Please enter a valid email address');
+      }
+
       const orderData = {
-        customer_name: formData.get('name') as string,
-        customer_email: formData.get('email') as string,
-        customer_phone: formData.get('phone') as string,
-        delivery_address: formData.get('address') as string,
+        customer_name: name.trim(),
+        customer_email: email.trim().toLowerCase(),
+        customer_phone: phone.trim(),
+        delivery_address: address.trim(),
         delivery_method: selectedDelivery.name,
         delivery_notes: formData.get('notes') as string || null,
         delivery_price: selectedDelivery.cost,
@@ -81,37 +126,50 @@ export default function Checkout() {
       }));
 
       // Call PayFast payment function
-      const { data, error } = await supabase.functions.invoke('create-payfast-payment', {
+      const { data, error: invokeError } = await supabase.functions.invoke('create-payfast-payment', {
         body: { orderData, items: orderItems }
       });
 
-      if (error) throw error;
-
-      if (data.success && data.paymentUrl && data.paymentData) {
-        // Clear cart before redirecting to payment
-        clearCart();
-        
-        // Create a form and submit it to PayFast
-        const form = document.createElement('form');
-        form.method = 'POST';
-        form.action = data.paymentUrl;
-
-        Object.entries(data.paymentData).forEach(([key, value]) => {
-          const input = document.createElement('input');
-          input.type = 'hidden';
-          input.name = key;
-          input.value = value as string;
-          form.appendChild(input);
-        });
-
-        document.body.appendChild(form);
-        form.submit();
-      } else {
-        throw new Error('Failed to initialize payment');
+      if (invokeError) {
+        console.error('Invoke error:', invokeError);
+        throw new Error(`Payment initialization failed: ${invokeError.message}`);
       }
+
+      if (!data) {
+        throw new Error('No response from payment service');
+      }
+
+      if (!data.success) {
+        throw new Error(data.error || 'Payment initialization failed');
+      }
+
+      if (!data.paymentUrl || !data.paymentData) {
+        throw new Error('Invalid payment response from server');
+      }
+
+      // Clear cart before redirecting to payment
+      clearCart();
+
+      // Create a form and submit it to PayFast
+      const form = document.createElement('form');
+      form.method = 'POST';
+      form.action = data.paymentUrl;
+
+      Object.entries(data.paymentData).forEach(([key, value]) => {
+        const input = document.createElement('input');
+        input.type = 'hidden';
+        input.name = key;
+        input.value = value as string;
+        form.appendChild(input);
+      });
+
+      document.body.appendChild(form);
+      form.submit();
     } catch (error: any) {
       console.error('Order error:', error);
-      toast.error(error.message || 'Failed to place order. Please try again.');
+      const errorMessage = error.message || 'Failed to place order. Please try again.';
+      setError(errorMessage);
+      toast.error(errorMessage);
       setLoading(false);
     }
   };
@@ -171,8 +229,24 @@ export default function Checkout() {
                   <CardTitle>Delivery Method</CardTitle>
                 </CardHeader>
                 <CardContent>
-                  <div className="space-y-2">
-                    {deliveryOptions.map((option) => (
+                  {loadingDelivery ? (
+                    <div className="py-8 text-center">
+                      <p className="text-muted-foreground">Loading delivery options...</p>
+                    </div>
+                  ) : error ? (
+                    <div className="py-8 text-center">
+                      <p className="text-destructive mb-4">{error}</p>
+                      <Button onClick={loadDeliveryOptions} variant="outline" size="sm">
+                        Retry
+                      </Button>
+                    </div>
+                  ) : deliveryOptions.length === 0 ? (
+                    <div className="py-8 text-center">
+                      <p className="text-muted-foreground">No delivery options available</p>
+                    </div>
+                  ) : (
+                    <div className="space-y-2">
+                      {deliveryOptions.map((option) => (
                       <div
                         key={option.id}
                         className={`p-4 border rounded-lg cursor-pointer transition-colors ${
@@ -194,9 +268,11 @@ export default function Checkout() {
                           </div>
                           <p className="font-semibold">R {option.cost.toFixed(2)}</p>
                         </div>
+                        </div>
                       </div>
-                    ))}
-                  </div>
+                      ))}
+                    </div>
+                  )}
                 </CardContent>
               </Card>
             </div>

@@ -1,9 +1,5 @@
-import { serve } from "https://deno.land/std@0.168.0/http/server.ts";
-
-const corsHeaders = {
-  "Access-Control-Allow-Origin": "*",
-  "Access-Control-Allow-Headers": "authorization, x-client-info, apikey, content-type",
-};
+import { serve } from "https://deno.land/std@0.224.0/http/server.ts";
+import { handleCors, getCorsHeaders } from "../_shared/cors.ts";
 
 interface EmailRequest {
   to: string;
@@ -41,9 +37,12 @@ async function sendEmail(apiKey: string, to: string, subject: string, html: stri
 }
 
 serve(async (req) => {
-  if (req.method === "OPTIONS") {
-    return new Response(null, { headers: corsHeaders });
-  }
+  // Handle CORS preflight requests
+  const corsResponse = handleCors(req);
+  if (corsResponse) return corsResponse;
+
+  const origin = req.headers.get("origin");
+  const corsHeaders = getCorsHeaders(origin);
 
   try {
     const { to, subject, orderDetails }: EmailRequest = await req.json();

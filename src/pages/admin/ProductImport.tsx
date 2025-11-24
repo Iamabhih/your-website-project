@@ -4,8 +4,7 @@ import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { supabase } from '@/integrations/supabase/client';
 import { toast } from 'sonner';
-import Header from '@/components/Header';
-import Footer from '@/components/Footer';
+import { AdminLayout } from '@/components/admin/AdminLayout';
 import { Upload, CheckCircle, XCircle } from 'lucide-react';
 
 export default function ProductImport() {
@@ -76,12 +75,8 @@ export default function ProductImport() {
   };
 
   return (
-    <div className="min-h-screen flex flex-col">
-      <Header />
-      
-      <main className="flex-1 py-12">
-        <div className="container mx-auto px-4 sm:px-6 lg:px-8">
-          <Card className="max-w-2xl mx-auto">
+    <AdminLayout>
+      <Card className="max-w-2xl mx-auto">
             <CardHeader>
               <CardTitle className="text-2xl">Import Products from Excel</CardTitle>
             </CardHeader>
@@ -158,10 +153,6 @@ export default function ProductImport() {
               )}
             </CardContent>
           </Card>
-        </div>
-      </main>
-
-      <Footer />
-    </div>
+    </AdminLayout>
   );
 }

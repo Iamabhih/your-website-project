@@ -9,8 +9,7 @@ import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from 
 import { Card, CardContent } from '@/components/ui/card';
 import { Plus, Edit, Trash2 } from 'lucide-react';
 import { toast } from 'sonner';
-import Header from '@/components/Header';
-import Footer from '@/components/Footer';
+import { AdminLayout } from '@/components/admin/AdminLayout';
 
 interface DeliveryOption {
   id: string;
@@ -96,12 +95,9 @@ export default function AdminDeliveryOptions() {
   };
 
   return (
-    <div className="min-h-screen flex flex-col">
-      <Header />
-      
-      <main className="flex-1 py-12">
-        <div className="container mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="flex justify-between items-center mb-8">
+    <AdminLayout>
+      <div className="space-y-6">
+        <div className="flex justify-between items-center">
             <h1 className="text-4xl font-bold">Delivery Options</h1>
             <Dialog open={open} onOpenChange={setOpen}>
               <DialogTrigger asChild>
@@ -176,10 +172,7 @@ export default function AdminDeliveryOptions() {
               </Card>
             ))}
           </div>
-        </div>
-      </main>
-
-      <Footer />
-    </div>
+      </div>
+    </AdminLayout>
   );
 }

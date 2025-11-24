@@ -9,6 +9,7 @@ import { supabase } from '@/integrations/supabase/client';
 import { useToast } from '@/hooks/use-toast';
 import { ArrowLeft, Search, Users } from 'lucide-react';
 import { useAuth } from '@/hooks/useAuth';
+import { AdminLayout } from '@/components/admin/AdminLayout';
 
 interface TelegramCustomer {
   id: string;
@@ -70,7 +71,7 @@ export default function TelegramCustomers() {
   });
 
   return (
-    <div className="container mx-auto py-8 px-4">
+    <AdminLayout>
       <Button
         variant="ghost"
         onClick={() => navigate('/admin')}
@@ -167,11 +168,11 @@ export default function TelegramCustomers() {
                     ))
                   )}
                 </TableBody>
-              </Table>
-            </div>
-          )}
-        </CardContent>
-      </Card>
-    </div>
+            </Table>
+          </div>
+        )}
+      </CardContent>
+    </Card>
+    </AdminLayout>
   );
 }

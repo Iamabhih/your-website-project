@@ -177,12 +177,9 @@ export default function AdminSettings() {
   }
 
   return (
-    <div className="min-h-screen flex flex-col">
-      <Header />
-
-      <main className="flex-1 py-12">
-        <div className="container mx-auto px-4 sm:px-6 lg:px-8 max-w-4xl">
-          <h1 className="text-4xl font-bold mb-8">System Settings</h1>
+    <AdminLayout>
+      <div className="space-y-6 max-w-4xl">
+        <h1 className="text-4xl font-bold">System Settings</h1>
 
           <Tabs defaultValue="telegram" className="space-y-6">
             <TabsList className="grid w-full grid-cols-4">
@@ -551,10 +548,7 @@ export default function AdminSettings() {
               </Card>
             </TabsContent>
           </Tabs>
-        </div>
-      </main>
-
-      <Footer />
-    </div>
+      </div>
+    </AdminLayout>
   );
 }

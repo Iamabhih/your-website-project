@@ -60,7 +60,7 @@ export default function Checkout() {
       if (error) throw error;
 
       const settings = data?.reduce((acc, s) => {
-        acc[s.key] = typeof s.value === 'string' ? JSON.parse(s.value) : s.value;
+        acc[s.key] = s.value;
         return acc;
       }, {} as Record<string, any>) || {};
 

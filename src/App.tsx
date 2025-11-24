@@ -70,49 +70,49 @@ const App = () => (
           <Toaster />
           <Sonner />
           <BrowserRouter>
-        <ChatWidget />
-        <Routes>
-          <Route path="/" element={<Index />} />
-          <Route path="/shop" element={<Shop />} />
-          <Route path="/about" element={<About />} />
-          <Route path="/product/:id" element={<ProductDetail />} />
-          <Route path="/checkout" element={<Checkout />} />
-          <Route path="/order-confirmation/:id" element={<OrderConfirmation />} />
-          <Route path="/my-orders" element={<MyOrders />} />
-          <Route path="/wishlist" element={<Wishlist />} />
-          <Route path="/auth" element={<Auth />} />
-          <Route path="/delivery" element={<Delivery />} />
-          <Route path="/support" element={<Support />} />
-          <Route path="/payment-success" element={<PaymentSuccess />} />
-          <Route path="/payment-cancelled" element={<PaymentCancelled />} />
-          <Route path="/privacy-policy" element={<PrivacyPolicy />} />
-          <Route path="/terms-of-service" element={<TermsOfService />} />
-          <Route path="/return-policy" element={<ReturnPolicy />} />
-          <Route path="/cookie-policy" element={<CookiePolicy />} />
-          <Route path="/admin" element={<ProtectedRoute requireAdmin><AdminDashboard /></ProtectedRoute>} />
-          <Route path="/admin/analytics" element={<ProtectedRoute requireAdmin><AdminAnalytics /></ProtectedRoute>} />
-          <Route path="/admin/products" element={<ProtectedRoute requireAdmin><AdminProducts /></ProtectedRoute>} />
-          <Route path="/admin/products/import" element={<ProtectedRoute requireAdmin><ProductImport /></ProtectedRoute>} />
-          <Route path="/admin/orders" element={<ProtectedRoute requireAdmin><AdminOrders /></ProtectedRoute>} />
-          <Route path="/admin/abandoned-carts" element={<ProtectedRoute requireAdmin><AdminAbandonedCarts /></ProtectedRoute>} />
-          <Route path="/admin/customers" element={<ProtectedRoute requireAdmin><AdminCustomers /></ProtectedRoute>} />
-          <Route path="/admin/coupons" element={<ProtectedRoute requireAdmin><AdminCoupons /></ProtectedRoute>} />
-          <Route path="/admin/reviews" element={<ProtectedRoute requireAdmin><AdminReviews /></ProtectedRoute>} />
-          <Route path="/admin/delivery-options" element={<ProtectedRoute requireAdmin><AdminDeliveryOptions /></ProtectedRoute>} />
-          <Route path="/admin/settings" element={<ProtectedRoute requireAdmin><AdminSettings /></ProtectedRoute>} />
-          <Route path="/admin/newsletter" element={<ProtectedRoute requireAdmin><Newsletter /></ProtectedRoute>} />
-          <Route path="/admin/telegram-chats" element={<ProtectedRoute requireAdmin><TelegramChats /></ProtectedRoute>} />
-          <Route path="/admin/telegram-customers" element={<ProtectedRoute requireAdmin><TelegramCustomers /></ProtectedRoute>} />
-          <Route path="/admin/telegram-broadcast" element={<ProtectedRoute requireAdmin><TelegramBroadcast /></ProtectedRoute>} />
-          <Route path="/admin/telegram-support" element={<ProtectedRoute requireAdmin><TelegramSupport /></ProtectedRoute>} />
-          <Route path="/account/telegram" element={<TelegramLink />} />
-          <Route path="/admin/banner" element={<ProtectedRoute requireAdmin><BannerManagement /></ProtectedRoute>} />
-          <Route path="/admin/pwa" element={<ProtectedRoute requireAdmin><PWASettings /></ProtectedRoute>} />
-          <Route path="/admin/system-logs" element={<ProtectedRoute requireAdmin><SystemLogs /></ProtectedRoute>} />
-          <Route path="*" element={<NotFound />} />
-        </Routes>
-        </BrowserRouter>
-      </TooltipProvider>
+            <ChatWidget />
+            <Routes>
+              <Route path="/" element={<Index />} />
+              <Route path="/shop" element={<Shop />} />
+              <Route path="/about" element={<About />} />
+              <Route path="/product/:id" element={<ProductDetail />} />
+              <Route path="/checkout" element={<Checkout />} />
+              <Route path="/order-confirmation/:id" element={<OrderConfirmation />} />
+              <Route path="/my-orders" element={<MyOrders />} />
+              <Route path="/wishlist" element={<Wishlist />} />
+              <Route path="/auth" element={<Auth />} />
+              <Route path="/delivery" element={<Delivery />} />
+              <Route path="/support" element={<Support />} />
+              <Route path="/payment-success" element={<PaymentSuccess />} />
+              <Route path="/payment-cancelled" element={<PaymentCancelled />} />
+              <Route path="/privacy-policy" element={<PrivacyPolicy />} />
+              <Route path="/terms-of-service" element={<TermsOfService />} />
+              <Route path="/return-policy" element={<ReturnPolicy />} />
+              <Route path="/cookie-policy" element={<CookiePolicy />} />
+              <Route path="/admin" element={<ProtectedRoute requireAdmin><AdminDashboard /></ProtectedRoute>} />
+              <Route path="/admin/analytics" element={<ProtectedRoute requireAdmin><AdminAnalytics /></ProtectedRoute>} />
+              <Route path="/admin/products" element={<ProtectedRoute requireAdmin><AdminProducts /></ProtectedRoute>} />
+              <Route path="/admin/products/import" element={<ProtectedRoute requireAdmin><ProductImport /></ProtectedRoute>} />
+              <Route path="/admin/orders" element={<ProtectedRoute requireAdmin><AdminOrders /></ProtectedRoute>} />
+              <Route path="/admin/abandoned-carts" element={<ProtectedRoute requireAdmin><AdminAbandonedCarts /></ProtectedRoute>} />
+              <Route path="/admin/customers" element={<ProtectedRoute requireAdmin><AdminCustomers /></ProtectedRoute>} />
+              <Route path="/admin/coupons" element={<ProtectedRoute requireAdmin><AdminCoupons /></ProtectedRoute>} />
+              <Route path="/admin/reviews" element={<ProtectedRoute requireAdmin><AdminReviews /></ProtectedRoute>} />
+              <Route path="/admin/delivery-options" element={<ProtectedRoute requireAdmin><AdminDeliveryOptions /></ProtectedRoute>} />
+              <Route path="/admin/settings" element={<ProtectedRoute requireAdmin><AdminSettings /></ProtectedRoute>} />
+              <Route path="/admin/newsletter" element={<ProtectedRoute requireAdmin><Newsletter /></ProtectedRoute>} />
+              <Route path="/admin/telegram-chats" element={<ProtectedRoute requireAdmin><TelegramChats /></ProtectedRoute>} />
+              <Route path="/admin/telegram-customers" element={<ProtectedRoute requireAdmin><TelegramCustomers /></ProtectedRoute>} />
+              <Route path="/admin/telegram-broadcast" element={<ProtectedRoute requireAdmin><TelegramBroadcast /></ProtectedRoute>} />
+              <Route path="/admin/telegram-support" element={<ProtectedRoute requireAdmin><TelegramSupport /></ProtectedRoute>} />
+              <Route path="/account/telegram" element={<TelegramLink />} />
+              <Route path="/admin/banner" element={<ProtectedRoute requireAdmin><BannerManagement /></ProtectedRoute>} />
+              <Route path="/admin/pwa" element={<ProtectedRoute requireAdmin><PWASettings /></ProtectedRoute>} />
+              <Route path="/admin/system-logs" element={<ProtectedRoute requireAdmin><SystemLogs /></ProtectedRoute>} />
+              <Route path="*" element={<NotFound />} />
+            </Routes>
+          </BrowserRouter>
+        </TooltipProvider>
       </LoadingProvider>
     </QueryClientProvider>
   </ErrorBoundary>

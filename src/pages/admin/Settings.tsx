@@ -8,8 +8,7 @@ import { Badge } from '@/components/ui/badge';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { toast } from 'sonner';
 import { Loader2, CheckCircle, XCircle, Send, Bot, Mail, CreditCard } from 'lucide-react';
-import Header from '@/components/Header';
-import Footer from '@/components/Footer';
+import { AdminLayout } from '@/components/admin/AdminLayout';
 import {
   Select,
   SelectContent,

@@ -4,8 +4,7 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { toast } from 'sonner';
-import Header from '@/components/Header';
-import Footer from '@/components/Footer';
+import { AdminLayout } from '@/components/admin/AdminLayout';
 
 interface Order {
   id: string;
@@ -67,12 +66,9 @@ export default function AdminOrders() {
   };
 
   return (
-    <div className="min-h-screen flex flex-col">
-      <Header />
-      
-      <main className="flex-1 py-12">
-        <div className="container mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="flex justify-between items-center mb-8">
+    <AdminLayout>
+      <div className="space-y-6">
+        <div className="flex justify-between items-center">
             <h1 className="text-4xl font-bold">Orders</h1>
             <Select value={filterStatus} onValueChange={setFilterStatus}>
               <SelectTrigger className="w-[200px]">
@@ -138,11 +134,8 @@ export default function AdminOrders() {
                 </CardContent>
               </Card>
             ))}
-          </div>
         </div>
-      </main>
-
-      <Footer />
-    </div>
+      </div>
+    </AdminLayout>
   );
 }

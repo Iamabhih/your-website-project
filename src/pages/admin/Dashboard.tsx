@@ -2,8 +2,7 @@ import { useState, useEffect } from 'react';
 import { supabase } from '@/integrations/supabase/client';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { DollarSign, ShoppingCart, Users, Package, Settings, BarChart3, Tag, Star, MessageCircle, Send } from 'lucide-react';
-import Header from '@/components/Header';
-import Footer from '@/components/Footer';
+import { AdminLayout } from '@/components/admin/AdminLayout';
 
 interface Stats {
   totalRevenue: number;
@@ -98,97 +97,91 @@ export default function AdminDashboard() {
   ];
 
   return (
-    <div className="min-h-screen flex flex-col">
-      <Header />
-      
-      <main className="flex-1 py-12">
-        <div className="container mx-auto px-4 sm:px-6 lg:px-8">
-          <h1 className="text-4xl font-bold text-foreground mb-8">Admin Dashboard</h1>
+    <AdminLayout>
+      <div className="space-y-8">
+        <h1 className="text-4xl font-bold text-foreground">Admin Dashboard</h1>
 
-          <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
-            {statCards.map((stat) => (
-              <Card key={stat.title}>
-                <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-                  <CardTitle className="text-sm font-medium">
-                    {stat.title}
-                  </CardTitle>
-                  <stat.icon className={`h-4 w-4 ${stat.color}`} />
-                </CardHeader>
-                <CardContent>
-                  <div className="text-2xl font-bold">{stat.value}</div>
-                </CardContent>
-              </Card>
-            ))}
-          </div>
-
-          <Card>
-            <CardHeader>
-              <CardTitle>Quick Actions</CardTitle>
-            </CardHeader>
-            <CardContent>
-              <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-4">
-                <a href="/admin/analytics" className="p-4 border rounded-lg hover:bg-muted/50 transition-colors">
-                  <BarChart3 className="h-8 w-8 mb-2 text-primary" />
-                  <h3 className="font-semibold">Analytics</h3>
-                  <p className="text-sm text-muted-foreground">View detailed reports</p>
-                </a>
-                <a href="/admin/products" className="p-4 border rounded-lg hover:bg-muted/50 transition-colors">
-                  <Package className="h-8 w-8 mb-2 text-primary" />
-                  <h3 className="font-semibold">Products</h3>
-                  <p className="text-sm text-muted-foreground">Add or edit products</p>
-                </a>
-                <a href="/admin/orders" className="p-4 border rounded-lg hover:bg-muted/50 transition-colors">
-                  <ShoppingCart className="h-8 w-8 mb-2 text-primary" />
-                  <h3 className="font-semibold">Orders</h3>
-                  <p className="text-sm text-muted-foreground">Process orders</p>
-                </a>
-                <a href="/admin/customers" className="p-4 border rounded-lg hover:bg-muted/50 transition-colors">
-                  <Users className="h-8 w-8 mb-2 text-primary" />
-                  <h3 className="font-semibold">Customers</h3>
-                  <p className="text-sm text-muted-foreground">Manage customers</p>
-                </a>
-                <a href="/admin/coupons" className="p-4 border rounded-lg hover:bg-muted/50 transition-colors">
-                  <Tag className="h-8 w-8 mb-2 text-primary" />
-                  <h3 className="font-semibold">Coupons</h3>
-                  <p className="text-sm text-muted-foreground">Manage discounts</p>
-                </a>
-                <a href="/admin/reviews" className="p-4 border rounded-lg hover:bg-muted/50 transition-colors">
-                  <Star className="h-8 w-8 mb-2 text-primary" />
-                  <h3 className="font-semibold">Reviews</h3>
-                  <p className="text-sm text-muted-foreground">Moderate reviews</p>
-                </a>
-                <a href="/admin/telegram-chats" className="p-4 border rounded-lg hover:bg-muted/50 transition-colors">
-                  <MessageCircle className="h-8 w-8 mb-2 text-primary" />
-                  <h3 className="font-semibold">Telegram Chats</h3>
-                  <p className="text-sm text-muted-foreground">Manage conversations</p>
-                </a>
-                <a href="/admin/telegram-customers" className="p-4 border rounded-lg hover:bg-muted/50 transition-colors">
-                  <Users className="h-8 w-8 mb-2 text-primary" />
-                  <h3 className="font-semibold">Telegram Customers</h3>
-                  <p className="text-sm text-muted-foreground">View bot users</p>
-                </a>
-                <a href="/admin/telegram-broadcast" className="p-4 border rounded-lg hover:bg-muted/50 transition-colors">
-                  <Send className="h-8 w-8 mb-2 text-primary" />
-                  <h3 className="font-semibold">Broadcast</h3>
-                  <p className="text-sm text-muted-foreground">Send messages</p>
-                </a>
-                <a href="/admin/delivery-options" className="p-4 border rounded-lg hover:bg-muted/50 transition-colors">
-                  <Package className="h-8 w-8 mb-2 text-primary" />
-                  <h3 className="font-semibold">Delivery</h3>
-                  <p className="text-sm text-muted-foreground">Configure delivery</p>
-                </a>
-                <a href="/admin/settings" className="p-4 border rounded-lg hover:bg-muted/50 transition-colors">
-                  <Settings className="h-8 w-8 mb-2 text-primary" />
-                  <h3 className="font-semibold">Settings</h3>
-                  <p className="text-sm text-muted-foreground">Configure system</p>
-                </a>
-              </div>
-            </CardContent>
-          </Card>
+        <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-6">
+          {statCards.map((stat) => (
+            <Card key={stat.title}>
+              <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+                <CardTitle className="text-sm font-medium">
+                  {stat.title}
+                </CardTitle>
+                <stat.icon className={`h-4 w-4 ${stat.color}`} />
+              </CardHeader>
+              <CardContent>
+                <div className="text-2xl font-bold">{stat.value}</div>
+              </CardContent>
+            </Card>
+          ))}
         </div>
-      </main>
 
-      <Footer />
-    </div>
+        <Card>
+          <CardHeader>
+            <CardTitle>Quick Actions</CardTitle>
+          </CardHeader>
+          <CardContent>
+            <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-4">
+              <a href="/admin/analytics" className="p-4 border rounded-lg hover:bg-muted/50 transition-colors">
+                <BarChart3 className="h-8 w-8 mb-2 text-primary" />
+                <h3 className="font-semibold">Analytics</h3>
+                <p className="text-sm text-muted-foreground">View detailed reports</p>
+              </a>
+              <a href="/admin/products" className="p-4 border rounded-lg hover:bg-muted/50 transition-colors">
+                <Package className="h-8 w-8 mb-2 text-primary" />
+                <h3 className="font-semibold">Products</h3>
+                <p className="text-sm text-muted-foreground">Add or edit products</p>
+              </a>
+              <a href="/admin/orders" className="p-4 border rounded-lg hover:bg-muted/50 transition-colors">
+                <ShoppingCart className="h-8 w-8 mb-2 text-primary" />
+                <h3 className="font-semibold">Orders</h3>
+                <p className="text-sm text-muted-foreground">Process orders</p>
+              </a>
+              <a href="/admin/customers" className="p-4 border rounded-lg hover:bg-muted/50 transition-colors">
+                <Users className="h-8 w-8 mb-2 text-primary" />
+                <h3 className="font-semibold">Customers</h3>
+                <p className="text-sm text-muted-foreground">Manage customers</p>
+              </a>
+              <a href="/admin/coupons" className="p-4 border rounded-lg hover:bg-muted/50 transition-colors">
+                <Tag className="h-8 w-8 mb-2 text-primary" />
+                <h3 className="font-semibold">Coupons</h3>
+                <p className="text-sm text-muted-foreground">Manage discounts</p>
+              </a>
+              <a href="/admin/reviews" className="p-4 border rounded-lg hover:bg-muted/50 transition-colors">
+                <Star className="h-8 w-8 mb-2 text-primary" />
+                <h3 className="font-semibold">Reviews</h3>
+                <p className="text-sm text-muted-foreground">Moderate reviews</p>
+              </a>
+              <a href="/admin/telegram-chats" className="p-4 border rounded-lg hover:bg-muted/50 transition-colors">
+                <MessageCircle className="h-8 w-8 mb-2 text-primary" />
+                <h3 className="font-semibold">Telegram Chats</h3>
+                <p className="text-sm text-muted-foreground">Manage conversations</p>
+              </a>
+              <a href="/admin/telegram-customers" className="p-4 border rounded-lg hover:bg-muted/50 transition-colors">
+                <Users className="h-8 w-8 mb-2 text-primary" />
+                <h3 className="font-semibold">Telegram Customers</h3>
+                <p className="text-sm text-muted-foreground">View bot users</p>
+              </a>
+              <a href="/admin/telegram-broadcast" className="p-4 border rounded-lg hover:bg-muted/50 transition-colors">
+                <Send className="h-8 w-8 mb-2 text-primary" />
+                <h3 className="font-semibold">Broadcast</h3>
+                <p className="text-sm text-muted-foreground">Send messages</p>
+              </a>
+              <a href="/admin/delivery-options" className="p-4 border rounded-lg hover:bg-muted/50 transition-colors">
+                <Package className="h-8 w-8 mb-2 text-primary" />
+                <h3 className="font-semibold">Delivery</h3>
+                <p className="text-sm text-muted-foreground">Configure delivery</p>
+              </a>
+              <a href="/admin/settings" className="p-4 border rounded-lg hover:bg-muted/50 transition-colors">
+                <Settings className="h-8 w-8 mb-2 text-primary" />
+                <h3 className="font-semibold">Settings</h3>
+                <p className="text-sm text-muted-foreground">Configure system</p>
+              </a>
+            </div>
+          </CardContent>
+        </Card>
+      </div>
+    </AdminLayout>
   );
 }

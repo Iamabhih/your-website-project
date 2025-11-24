@@ -30,6 +30,8 @@ import TelegramChats from "./pages/admin/TelegramChats";
 import TelegramCustomers from "./pages/admin/TelegramCustomers";
 import TelegramBroadcast from "./pages/admin/TelegramBroadcast";
 import ProductImport from "./pages/admin/ProductImport";
+import BannerManagement from "./pages/admin/BannerManagement";
+import PWASettings from "./pages/admin/PWASettings";
 import ChatWidget from "./components/ChatWidget";
 
 const queryClient = new QueryClient({
@@ -79,6 +81,8 @@ const App = () => (
           <Route path="/admin/telegram-chats" element={<ProtectedRoute requireAdmin><TelegramChats /></ProtectedRoute>} />
           <Route path="/admin/telegram-customers" element={<ProtectedRoute requireAdmin><TelegramCustomers /></ProtectedRoute>} />
           <Route path="/admin/telegram-broadcast" element={<ProtectedRoute requireAdmin><TelegramBroadcast /></ProtectedRoute>} />
+          <Route path="/admin/banner" element={<ProtectedRoute requireAdmin><BannerManagement /></ProtectedRoute>} />
+          <Route path="/admin/pwa" element={<ProtectedRoute requireAdmin><PWASettings /></ProtectedRoute>} />
           <Route path="*" element={<NotFound />} />
         </Routes>
       </BrowserRouter>

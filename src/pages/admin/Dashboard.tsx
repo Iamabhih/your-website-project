@@ -25,24 +25,40 @@ export default function AdminDashboard() {
   }, []);
 
   const loadStats = async () => {
-    // Get total revenue and orders
-    const { data: orders } = await supabase
-      .from('orders')
-      .select('total_amount, status');
+    // Get order statistics using aggregation
+    const { data: orderStats, error: orderError } = await supabase
+      .rpc('get_order_statistics')
+      .single();
 
-    if (orders) {
-      const revenue = orders.reduce((sum, order) => sum + Number(order.total_amount), 0);
-      const pending = orders.filter(o => o.status === 'pending').length;
-      
+    if (!orderError && orderStats) {
       setStats(prev => ({
         ...prev,
-        totalRevenue: revenue,
-        totalOrders: orders.length,
-        pendingOrders: pending,
+        totalRevenue: orderStats.total_revenue || 0,
+        totalOrders: orderStats.total_orders || 0,
+        pendingOrders: orderStats.pending_orders || 0,
       }));
+    } else {
+      // Fallback: Get limited orders for stats
+      const { data: orders } = await supabase
+        .from('orders')
+        .select('total_amount, status')
+        .order('created_at', { ascending: false })
+        .limit(1000); // Limit to most recent 1000 orders
+
+      if (orders) {
+        const revenue = orders.reduce((sum, order) => sum + Number(order.total_amount), 0);
+        const pending = orders.filter(o => o.status === 'pending').length;
+
+        setStats(prev => ({
+          ...prev,
+          totalRevenue: revenue,
+          totalOrders: orders.length,
+          pendingOrders: pending,
+        }));
+      }
     }
 
-    // Get total customers
+    // Get total customers count
     const { count } = await supabase
       .from('user_roles')
       .select('*', { count: 'exact', head: true })

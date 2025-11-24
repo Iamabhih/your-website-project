@@ -66,6 +66,7 @@ const menuItems = [
     title: "Communication",
     icon: MessageSquare,
     items: [
+      { title: "Newsletter", url: "/admin/newsletter", icon: Megaphone },
       { title: "Telegram Chats", url: "/admin/telegram-chats", icon: MessageSquare },
       { title: "Telegram Support", url: "/admin/telegram-support", icon: MessageSquare },
       { title: "Telegram Customers", url: "/admin/telegram-customers", icon: Users2 },

@@ -284,6 +284,60 @@ export default function Checkout() {
         item_description: `${items.length} item(s)`,
       };
 
+      // Auto-create account for guest users
+      try {
+        const { data: { user: existingUser } } = await supabase.auth.getUser();
+        
+        if (!existingUser) {
+          // Generate a temporary password
+          const tempPassword = Math.random().toString(36).slice(-12) + Math.random().toString(36).slice(-12);
+          
+          // Create auth account
+          const { data: authData, error: authError } = await supabase.auth.signUp({
+            email: email.trim().toLowerCase(),
+            password: tempPassword,
+            options: {
+              emailRedirectTo: `${window.location.origin}/`,
+            },
+          });
+
+          if (!authError && authData.user) {
+            // Update order with user_id
+            await supabase
+              .from('orders')
+              .update({ user_id: authData.user.id })
+              .eq('id', order.id);
+
+            // Send welcome email with password reset link
+            const { error: resetError } = await supabase.auth.resetPasswordForEmail(
+              email.trim().toLowerCase(),
+              { redirectTo: `${window.location.origin}/auth` }
+            );
+
+            // Send welcome email via edge function
+            await supabase.functions.invoke('send-welcome-email', {
+              body: {
+                to: email.trim().toLowerCase(),
+                customerName: name.trim(),
+                orderId: order.id.slice(0, 8),
+                resetLink: resetError ? 'Please check your email for password reset' : 'Check your email',
+              },
+            });
+
+            toast.success('Account created! Check your email to set your password.');
+          }
+        } else {
+          // Update order with existing user_id
+          await supabase
+            .from('orders')
+            .update({ user_id: existingUser.id })
+            .eq('id', order.id);
+        }
+      } catch (error) {
+        console.error('Account creation error:', error);
+        // Don't block checkout if account creation fails
+      }
+
       // Mark cart as recovered and clear it
       await markCartAsRecovered();
       clearCart();

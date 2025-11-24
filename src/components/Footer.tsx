@@ -5,7 +5,7 @@ const Footer = () => {
   return (
     <footer className="bg-natural-deep text-primary-foreground py-12">
       <div className="container mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="grid md:grid-cols-4 gap-8 mb-8">
+        <div className="grid md:grid-cols-5 gap-8 mb-8">
           <div className="md:col-span-2">
             <div className="flex items-center gap-2 mb-4">
               <Leaf className="h-8 w-8 text-secondary" />
@@ -31,8 +31,16 @@ const Footer = () => {
             <ul className="space-y-2 text-primary-foreground/80">
               <li><Link to="/support" className="hover:text-secondary transition-colors">FAQ</Link></li>
               <li><Link to="/delivery" className="hover:text-secondary transition-colors">Shipping</Link></li>
-              <li><Link to="/support" className="hover:text-secondary transition-colors">Returns</Link></li>
-              <li><Link to="/support" className="hover:text-secondary transition-colors">Privacy Policy</Link></li>
+              <li><Link to="/return-policy" className="hover:text-secondary transition-colors">Returns</Link></li>
+            </ul>
+          </div>
+          
+          <div>
+            <h3 className="font-bold text-lg mb-4">Legal</h3>
+            <ul className="space-y-2 text-primary-foreground/80">
+              <li><Link to="/privacy-policy" className="hover:text-secondary transition-colors">Privacy Policy</Link></li>
+              <li><Link to="/terms-of-service" className="hover:text-secondary transition-colors">Terms of Service</Link></li>
+              <li><Link to="/cookie-policy" className="hover:text-secondary transition-colors">Cookie Policy</Link></li>
             </ul>
           </div>
         </div>

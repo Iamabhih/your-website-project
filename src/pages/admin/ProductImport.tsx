@@ -6,7 +6,7 @@ import { supabase } from '@/integrations/supabase/client';
 import { toast } from 'sonner';
 import { AdminLayout } from '@/components/admin/AdminLayout';
 import { Upload, CheckCircle, XCircle } from 'lucide-react';
-import { importProductsData } from '@/data/importProductsData';
+import { products, categories } from '@/data/newProductData';
 
 export default function ProductImport() {
   const navigate = useNavigate();
@@ -18,12 +18,11 @@ export default function ProductImport() {
     setResult(null);
 
     try {
-      const productsArray = importProductsData.products || [];
-      console.log(`Starting import of ${productsArray.length} products from ${importProductsData.stats?.categories || 0} categories...`);
+      console.log(`Starting import of ${products.length} products from ${categories.length} categories...`);
 
       const { data, error } = await supabase.functions.invoke('import-products', {
         body: { 
-          products: productsArray,
+          products: products,
           clearExisting: true  // Clear all existing products before import
         }
       });
@@ -50,11 +49,11 @@ export default function ProductImport() {
             <CardContent className="space-y-6">
               <div className="text-muted-foreground">
                 <p className="mb-4">
-                  This will replace all existing products with the new database from ideal_smoke_supply_database.json.
+                  This will replace all existing products with the new product database.
                 </p>
                 <ul className="list-disc list-inside space-y-2">
                   <li>All existing products will be deleted</li>
-                  <li>379 new products across 23 categories will be imported</li>
+                  <li>{products.length} new products across {categories.length} categories will be imported</li>
                   <li>Images will need to be uploaded separately to the product-images storage bucket</li>
                   <li>Stock quantities will default to 0</li>
                 </ul>

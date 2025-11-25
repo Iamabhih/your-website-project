@@ -6,15 +6,17 @@ const TELEGRAM_BOT_TOKEN = Deno.env.get("TELEGRAM_BOT_TOKEN");
 const TELEGRAM_CHAT_ID = Deno.env.get("TELEGRAM_CHAT_ID");
 const TELEGRAM_API = `https://api.telegram.org/bot${TELEGRAM_BOT_TOKEN}`;
 
-async function sendTelegramMessage(text: string, threadId?: string) {
+async function sendTelegramMessage(text: string, replyToMessageId?: string) {
   const body: any = {
     chat_id: TELEGRAM_CHAT_ID,
     text: text,
     parse_mode: "HTML",
   };
 
-  if (threadId) {
-    body.message_thread_id = parseInt(threadId);
+  // Use reply_to_message_id instead of message_thread_id
+  // This works for all chat types (private, group, etc.)
+  if (replyToMessageId) {
+    body.reply_to_message_id = parseInt(replyToMessageId);
   }
 
   const response = await fetch(`${TELEGRAM_API}/sendMessage`, {
@@ -184,11 +186,30 @@ serve(async (req) => {
         console.error('Telegram API error:', telegramResponse);
       }
     } else {
-      // Send message to existing thread
-      const telegramMessage = `💬 <b>${visitorName || "Visitor"}:</b>\n${message}`;
+      // Send message to existing thread - include session context
+      const sessionShortId = session.id.slice(0, 8);
+      const telegramMessage = `💬 <b>${visitorName || "Visitor"}</b> <i>(${sessionShortId})</i>:\n${message}`;
+      
       console.log(`Sending to existing thread: ${session.telegram_thread_id}`);
+      // Use reply_to_message_id for visual reply chain
       const response = await sendTelegramMessage(telegramMessage, session.telegram_thread_id);
       console.log('Telegram response for existing thread:', JSON.stringify(response));
+      
+      // If reply fails (message deleted, etc.), send without reply
+      if (!response.ok && response.error_code === 400) {
+        console.log('Reply failed, sending as new message');
+        const fallbackResponse = await sendTelegramMessage(telegramMessage);
+        console.log('Fallback response:', JSON.stringify(fallbackResponse));
+        
+        // Update telegram_thread_id to new message
+        if (fallbackResponse.ok) {
+          const messageId = fallbackResponse.result.message_id.toString();
+          await supabase.from("chat_sessions")
+            .update({ telegram_thread_id: messageId })
+            .eq("id", session.id);
+          console.log(`Updated telegram_thread_id to ${messageId} after fallback`);
+        }
+      }
       
       // If session doesn't have telegram_thread_id yet, store it now
       if (!session.telegram_thread_id && response.ok) {

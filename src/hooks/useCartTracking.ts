@@ -48,9 +48,9 @@ export function useCartTracking() {
       const totalAmount = getTotalPrice();
       
       // Get customer info
-      let customerEmail = user?.email || localStorage.getItem('guest_email') || null;
-      let customerName = localStorage.getItem('guest_name') || null;
-      let customerPhone = localStorage.getItem('guest_phone') || null;
+      const customerEmail = user?.email || localStorage.getItem('guest_email') || null;
+      const customerName = localStorage.getItem('guest_name') || null;
+      const customerPhone = localStorage.getItem('guest_phone') || null;
       let telegramChatId = null;
 
       // If we have an email, try to get Telegram chat ID

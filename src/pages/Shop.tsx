@@ -1,4 +1,5 @@
 import { useState, useEffect } from 'react';
+import { useSearchParams } from 'react-router-dom';
 import { supabase } from '@/integrations/supabase/client';
 import ProductCard from '@/components/ProductCard';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
@@ -17,9 +18,21 @@ interface Product {
 }
 
 export default function Shop() {
+  const [searchParams, setSearchParams] = useSearchParams();
   const [products, setProducts] = useState<Product[]>([]);
   const [loading, setLoading] = useState(true);
-  const [selectedCategory, setSelectedCategory] = useState('all');
+
+  // Get category from URL or default to 'all'
+  const categoryFromUrl = searchParams.get('category');
+  const [selectedCategory, setSelectedCategory] = useState(categoryFromUrl || 'all');
+
+  // Update selected category when URL changes
+  useEffect(() => {
+    const urlCategory = searchParams.get('category');
+    if (urlCategory && urlCategory !== selectedCategory) {
+      setSelectedCategory(urlCategory);
+    }
+  }, [searchParams]);
 
   useEffect(() => {
     loadProducts();
@@ -42,6 +55,17 @@ export default function Shop() {
     ? products
     : products.filter(p => p.category === selectedCategory);
 
+  // Handle category change - update both state and URL
+  const handleCategoryChange = (category: string) => {
+    setSelectedCategory(category);
+    if (category === 'all') {
+      searchParams.delete('category');
+    } else {
+      searchParams.set('category', category);
+    }
+    setSearchParams(searchParams);
+  };
+
   return (
     <div className="min-h-screen flex flex-col">
       <Header />
@@ -57,7 +81,7 @@ export default function Shop() {
             </p>
           </div>
 
-          <Tabs value={selectedCategory} onValueChange={setSelectedCategory} className="mb-8">
+          <Tabs value={selectedCategory} onValueChange={handleCategoryChange} className="mb-8">
             <div className="w-full overflow-x-auto">
               <TabsList className="inline-flex h-auto flex-wrap gap-2 bg-transparent p-1 justify-center min-w-full">
                 {categories.map((category) => (

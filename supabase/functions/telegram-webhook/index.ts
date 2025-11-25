@@ -44,6 +44,7 @@ serve(async (req) => {
       if (replyToMessageId) {
         console.log(`Looking for session with telegram_thread_id: ${replyToMessageId}`);
         
+        // First try to match by telegram_thread_id
         const { data: session, error: sessionError } = await supabase
           .from("chat_sessions")
           .select("*")
@@ -54,12 +55,65 @@ serve(async (req) => {
           console.error("Error querying chat_sessions:", sessionError);
         }
 
-        if (session) {
-          console.log(`Found session ${session.id}, storing admin reply`);
+        let matchedSession = session;
+
+        // If no direct match, try to find the session that sent the original message
+        if (!matchedSession) {
+          console.log(`No direct match, checking if reply_to_message was sent by a session`);
+          
+          // Look for visitor messages that have this telegram_message_id
+          // Since visitor messages are sent TO telegram, we need to look at messages
+          // that were sent in the thread. The thread ID itself is the first message,
+          // so let's try to find any message in a thread that matches
+          const { data: messages, error: msgError } = await supabase
+            .from("chat_messages")
+            .select("session_id")
+            .eq("sender_type", "visitor")
+            .order("created_at", { ascending: false })
+            .limit(50);
+
+          if (!msgError && messages) {
+            // Get all unique session IDs from recent visitor messages
+            const sessionIds = [...new Set(messages.map(m => m.session_id))];
+            
+            // Check these sessions for the telegram_thread_id or messages sent around this time
+            for (const sessionId of sessionIds) {
+              const { data: checkSession } = await supabase
+                .from("chat_sessions")
+                .select("*")
+                .eq("id", sessionId)
+                .maybeSingle();
+              
+              // Check if this session's thread matches or is close
+              if (checkSession) {
+                // If the session has no thread ID yet, this might be it
+                // Or if messages were sent recently to this session
+                const recentMessages = messages.filter(m => m.session_id === sessionId);
+                if (recentMessages.length > 0) {
+                  console.log(`Potential match: session ${checkSession.id}`);
+                  matchedSession = checkSession;
+                  
+                  // Store this telegram thread ID
+                  if (!matchedSession.telegram_thread_id) {
+                    console.log(`Storing telegram_thread_id: ${replyToMessageId} for session: ${matchedSession.id}`);
+                    await supabase
+                      .from("chat_sessions")
+                      .update({ telegram_thread_id: replyToMessageId })
+                      .eq("id", matchedSession.id);
+                  }
+                  break;
+                }
+              }
+            }
+          }
+        }
+
+        if (matchedSession) {
+          console.log(`Matched to session ${matchedSession.id}, storing admin reply`);
           
           // Store admin's reply
           const { error: insertError } = await supabase.from("chat_messages").insert({
-            session_id: session.id,
+            session_id: matchedSession.id,
             sender_type: "admin",
             message_text: text,
             telegram_message_id: message.message_id.toString(),
@@ -68,7 +122,7 @@ serve(async (req) => {
           if (insertError) {
             console.error("Error inserting admin reply:", insertError);
           } else {
-            console.log(`Admin replied to session ${session.id}: ${text}`);
+            console.log(`Admin replied to session ${matchedSession.id}: ${text}`);
           }
           
           return new Response(JSON.stringify({ success: true, handled: true }), {

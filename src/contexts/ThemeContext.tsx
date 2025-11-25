@@ -1,4 +1,4 @@
-import React, { createContext, useContext, useState, useEffect, useCallback, ReactNode } from 'react';
+import React, { createContext, useContext, useState, useEffect, useCallback, ReactNode, useRef, useMemo } from 'react';
 import { supabase } from '@/integrations/supabase/client';
 import {
   ThemeConfig,
@@ -64,8 +64,15 @@ export function ThemeProvider({ children }: ThemeProviderProps) {
   const [isPreviewMode, setIsPreviewMode] = useState(false);
   const [previewTheme, setPreviewTheme] = useState<ThemeConfig | null>(null);
 
+  // Track initialization to prevent duplicate applies
+  const hasInitialized = useRef(false);
+  const lastAppliedTheme = useRef<string>('');
+
   // Check if theme has unsaved changes
-  const isDirty = JSON.stringify(theme) !== JSON.stringify(savedTheme);
+  const isDirty = useMemo(
+    () => JSON.stringify(theme) !== JSON.stringify(savedTheme),
+    [theme, savedTheme]
+  );
 
   // Load theme from Supabase
   const loadTheme = useCallback(async () => {
@@ -304,11 +311,20 @@ export function ThemeProvider({ children }: ThemeProviderProps) {
     setPreviewTheme(null);
   }, []);
 
-  // Apply theme when it changes
+  // Apply theme when it changes (with duplicate prevention)
   useEffect(() => {
+    // Don't apply until we've loaded from database
+    if (isLoading) return;
+
     const activeTheme = isPreviewMode && previewTheme ? previewTheme : theme;
-    applyTheme(activeTheme);
-  }, [theme, isPreviewMode, previewTheme]);
+    const themeHash = JSON.stringify(activeTheme);
+
+    // Only apply if theme has actually changed
+    if (lastAppliedTheme.current !== themeHash) {
+      applyTheme(activeTheme);
+      lastAppliedTheme.current = themeHash;
+    }
+  }, [theme, isPreviewMode, previewTheme, isLoading]);
 
   // Apply dark mode class
   useEffect(() => {
@@ -319,8 +335,11 @@ export function ThemeProvider({ children }: ThemeProviderProps) {
     }
   }, [isDarkMode]);
 
-  // Initial load
+  // Initial load (only once)
   useEffect(() => {
+    if (hasInitialized.current) return;
+    hasInitialized.current = true;
+
     // Load dark mode preference
     const savedDarkMode = localStorage.getItem(DARK_MODE_KEY);
     if (savedDarkMode !== null) {

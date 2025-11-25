@@ -488,8 +488,8 @@ export default function Categories() {
         <Card>
           <CardContent className="p-4">
             <div className="flex items-center gap-3">
-              <div className="p-2 bg-green-100 rounded-lg">
-                <Eye className="h-5 w-5 text-green-600" />
+              <div className="p-2 bg-success/10 rounded-lg">
+                <Eye className="h-5 w-5 text-success" />
               </div>
               <div>
                 <p className="text-2xl font-bold">
@@ -637,7 +637,7 @@ export default function Categories() {
                     </TableCell>
                     <TableCell>
                       {category.metadata.image_url ? (
-                        <Badge variant="outline" className="text-green-600">
+                        <Badge variant="outline" className="text-success">
                           <ImageIcon className="h-3 w-3 mr-1" />
                           Set
                         </Badge>

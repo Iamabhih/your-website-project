@@ -169,7 +169,7 @@ function ContrastChecker({
         <p className="font-medium">{ratio.toFixed(2)}:1</p>
         <div className="flex gap-1">
           {passesAA ? (
-            <Badge variant="secondary" className="bg-green-100 text-green-800 text-[10px] px-1">
+            <Badge variant="secondary" className="bg-success/10 text-success text-[10px] px-1">
               AA
             </Badge>
           ) : passesAALarge ? (

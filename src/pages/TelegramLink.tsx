@@ -71,7 +71,7 @@ export default function TelegramLink() {
           ) : isLinked ? (
             <Card>
               <CardContent className="p-8 text-center space-y-4">
-                <CheckCircle className="w-16 h-16 text-green-500 mx-auto" />
+                <CheckCircle className="w-16 h-16 text-success mx-auto" />
                 <div>
                   <h2 className="text-2xl font-bold mb-2">Account Linked!</h2>
                   <p className="text-muted-foreground">
@@ -178,23 +178,23 @@ export default function TelegramLink() {
                 <CardContent>
                   <ul className="space-y-2">
                     <li className="flex items-start gap-2">
-                      <CheckCircle className="w-5 h-5 text-green-500 flex-shrink-0 mt-0.5" />
+                      <CheckCircle className="w-5 h-5 text-success flex-shrink-0 mt-0.5" />
                       <span>Receive instant order status updates</span>
                     </li>
                     <li className="flex items-start gap-2">
-                      <CheckCircle className="w-5 h-5 text-green-500 flex-shrink-0 mt-0.5" />
+                      <CheckCircle className="w-5 h-5 text-success flex-shrink-0 mt-0.5" />
                       <span>Get notified when products are back in stock</span>
                     </li>
                     <li className="flex items-start gap-2">
-                      <CheckCircle className="w-5 h-5 text-green-500 flex-shrink-0 mt-0.5" />
+                      <CheckCircle className="w-5 h-5 text-success flex-shrink-0 mt-0.5" />
                       <span>Track your orders directly from Telegram</span>
                     </li>
                     <li className="flex items-start gap-2">
-                      <CheckCircle className="w-5 h-5 text-green-500 flex-shrink-0 mt-0.5" />
+                      <CheckCircle className="w-5 h-5 text-success flex-shrink-0 mt-0.5" />
                       <span>Receive exclusive promotions and offers</span>
                     </li>
                     <li className="flex items-start gap-2">
-                      <CheckCircle className="w-5 h-5 text-green-500 flex-shrink-0 mt-0.5" />
+                      <CheckCircle className="w-5 h-5 text-success flex-shrink-0 mt-0.5" />
                       <span>Quick access to customer support</span>
                     </li>
                   </ul>

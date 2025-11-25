@@ -217,9 +217,9 @@ export default function CartDrawer({ open, onClose }: CartDrawerProps) {
           )}
 
           {items.length > 0 && subtotal >= FREE_SHIPPING_THRESHOLD && (
-            <div className="px-6 py-3 bg-green-500/10 flex items-center gap-2">
-              <CheckCircle className="h-4 w-4 text-green-600" />
-              <span className="text-sm text-green-700 font-medium">
+            <div className="px-6 py-3 bg-success/10 flex items-center gap-2">
+              <CheckCircle className="h-4 w-4 text-success" />
+              <span className="text-sm text-success font-medium">
                 You qualify for free shipping!
               </span>
             </div>
@@ -444,7 +444,7 @@ export default function CartDrawer({ open, onClose }: CartDrawerProps) {
                 </div>
 
                 {totalSavings > 0 && (
-                  <div className="flex justify-between text-sm text-green-600">
+                  <div className="flex justify-between text-sm text-success">
                     <span className="flex items-center gap-1">
                       <Tag className="h-3 w-3" />
                       You Save
@@ -454,7 +454,7 @@ export default function CartDrawer({ open, onClose }: CartDrawerProps) {
                 )}
 
                 {couponDiscount > 0 && (
-                  <div className="flex justify-between text-sm text-green-600">
+                  <div className="flex justify-between text-sm text-success">
                     <span className="flex items-center gap-1">
                       <Tag className="h-3 w-3" />
                       Coupon ({metadata.couponCode})

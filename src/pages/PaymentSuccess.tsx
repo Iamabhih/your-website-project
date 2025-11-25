@@ -18,7 +18,7 @@ export default function PaymentSuccess() {
       <main className="flex-1 container mx-auto px-4 py-12">
         <div className="max-w-2xl mx-auto text-center">
           <div className="mb-8 flex justify-center">
-            <CheckCircle className="h-24 w-24 text-green-600" />
+            <CheckCircle className="h-24 w-24 text-success" />
           </div>
 
           <Card>

@@ -274,7 +274,7 @@ export default function AdminProducts() {
   const getStockBadge = (stock: number) => {
     if (stock === 0) return <Badge variant="destructive">Out of Stock</Badge>;
     if (stock <= 10) return <Badge variant="secondary" className="bg-yellow-100 text-yellow-800">Low Stock ({stock})</Badge>;
-    return <Badge variant="secondary" className="bg-green-100 text-green-800">In Stock ({stock})</Badge>;
+    return <Badge variant="secondary" className="bg-success/10 text-success">In Stock ({stock})</Badge>;
   };
 
   // Pagination

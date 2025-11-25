@@ -215,10 +215,38 @@ export default function TelegramSettings() {
     }
   };
 
+  const webhookUrl = `https://dljnlqznteqxszbxdelw.supabase.co/functions/v1/telegram-webhook`;
+
   const copyWebhookUrl = () => {
-    const webhookUrl = `${window.location.origin}/api/telegram-webhook`;
     navigator.clipboard.writeText(webhookUrl);
     toast.success('Webhook URL copied to clipboard');
+  };
+
+  const registerWebhook = async () => {
+    if (!settings.admin_chat_id) {
+      toast.error('Please configure admin chat ID first');
+      return;
+    }
+
+    setTestingConnection(true);
+    try {
+      const { data, error } = await supabase.functions.invoke('send-to-telegram', {
+        body: {
+          event: 'register_webhook',
+          webhookUrl,
+        },
+      });
+
+      if (error) throw error;
+
+      toast.success('Webhook registered successfully!');
+      console.log('Webhook registration response:', data);
+    } catch (error: any) {
+      toast.error('Failed to register webhook: ' + error.message);
+      console.error('Webhook registration error:', error);
+    } finally {
+      setTestingConnection(false);
+    }
   };
 
   if (loading) {
@@ -387,13 +415,23 @@ export default function TelegramSettings() {
                   <div className="p-4 bg-muted rounded-lg">
                     <div className="flex items-center justify-between mb-2">
                       <Label>Webhook URL</Label>
-                      <Button variant="ghost" size="sm" onClick={copyWebhookUrl}>
-                        <Copy className="h-4 w-4 mr-1" />
-                        Copy
-                      </Button>
+                      <div className="flex gap-2">
+                        <Button variant="ghost" size="sm" onClick={copyWebhookUrl}>
+                          <Copy className="h-4 w-4 mr-1" />
+                          Copy
+                        </Button>
+                        <Button variant="outline" size="sm" onClick={registerWebhook} disabled={testingConnection}>
+                          {testingConnection ? (
+                            <Loader2 className="h-4 w-4 mr-1 animate-spin" />
+                          ) : (
+                            <ExternalLink className="h-4 w-4 mr-1" />
+                          )}
+                          Register
+                        </Button>
+                      </div>
                     </div>
-                    <code className="text-sm block p-2 bg-background rounded border">
-                      {window.location.origin}/api/telegram-webhook
+                    <code className="text-sm block p-2 bg-background rounded border break-all">
+                      {webhookUrl}
                     </code>
                   </div>
 

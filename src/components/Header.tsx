@@ -6,6 +6,7 @@ import { useCartStore } from '@/stores/cartStore';
 import { useAuth } from '@/hooks/useAuth';
 import { useWishlist } from '@/hooks/useWishlist';
 import CartDrawer from './CartDrawer';
+import logo from '@/assets/logo.png';
 
 export default function Header() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
@@ -27,8 +28,8 @@ export default function Header() {
         <div className="container mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex h-16 items-center justify-between">
             {/* Logo */}
-            <Link to="/" className="flex items-center space-x-2">
-              <span className="text-2xl font-bold text-primary">Ideal Smoke Supply</span>
+            <Link to="/" className="flex items-center">
+              <img src={logo} alt="Ideal Smoke Supply" className="h-12 w-auto" />
             </Link>
 
             {/* Desktop Navigation */}

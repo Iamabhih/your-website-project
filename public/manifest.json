@@ -4,8 +4,8 @@
   "description": "Premium vaping and smoking products delivered to your door",
   "start_url": "/",
   "display": "standalone",
-  "background_color": "#f5f1e8",
-  "theme_color": "#10b981",
+  "background_color": "#faf9f7",
+  "theme_color": "#8B9A6D",
   "orientation": "portrait-primary",
   "icons": [
     {

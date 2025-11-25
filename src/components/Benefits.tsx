@@ -1,25 +1,25 @@
-import { Shield, Leaf, Award, HeartPulse } from "lucide-react";
+import { Shield, Package, Truck, Headphones } from "lucide-react";
 
 const benefits = [
   {
     icon: Shield,
-    title: "Lab Tested",
-    description: "Every product undergoes rigorous third-party lab testing for purity and potency.",
+    title: "Authentic Products",
+    description: "100% genuine products from trusted manufacturers. Quality guaranteed on every purchase.",
   },
   {
-    icon: Leaf,
-    title: "100% Authentic",
-    description: "Sourced from trusted manufacturers with genuine, quality-assured products.",
+    icon: Package,
+    title: "Wide Selection",
+    description: "Glass pipes, bongs, grinders, vapes, and smoking accessories. Everything you need in one place.",
   },
   {
-    icon: Award,
-    title: "Premium Quality",
-    description: "Crafted with care using the finest ingredients and industry-leading standards.",
+    icon: Truck,
+    title: "Fast Shipping",
+    description: "Quick and discreet delivery across South Africa. Track your order every step of the way.",
   },
   {
-    icon: HeartPulse,
-    title: "Wellness Focused",
-    description: "Designed to support your natural health and wellbeing journey every day.",
+    icon: Headphones,
+    title: "Expert Support",
+    description: "Knowledgeable team ready to help you find the perfect products for your needs.",
   },
 ];
 
@@ -32,7 +32,7 @@ const Benefits = () => {
             Why Choose Ideal Smoke Supply?
           </h2>
           <p className="text-xl text-muted-foreground max-w-2xl mx-auto">
-            We're committed to delivering the highest quality vaping products with complete transparency and care.
+            Your trusted source for premium smoking accessories and supplies with exceptional service.
           </p>
         </div>
 

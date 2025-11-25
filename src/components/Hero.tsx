@@ -1,5 +1,5 @@
 import { Button } from "@/components/ui/button";
-import heroImage from "@/assets/hero-cbd.jpg";
+import heroImage from "@/assets/hero-smoke-shop.jpg";
 import { ArrowRight } from "lucide-react";
 
 const Hero = () => {
@@ -9,23 +9,23 @@ const Hero = () => {
       <div className="absolute inset-0 z-0">
         <img
           src={heroImage}
-          alt="Premium CBD products with natural hemp leaves"
+          alt="Premium smoke shop supplies and vaping accessories"
           className="w-full h-full object-cover"
         />
-        <div className="absolute inset-0 bg-gradient-to-r from-natural-deep/90 via-primary/85 to-primary/70" />
+        <div className="absolute inset-0 bg-gradient-to-r from-primary/95 via-primary/80 to-primary/60" />
       </div>
 
       {/* Content */}
       <div className="container mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
         <div className="max-w-3xl animate-fade-in-up">
           <h1 className="text-5xl md:text-7xl font-bold text-primary-foreground mb-6 leading-tight">
-            Natural Wellness,
+            Premium Smoke Supply,
             <br />
-            <span className="text-secondary">Naturally Pure</span>
+            <span className="text-secondary">Quality You Can Trust</span>
           </h1>
           <p className="text-xl md:text-2xl text-primary-foreground/90 mb-8 leading-relaxed">
-            Discover premium, lab-tested CBD products crafted from the finest organic hemp. 
-            Your journey to natural wellness starts here.
+            Discover premium smoking accessories, glass pieces, vapes, and more. 
+            Your one-stop shop for all your smoking needs.
           </p>
           <div className="flex flex-col sm:flex-row gap-4">
             <Button 

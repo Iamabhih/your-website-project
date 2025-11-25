@@ -63,10 +63,10 @@ const Newsletter = () => {
         <div className="max-w-3xl mx-auto text-center animate-fade-in">
           <Mail className="h-16 w-16 mx-auto mb-6 animate-float" />
           <h2 className="text-4xl md:text-5xl font-bold mb-6">
-            Stay Connected with Wellness
+            Stay in the Loop
           </h2>
           <p className="text-xl text-primary-foreground/90 mb-8 leading-relaxed">
-            Subscribe to our newsletter for exclusive offers, wellness tips, and the latest CBD insights 
+            Subscribe to our newsletter for exclusive deals, new arrivals, and expert smoking tips 
             delivered straight to your inbox.
           </p>
           

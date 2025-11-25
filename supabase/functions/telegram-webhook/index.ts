@@ -16,6 +16,8 @@ serve(async (req) => {
       Deno.env.get("SUPABASE_SERVICE_ROLE_KEY") ?? ""
     );
 
+    const TELEGRAM_CHAT_ID = Deno.env.get("TELEGRAM_CHAT_ID") ?? "";
+
     const update = await req.json();
     console.log("Telegram webhook update:", JSON.stringify(update));
 
@@ -32,47 +34,91 @@ serve(async (req) => {
     const text = message.text;
     const replyToMessageId = message.reply_to_message?.message_id?.toString();
     
-    console.log("Processing message:", { chatId, text, replyToMessageId });
+    console.log("Processing message:", { chatId, text, replyToMessageId, adminChatId: TELEGRAM_CHAT_ID });
 
-    // Check if this is a reply to a previous message (admin replying to customer)
-    if (replyToMessageId) {
-      console.log(`Looking for session with telegram_thread_id: ${replyToMessageId}`);
+    // Check if message is from admin chat
+    if (chatId === TELEGRAM_CHAT_ID) {
+      console.log("Message is from admin chat");
       
-      const { data: session, error: sessionError } = await supabase
-        .from("chat_sessions")
-        .select("*")
-        .eq("telegram_thread_id", replyToMessageId)
-        .maybeSingle();
-
-      if (sessionError) {
-        console.error("Error querying chat_sessions:", sessionError);
-      }
-
-      if (session) {
-        console.log(`Found session ${session.id}, storing admin reply`);
+      // Check if this is a reply to a specific thread
+      if (replyToMessageId) {
+        console.log(`Looking for session with telegram_thread_id: ${replyToMessageId}`);
         
-        // Store admin's reply
-        const { error: insertError } = await supabase.from("chat_messages").insert({
-          session_id: session.id,
-          sender_type: "admin",
-          message_text: text,
-          telegram_message_id: message.message_id.toString(),
-        });
+        const { data: session, error: sessionError } = await supabase
+          .from("chat_sessions")
+          .select("*")
+          .eq("telegram_thread_id", replyToMessageId)
+          .maybeSingle();
 
-        if (insertError) {
-          console.error("Error inserting admin reply:", insertError);
-        } else {
-          console.log(`Admin replied to session ${session.id}: ${text}`);
+        if (sessionError) {
+          console.error("Error querying chat_sessions:", sessionError);
         }
-        
-        // Don't forward to telegram-bot since this is an admin reply
-        return new Response(JSON.stringify({ success: true, handled: true }), {
-          status: 200,
-          headers: { ...corsHeaders, "Content-Type": "application/json" },
-        });
+
+        if (session) {
+          console.log(`Found session ${session.id}, storing admin reply`);
+          
+          // Store admin's reply
+          const { error: insertError } = await supabase.from("chat_messages").insert({
+            session_id: session.id,
+            sender_type: "admin",
+            message_text: text,
+            telegram_message_id: message.message_id.toString(),
+          });
+
+          if (insertError) {
+            console.error("Error inserting admin reply:", insertError);
+          } else {
+            console.log(`Admin replied to session ${session.id}: ${text}`);
+          }
+          
+          return new Response(JSON.stringify({ success: true, handled: true }), {
+            status: 200,
+            headers: { ...corsHeaders, "Content-Type": "application/json" },
+          });
+        } else {
+          console.log("No matching session found for reply_to_message_id:", replyToMessageId);
+        }
       } else {
-        console.log("No matching session found for reply_to_message_id:", replyToMessageId);
+        // No reply_to_message - might be a general admin message, try to find most recent active session
+        console.log("No reply_to_message, looking for most recent active session");
+        
+        const { data: sessions, error: sessionError } = await supabase
+          .from("chat_sessions")
+          .select("*")
+          .eq("status", "active")
+          .order("started_at", { ascending: false })
+          .limit(1);
+
+        if (!sessionError && sessions && sessions.length > 0) {
+          const session = sessions[0];
+          console.log(`Found most recent active session ${session.id}, storing admin message`);
+          
+          const { error: insertError } = await supabase.from("chat_messages").insert({
+            session_id: session.id,
+            sender_type: "admin",
+            message_text: text,
+            telegram_message_id: message.message_id.toString(),
+          });
+
+          if (insertError) {
+            console.error("Error inserting admin message:", insertError);
+          } else {
+            console.log(`Admin message stored to session ${session.id}`);
+          }
+          
+          return new Response(JSON.stringify({ success: true, handled: true }), {
+            status: 200,
+            headers: { ...corsHeaders, "Content-Type": "application/json" },
+          });
+        }
       }
+      
+      // If we get here, it's an admin message but we couldn't match it to a session
+      console.log("Admin message but no matching session found");
+      return new Response(JSON.stringify({ success: true, handled: false, reason: "no_session" }), {
+        status: 200,
+        headers: { ...corsHeaders, "Content-Type": "application/json" },
+      });
     }
 
     // Forward to telegram-bot for processing

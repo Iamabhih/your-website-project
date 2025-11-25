@@ -189,6 +189,23 @@ serve(async (req) => {
       console.log(`Sending to existing thread: ${session.telegram_thread_id}`);
       const response = await sendTelegramMessage(telegramMessage, session.telegram_thread_id);
       console.log('Telegram response for existing thread:', JSON.stringify(response));
+      
+      // If session doesn't have telegram_thread_id yet, store it now
+      if (!session.telegram_thread_id && response.ok) {
+        const messageId = response.result.message_id.toString();
+        console.log(`Updating telegram_thread_id: ${messageId} for session: ${session.id}`);
+        
+        const { error: updateError } = await supabase
+          .from("chat_sessions")
+          .update({ telegram_thread_id: messageId })
+          .eq("id", session.id);
+        
+        if (updateError) {
+          console.error('Error updating telegram_thread_id:', updateError);
+        } else {
+          console.log(`Successfully stored telegram_thread_id for session ${session.id}`);
+        }
+      }
     }
 
     // Store message in database

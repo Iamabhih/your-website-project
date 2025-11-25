@@ -1,4 +1,4 @@
-import { useState, useEffect, useCallback } from 'react';
+import { useState, useEffect, useCallback, useRef } from 'react';
 import { User, Session } from '@supabase/supabase-js';
 import { supabase } from '@/integrations/supabase/client';
 
@@ -7,24 +7,44 @@ export function useAuth() {
   const [session, setSession] = useState<Session | null>(null);
   const [loading, setLoading] = useState(true);
   const [isAdmin, setIsAdmin] = useState(false);
+  
+  // Cache admin role check to prevent redundant API calls
+  const adminRoleCache = useRef<{ [key: string]: boolean }>({});
+  const lastErrorTime = useRef<number>(0);
 
-  // Centralized function to check admin role
+  // Centralized function to check admin role with caching
   const checkAdminRole = useCallback(async (userId: string): Promise<boolean> => {
+    // Return cached value if available
+    if (adminRoleCache.current[userId] !== undefined) {
+      return adminRoleCache.current[userId];
+    }
+
     try {
       const { data, error } = await supabase
         .from('user_roles')
         .select('role')
         .eq('user_id', userId)
-        .single();
+        .maybeSingle();
 
       if (error) {
-        console.error('Error checking admin role:', error);
+        // Only log error once every 10 seconds to avoid spam
+        const now = Date.now();
+        if (now - lastErrorTime.current > 10000) {
+          console.error('Error checking admin role:', error);
+          lastErrorTime.current = now;
+        }
         return false;
       }
 
-      return data?.role === 'admin';
+      const isAdminUser = data?.role === 'admin';
+      adminRoleCache.current[userId] = isAdminUser;
+      return isAdminUser;
     } catch (error) {
-      console.error('Error checking admin role:', error);
+      const now = Date.now();
+      if (now - lastErrorTime.current > 10000) {
+        console.error('Error checking admin role:', error);
+        lastErrorTime.current = now;
+      }
       return false;
     }
   }, []);

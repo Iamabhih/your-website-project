@@ -61,23 +61,49 @@ Deno.serve(async (req) => {
 
     let imported = 0;
     let errors = 0;
+    let skipped = 0;
     const errorDetails: string[] = [];
+
+    // Helper function to parse price
+    const parsePrice = (price: any): number | null => {
+      if (typeof price === 'number') return price;
+      if (typeof price === 'string') {
+        // Remove currency symbols and whitespace
+        const cleaned = price.replace(/[R\s]/g, '');
+        const parsed = parseFloat(cleaned);
+        return isNaN(parsed) ? null : parsed;
+      }
+      return null;
+    };
 
     // Process products in batches
     const batchSize = 50;
     for (let i = 0; i < products.length; i += batchSize) {
       const batch = products.slice(i, i + batchSize);
-      const productsToInsert = batch.map((product: ProductData) => ({
-        name: `${product.code} - ${product.description}`,
-        category: product.category,
-        description: product.description,
-        price: product.price,
-        pack_info: product.size,
-        image_url: product.image ? `/images/${product.image}` : null,
-        stock_quantity: 0,
-        min_quantity: 1,
-        has_variants: false
-      }));
+      
+      // Filter and transform products, skipping invalid ones
+      const productsToInsert = batch
+        .map((product: ProductData) => {
+          const price = parsePrice(product.price);
+          if (price === null) {
+            skipped++;
+            errorDetails.push(`Skipped product ${product.code}: invalid price "${product.price}"`);
+            return null;
+          }
+          
+          return {
+            name: `${product.code} - ${product.description}`,
+            category: product.category,
+            description: product.description,
+            price: price,
+            pack_info: product.size,
+            image_url: product.image ? `/images/${product.image}` : null,
+            stock_quantity: 0,
+            min_quantity: 1,
+            has_variants: false
+          };
+        })
+        .filter(Boolean);
 
       const { data, error } = await supabase
         .from('products')
@@ -96,8 +122,9 @@ Deno.serve(async (req) => {
 
     const result = {
       success: errors === 0,
-      message: `Import completed: ${imported} products imported${errors > 0 ? `, ${errors} errors` : ''}`,
+      message: `Import completed: ${imported} products imported${skipped > 0 ? `, ${skipped} skipped` : ''}${errors > 0 ? `, ${errors} errors` : ''}`,
       imported,
+      skipped,
       errors,
       errorDetails: errorDetails.length > 0 ? errorDetails : undefined
     };

@@ -18,10 +18,14 @@ export default function ProductImport() {
     setResult(null);
 
     try {
-      console.log(`Starting import of ${importProductsData.length} products...`);
+      const productsArray = importProductsData.products || [];
+      console.log(`Starting import of ${productsArray.length} products from ${importProductsData.stats?.categories || 0} categories...`);
 
       const { data, error } = await supabase.functions.invoke('import-products', {
-        body: { products: importProductsData }
+        body: { 
+          products: productsArray,
+          clearExisting: true  // Clear all existing products before import
+        }
       });
 
       if (error) throw error;
@@ -46,13 +50,13 @@ export default function ProductImport() {
             <CardContent className="space-y-6">
               <div className="text-muted-foreground">
                 <p className="mb-4">
-                  This will import all products from the ideal_smoke_supply.xlsx file into the database.
+                  This will replace all existing products with the new database from ideal_smoke_supply_database.json.
                 </p>
                 <ul className="list-disc list-inside space-y-2">
-                  <li>Products will be organized by categories</li>
-                  <li>Images can be added later via the Products page</li>
+                  <li>All existing products will be deleted</li>
+                  <li>379 new products across 23 categories will be imported</li>
+                  <li>Images will need to be uploaded separately to the product-images storage bucket</li>
                   <li>Stock quantities will default to 0</li>
-                  <li>Expected: 370+ products</li>
                 </ul>
               </div>
 

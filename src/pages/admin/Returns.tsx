@@ -104,7 +104,7 @@ const STATUS_COLORS: Record<string, string> = {
   approved: 'bg-blue-100 text-blue-800',
   rejected: 'bg-red-100 text-red-800',
   processing: 'bg-purple-100 text-purple-800',
-  completed: 'bg-green-100 text-green-800',
+  completed: 'bg-success/10 text-success',
   refunded: 'bg-emerald-100 text-emerald-800',
 };
 
@@ -382,8 +382,8 @@ export default function Returns() {
         <Card>
           <CardContent className="p-4">
             <div className="flex items-center gap-3">
-              <div className="p-2 bg-green-100 rounded-lg">
-                <CheckCircle className="h-5 w-5 text-green-600" />
+              <div className="p-2 bg-success/10 rounded-lg">
+                <CheckCircle className="h-5 w-5 text-success" />
               </div>
               <div>
                 <p className="text-2xl font-bold">{stats.completed}</p>
@@ -523,7 +523,7 @@ export default function Returns() {
                           {returnReq.status === 'pending' && (
                             <>
                               <DropdownMenuItem onClick={() => updateReturnStatus(returnReq.id, 'approved')}>
-                                <CheckCircle className="h-4 w-4 mr-2 text-green-600" />
+                                <CheckCircle className="h-4 w-4 mr-2 text-success" />
                                 Approve
                               </DropdownMenuItem>
                               <DropdownMenuItem onClick={() => updateReturnStatus(returnReq.id, 'rejected')}>

@@ -70,11 +70,11 @@ export default function ProductImport() {
               </Button>
 
               {result && (
-                <Card className={result.success ? 'border-green-500' : 'border-red-500'}>
+                <Card className={result.success ? 'border-success' : 'border-red-500'}>
                   <CardContent className="pt-6">
                     <div className="flex items-start gap-3">
                       {result.success ? (
-                        <CheckCircle className="h-6 w-6 text-green-500 flex-shrink-0 mt-0.5" />
+                        <CheckCircle className="h-6 w-6 text-success flex-shrink-0 mt-0.5" />
                       ) : (
                         <XCircle className="h-6 w-6 text-red-500 flex-shrink-0 mt-0.5" />
                       )}

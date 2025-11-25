@@ -154,7 +154,7 @@ export default function AdminDeliveryOptions() {
                       <div className="flex gap-4 mt-2 text-sm">
                         <span><span className="text-muted-foreground">Cost:</span> R {option.cost.toFixed(2)}</span>
                         <span><span className="text-muted-foreground">Estimated:</span> {option.estimated_days} days</span>
-                        <span className={option.is_active ? 'text-green-600' : 'text-red-600'}>
+                        <span className={option.is_active ? 'text-success' : 'text-red-600'}>
                           {option.is_active ? 'Active' : 'Inactive'}
                         </span>
                       </div>

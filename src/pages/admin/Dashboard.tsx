@@ -95,7 +95,7 @@ export default function AdminDashboard() {
       title: 'Total Revenue',
       value: `R ${stats.totalRevenue.toFixed(2)}`,
       icon: DollarSign,
-      color: 'text-green-600',
+      color: 'text-success',
     },
     {
       title: 'Total Orders',

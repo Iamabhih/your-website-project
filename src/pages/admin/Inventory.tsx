@@ -310,7 +310,7 @@ export default function Inventory() {
     if (quantity <= LOW_STOCK_THRESHOLD) {
       return { label: 'Low Stock', color: 'bg-yellow-100 text-yellow-800', icon: TrendingDown };
     }
-    return { label: 'In Stock', color: 'bg-green-100 text-green-800', icon: CheckCircle };
+    return { label: 'In Stock', color: 'bg-success/10 text-success', icon: CheckCircle };
   };
 
   const getStockPercentage = (quantity: number, minQuantity: number) => {
@@ -415,8 +415,8 @@ export default function Inventory() {
         <Card>
           <CardContent className="p-4">
             <div className="flex items-center gap-3">
-              <div className="p-2 bg-green-100 rounded-lg">
-                <CheckCircle className="h-5 w-5 text-green-600" />
+              <div className="p-2 bg-success/10 rounded-lg">
+                <CheckCircle className="h-5 w-5 text-success" />
               </div>
               <div>
                 <p className="text-2xl font-bold">{stats.inStock}</p>
@@ -686,7 +686,7 @@ export default function Inventory() {
                 <SelectContent>
                   <SelectItem value="add">
                     <div className="flex items-center gap-2">
-                      <Plus className="h-4 w-4 text-green-600" />
+                      <Plus className="h-4 w-4 text-success" />
                       Add Stock
                     </div>
                   </SelectItem>
@@ -824,8 +824,8 @@ export default function Inventory() {
                   <div key={movement.id} className="flex items-center justify-between p-3 border rounded-lg">
                     <div className="flex items-center gap-3">
                       {movement.type === 'in' ? (
-                        <div className="p-2 bg-green-100 rounded-full">
-                          <Plus className="h-4 w-4 text-green-600" />
+                        <div className="p-2 bg-success/10 rounded-full">
+                          <Plus className="h-4 w-4 text-success" />
                         </div>
                       ) : movement.type === 'out' ? (
                         <div className="p-2 bg-red-100 rounded-full">
@@ -844,7 +844,7 @@ export default function Inventory() {
                     <div className="text-right">
                       <p className={cn(
                         "font-bold",
-                        movement.type === 'in' && "text-green-600",
+                        movement.type === 'in' && "text-success",
                         movement.type === 'out' && "text-red-600"
                       )}>
                         {movement.type === 'in' ? '+' : movement.type === 'out' ? '-' : ''}{movement.quantity}

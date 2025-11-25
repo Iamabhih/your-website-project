@@ -271,7 +271,7 @@ export default function AdminOrders() {
 
   const getPaymentBadge = (status: string) => {
     const colors: Record<string, string> = {
-      paid: 'bg-green-100 text-green-800',
+      paid: 'bg-success/10 text-success',
       pending: 'bg-yellow-100 text-yellow-800',
       failed: 'bg-red-100 text-red-800',
     };

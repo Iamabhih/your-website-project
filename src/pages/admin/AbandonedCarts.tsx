@@ -143,7 +143,7 @@ export default function AbandonedCarts() {
 
   const getStatusBadge = (cart: AbandonedCart) => {
     if (cart.recovered) {
-      return <Badge variant="default" className="bg-green-500">Recovered</Badge>;
+      return <Badge variant="default" className="bg-success">Recovered</Badge>;
     }
     if (cart.reminded_at) {
       return <Badge variant="secondary">Reminded</Badge>;

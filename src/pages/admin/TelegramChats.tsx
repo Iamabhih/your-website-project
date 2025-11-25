@@ -607,7 +607,7 @@ export default function TelegramChats() {
 
   const getStatusColor = (status: string) => {
     switch (status) {
-      case 'active': return 'bg-green-100 text-green-800';
+      case 'active': return 'bg-success/10 text-success';
       case 'waiting': return 'bg-yellow-100 text-yellow-800';
       case 'closed': return 'bg-gray-100 text-gray-800';
       default: return 'bg-gray-100 text-gray-800';
@@ -1244,8 +1244,8 @@ export default function TelegramChats() {
               </Card>
               <Card className="p-4">
                 <div className="flex items-center gap-3">
-                  <div className="p-2 bg-green-100 rounded-lg">
-                    <CheckCircle className="h-5 w-5 text-green-600" />
+                  <div className="p-2 bg-success/10 rounded-lg">
+                    <CheckCircle className="h-5 w-5 text-success" />
                   </div>
                   <div>
                     <p className="text-2xl font-bold">{stats.activeChats}</p>

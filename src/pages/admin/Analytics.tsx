@@ -272,7 +272,7 @@ export default function AdminAnalytics() {
               </CardHeader>
               <CardContent>
                 <div className="text-2xl font-bold">R {totalRevenue.toFixed(2)}</div>
-                <div className={`text-xs flex items-center ${revenueGrowth >= 0 ? 'text-green-600' : 'text-red-600'}`}>
+                <div className={`text-xs flex items-center ${revenueGrowth >= 0 ? 'text-success' : 'text-red-600'}`}>
                   {revenueGrowth >= 0 ? <TrendingUp className="mr-1 h-3 w-3" /> : <TrendingDown className="mr-1 h-3 w-3" />}
                   {Math.abs(revenueGrowth).toFixed(1)}% from last period
                 </div>
@@ -286,7 +286,7 @@ export default function AdminAnalytics() {
               </CardHeader>
               <CardContent>
                 <div className="text-2xl font-bold">{totalOrders}</div>
-                <div className={`text-xs flex items-center ${ordersGrowth >= 0 ? 'text-green-600' : 'text-red-600'}`}>
+                <div className={`text-xs flex items-center ${ordersGrowth >= 0 ? 'text-success' : 'text-red-600'}`}>
                   {ordersGrowth >= 0 ? <TrendingUp className="mr-1 h-3 w-3" /> : <TrendingDown className="mr-1 h-3 w-3" />}
                   {Math.abs(ordersGrowth).toFixed(1)}% from last period
                 </div>

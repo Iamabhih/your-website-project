@@ -482,9 +482,9 @@ export default function Newsletter() {
               <div className="flex items-center justify-between">
                 <div>
                   <p className="text-sm text-muted-foreground">Active</p>
-                  <p className="text-3xl font-bold text-green-600">{stats.active}</p>
+                  <p className="text-3xl font-bold text-success">{stats.active}</p>
                 </div>
-                <UserCheck className="h-10 w-10 text-green-600" />
+                <UserCheck className="h-10 w-10 text-success" />
               </div>
             </CardContent>
           </Card>

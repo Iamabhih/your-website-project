@@ -199,14 +199,15 @@ async function fetchStoreSettings(): Promise<StoreSettings> {
     .from('settings')
     .select('value')
     .eq('key', STORE_SETTINGS_KEY)
-    .single();
+    .maybeSingle();
 
   if (error) {
-    if (error.code === 'PGRST116') {
-      // No settings found, return defaults
-      return defaultSettings;
-    }
     throw error;
+  }
+
+  if (!data) {
+    // No settings found, return defaults
+    return defaultSettings;
   }
 
   // Merge with defaults to ensure all fields exist

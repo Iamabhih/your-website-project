@@ -28,8 +28,8 @@ export default function Wishlist() {
     toast.success(`${item.product.name} added to cart`);
   };
 
-  const handleRemove = (productId: string, variantId?: string) => {
-    removeFromWishlist(productId, variantId);
+  const handleRemove = (productId: string) => {
+    removeFromWishlist(productId);
   };
 
   return (
@@ -123,15 +123,15 @@ export default function Wishlist() {
                       <Button
                         size="sm"
                         variant="outline"
-                        onClick={() => handleRemove(item.product_id, item.variant_id)}
+                        onClick={() => handleRemove(item.product_id)}
                       >
                         <Trash2 className="h-4 w-4" />
                       </Button>
                     </div>
 
-                    {item.added_at && (
+                    {item.created_at && (
                       <p className="text-xs text-muted-foreground">
-                        Added {new Date(item.added_at).toLocaleDateString('en-ZA')}
+                        Added {new Date(item.created_at).toLocaleDateString('en-ZA')}
                       </p>
                     )}
                   </CardContent>

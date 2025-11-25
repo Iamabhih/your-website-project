@@ -5,7 +5,6 @@ import { cn } from '@/lib/utils';
 
 interface WishlistButtonProps {
   productId: string;
-  variantId?: string;
   size?: 'sm' | 'default' | 'lg' | 'icon';
   variant?: 'default' | 'outline' | 'ghost';
   className?: string;
@@ -14,23 +13,22 @@ interface WishlistButtonProps {
 
 export default function WishlistButton({
   productId,
-  variantId,
   size = 'icon',
   variant = 'outline',
   className,
   iconOnly = true,
 }: WishlistButtonProps) {
   const { isInWishlist, addToWishlist, removeFromWishlist } = useWishlist();
-  const inWishlist = isInWishlist(productId, variantId);
+  const inWishlist = isInWishlist(productId);
 
   const handleClick = (e: React.MouseEvent) => {
     e.preventDefault();
     e.stopPropagation();
 
     if (inWishlist) {
-      removeFromWishlist(productId, variantId);
+      removeFromWishlist(productId);
     } else {
-      addToWishlist(productId, variantId);
+      addToWishlist(productId);
     }
   };
 

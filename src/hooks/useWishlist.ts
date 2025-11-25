@@ -6,8 +6,7 @@ import { toast } from 'sonner';
 interface WishlistItem {
   id: string;
   product_id: string;
-  variant_id?: string;
-  added_at: string;
+  created_at: string;
   product?: {
     id: string;
     name: string;
@@ -48,8 +47,7 @@ export function useWishlist() {
         .select(`
           id,
           product_id,
-          variant_id,
-          added_at,
+          created_at,
           products (
             id,
             name,
@@ -59,15 +57,14 @@ export function useWishlist() {
           )
         `)
         .eq('user_id', user.id)
-        .order('added_at', { ascending: false });
+        .order('created_at', { ascending: false });
 
       if (!error && data) {
         setWishlistItems(
           data.map((item: any) => ({
             id: item.id,
             product_id: item.product_id,
-            variant_id: item.variant_id,
-            added_at: item.added_at,
+            created_at: item.created_at,
             product: item.products,
           }))
         );
@@ -109,13 +106,12 @@ export function useWishlist() {
     }
   };
 
-  const addToWishlist = async (productId: string, variantId?: string) => {
+  const addToWishlist = async (productId: string) => {
     if (user) {
       // Add to database
       const { error } = await supabase.from('wishlist').insert({
         user_id: user.id,
         product_id: productId,
-        variant_id: variantId || null,
       });
 
       if (error) {
@@ -135,17 +131,14 @@ export function useWishlist() {
       const guestItem: WishlistItem = {
         id: crypto.randomUUID(),
         product_id: productId,
-        variant_id: variantId,
-        added_at: new Date().toISOString(),
+        created_at: new Date().toISOString(),
       };
 
       const existingWishlist = localStorage.getItem(GUEST_WISHLIST_KEY);
       const wishlist: WishlistItem[] = existingWishlist ? JSON.parse(existingWishlist) : [];
 
       // Check if already in wishlist
-      const exists = wishlist.some(
-        (item) => item.product_id === productId && item.variant_id === variantId
-      );
+      const exists = wishlist.some((item) => item.product_id === productId);
 
       if (exists) {
         toast.info('Already in wishlist');
@@ -160,38 +153,22 @@ export function useWishlist() {
       await supabase.from('guest_wishlist').insert({
         session_id: sessionId,
         product_id: productId,
-        variant_id: variantId || null,
       });
 
       toast.success('Added to wishlist');
     }
   };
 
-  const removeFromWishlist = async (productId: string, variantId?: string) => {
+  const removeFromWishlist = async (productId: string) => {
     if (user) {
       // Remove from database
       try {
-        const deleteParams: any = {
-          user_id: user.id,
-          product_id: productId
-        };
+        const { error } = await supabase
+          .from('wishlist')
+          .delete()
+          .match({ user_id: user.id, product_id: productId });
         
-        if (variantId) {
-          const { error } = await supabase
-            .from('wishlist')
-            .delete()
-            .match({ ...deleteParams, variant_id: variantId });
-          
-          if (error) throw error;
-        } else {
-          const { error } = await supabase
-            .from('wishlist')
-            .delete()
-            .match(deleteParams)
-            .is('variant_id', null);
-          
-          if (error) throw error;
-        }
+        if (error) throw error;
 
         toast.success('Removed from wishlist');
         loadWishlist();
@@ -204,9 +181,7 @@ export function useWishlist() {
       if (!existingWishlist) return;
 
       const wishlist: WishlistItem[] = JSON.parse(existingWishlist);
-      const filtered = wishlist.filter(
-        (item) => !(item.product_id === productId && item.variant_id === variantId)
-      );
+      const filtered = wishlist.filter((item) => item.product_id !== productId);
 
       localStorage.setItem(GUEST_WISHLIST_KEY, JSON.stringify(filtered));
       setWishlistItems(filtered);
@@ -214,10 +189,8 @@ export function useWishlist() {
     }
   };
 
-  const isInWishlist = (productId: string, variantId?: string) => {
-    return wishlistItems.some(
-      (item) => item.product_id === productId && item.variant_id === variantId
-    );
+  const isInWishlist = (productId: string) => {
+    return wishlistItems.some((item) => item.product_id === productId);
   };
 
   return {

@@ -53,18 +53,24 @@ export default function Shop() {
               Our Products
             </h1>
             <p className="text-xl text-muted-foreground max-w-2xl mx-auto">
-              Browse our premium selection of CBD products
+              Browse our premium selection of smoking accessories
             </p>
           </div>
 
           <Tabs value={selectedCategory} onValueChange={setSelectedCategory} className="mb-8">
-            <TabsList className="grid w-full max-w-md mx-auto grid-cols-4">
-              {categories.map((category) => (
-                <TabsTrigger key={category} value={category} className="capitalize">
-                  {category}
-                </TabsTrigger>
-              ))}
-            </TabsList>
+            <div className="w-full overflow-x-auto">
+              <TabsList className="inline-flex h-auto flex-wrap gap-2 bg-transparent p-1 justify-center min-w-full">
+                {categories.map((category) => (
+                  <TabsTrigger 
+                    key={category} 
+                    value={category} 
+                    className="capitalize whitespace-nowrap"
+                  >
+                    {category}
+                  </TabsTrigger>
+                ))}
+              </TabsList>
+            </div>
           </Tabs>
 
           {loading ? (

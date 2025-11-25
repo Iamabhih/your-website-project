@@ -11,7 +11,7 @@ const About = () => {
                 Our Story
               </span>
               <h2 className="text-4xl md:text-5xl font-bold text-foreground mb-6 leading-tight">
-                Bringing Nature's Best to You
+                Your Trusted Smoke Shop Partner
               </h2>
               <p className="text-lg text-muted-foreground mb-6 leading-relaxed">
                 At Ideal Smoke Supply, we believe in providing the finest vaping and smoking products.

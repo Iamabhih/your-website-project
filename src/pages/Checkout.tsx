@@ -487,9 +487,9 @@ export default function Checkout() {
                   <div className="border-t pt-4">
                     {appliedCoupon ? (
                       <div className="space-y-2">
-                        <div className="flex items-center justify-between p-2 bg-green-50 dark:bg-green-900/20 rounded-lg">
+                        <div className="flex items-center justify-between p-2 bg-success/10 dark:bg-success/20 rounded-lg">
                           <div className="flex items-center gap-2">
-                            <Tag className="h-4 w-4 text-green-600" />
+                            <Tag className="h-4 w-4 text-success" />
                             <span className="text-sm font-medium">{appliedCoupon.code}</span>
                           </div>
                           <Button
@@ -501,7 +501,7 @@ export default function Checkout() {
                             Remove
                           </Button>
                         </div>
-                        <p className="text-xs text-green-600 flex items-center gap-1">
+                        <p className="text-xs text-success flex items-center gap-1">
                           <CheckCircle2 className="h-3 w-3" />
                           Coupon applied successfully!
                         </p>
@@ -543,7 +543,7 @@ export default function Checkout() {
                       <span>R {deliveryCost.toFixed(2)}</span>
                     </div>
                     {discount > 0 && (
-                      <div className="flex justify-between text-green-600">
+                      <div className="flex justify-between text-success">
                         <span>Discount</span>
                         <span>-R {discount.toFixed(2)}</span>
                       </div>
@@ -553,7 +553,7 @@ export default function Checkout() {
                       <span>R {total.toFixed(2)}</span>
                     </div>
                     {discount > 0 && (
-                      <p className="text-xs text-green-600 text-right">
+                      <p className="text-xs text-success text-right">
                         You saved R {discount.toFixed(2)}!
                       </p>
                     )}

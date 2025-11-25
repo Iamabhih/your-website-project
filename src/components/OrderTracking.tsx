@@ -151,7 +151,7 @@ export default function OrderTracking({ orderId }: OrderTrackingProps) {
               {trackingInfo.actual_delivery_date && (
                 <div>
                   <p className="text-sm text-muted-foreground">Delivered On</p>
-                  <p className="font-semibold text-green-600 flex items-center gap-1">
+                  <p className="font-semibold text-success flex items-center gap-1">
                     <Calendar className="h-4 w-4" />
                     {new Date(trackingInfo.actual_delivery_date).toLocaleDateString('en-ZA', {
                       year: 'numeric',

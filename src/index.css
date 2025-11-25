@@ -43,6 +43,18 @@ All colors MUST be HSL.
     --destructive: 0 84.2% 60.2%;
     --destructive-foreground: 0 0% 100%;
 
+    /* Success - Sage green (matches brand) */
+    --success: 85 25% 45%;
+    --success-foreground: 0 0% 100%;
+
+    /* Warning - Amber */
+    --warning: 38 92% 50%;
+    --warning-foreground: 0 0% 10%;
+
+    /* Info - Blue */
+    --info: 210 80% 55%;
+    --info-foreground: 0 0% 100%;
+
     --border: 40 15% 88%;
     --input: 40 15% 88%;
     --ring: 85 20% 52%;
@@ -93,6 +105,18 @@ All colors MUST be HSL.
 
     --destructive: 0 62.8% 50%;
     --destructive-foreground: 0 0% 95%;
+
+    /* Success - Sage green (lighter for dark mode) */
+    --success: 85 30% 50%;
+    --success-foreground: 0 0% 100%;
+
+    /* Warning - Amber */
+    --warning: 38 90% 55%;
+    --warning-foreground: 0 0% 10%;
+
+    /* Info - Blue */
+    --info: 210 75% 60%;
+    --info-foreground: 0 0% 100%;
 
     --border: 85 10% 22%;
     --input: 85 10% 22%;

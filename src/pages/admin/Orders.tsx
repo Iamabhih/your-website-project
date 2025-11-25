@@ -58,7 +58,7 @@ const STATUS_OPTIONS = [
   { value: 'pending', label: 'Pending', color: 'bg-yellow-100 text-yellow-800' },
   { value: 'processing', label: 'Processing', color: 'bg-blue-100 text-blue-800' },
   { value: 'shipped', label: 'Shipped', color: 'bg-purple-100 text-purple-800' },
-  { value: 'delivered', label: 'Delivered', color: 'bg-green-100 text-green-800' },
+  { value: 'delivered', label: 'Delivered', color: 'bg-success/10 text-success' },
   { value: 'cancelled', label: 'Cancelled', color: 'bg-red-100 text-red-800' },
 ];
 

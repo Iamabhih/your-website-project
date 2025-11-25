@@ -289,8 +289,8 @@ export default function AccountProfile() {
             <Card>
               <CardContent className="p-4">
                 <div className="flex items-center gap-3">
-                  <div className="p-2 bg-green-100 rounded-lg">
-                    <CreditCard className="h-5 w-5 text-green-600" />
+                  <div className="p-2 bg-success/10 rounded-lg">
+                    <CreditCard className="h-5 w-5 text-success" />
                   </div>
                   <div>
                     <p className="text-2xl font-bold">R{orderSummary.total_spent.toFixed(2)}</p>
@@ -587,7 +587,7 @@ export default function AccountProfile() {
                       </div>
                       <div className="flex items-center gap-2">
                         {notifications.telegram_enabled && (
-                          <Badge variant="secondary" className="text-green-600">
+                          <Badge variant="secondary" className="text-success">
                             <Check className="h-3 w-3 mr-1" />
                             Connected
                           </Badge>
@@ -640,8 +640,8 @@ export default function AccountProfile() {
 
                   <div className="flex items-center justify-between p-4 border rounded-lg">
                     <div className="flex items-center gap-3">
-                      <div className="p-2 bg-green-100 rounded-lg">
-                        <Mail className="h-5 w-5 text-green-600" />
+                      <div className="p-2 bg-success/10 rounded-lg">
+                        <Mail className="h-5 w-5 text-success" />
                       </div>
                       <div>
                         <p className="font-medium">Email Address</p>

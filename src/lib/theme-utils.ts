@@ -214,11 +214,20 @@ export function generateThemeCss(config: ThemeConfig): string {
   return `${lightVars}\n${darkVars}\n${spacingVars}\n${buttonVars}\n${cardVars}\n${config.customCss || ''}`;
 }
 
+// Simple hash function for CSS content (djb2 algorithm)
+function hashString(str: string): string {
+  let hash = 5381;
+  for (let i = 0; i < str.length; i++) {
+    hash = ((hash << 5) + hash) ^ str.charCodeAt(i);
+  }
+  return hash.toString(36);
+}
+
 // Inject CSS into document with duplicate prevention
 export function injectThemeCss(css: string, styleId: string = 'dynamic-theme'): void {
-  // Generate hash of CSS content to detect duplicates
-  const cssHash = css.length.toString();
-  
+  // Generate proper content hash to detect duplicates
+  const cssHash = hashString(css);
+
   // Check if this exact CSS was just applied
   if (appliedThemeId.current === cssHash) {
     return;
@@ -235,7 +244,7 @@ export function injectThemeCss(css: string, styleId: string = 'dynamic-theme'): 
   styleElement.id = styleId;
   styleElement.textContent = css;
   document.head.appendChild(styleElement);
-  
+
   // Update applied theme ID
   appliedThemeId.current = cssHash;
 }

@@ -216,7 +216,7 @@ export default function ProductVariantSelector({
       {selectedVariant && (
         <div className="flex items-center gap-2">
           {selectedVariant.stock_quantity > 0 ? (
-            <Badge variant="default" className="bg-green-600">
+            <Badge variant="default" className="bg-success">
               In Stock ({selectedVariant.stock_quantity} available)
             </Badge>
           ) : (

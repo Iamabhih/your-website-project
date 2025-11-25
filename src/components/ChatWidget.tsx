@@ -530,7 +530,7 @@ export default function ChatWidget() {
                 <MessageCircle className="h-5 w-5" />
                 <span className={cn(
                   "absolute -bottom-0.5 -right-0.5 h-2.5 w-2.5 rounded-full border-2 border-primary",
-                  isOnline ? "bg-green-400" : "bg-gray-400"
+                  isOnline ? "bg-success" : "bg-gray-400"
                 )} />
               </div>
               <div>

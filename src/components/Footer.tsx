@@ -1,6 +1,7 @@
-import { Leaf, Mail, Phone, MapPin, Facebook, Instagram, Twitter } from "lucide-react";
+import { Mail, Phone, MapPin, Facebook, Instagram, Twitter } from "lucide-react";
 import { Link } from "react-router-dom";
 import { useStoreSettings } from "@/hooks/useStoreSettings";
+import logo from "@/assets/logo.png";
 
 const Footer = () => {
   const { data: settings } = useStoreSettings();
@@ -22,9 +23,8 @@ const Footer = () => {
       <div className="container mx-auto px-4 sm:px-6 lg:px-8">
         <div className="grid md:grid-cols-5 gap-8 mb-8">
           <div className="md:col-span-2">
-            <div className="flex items-center gap-2 mb-4">
-              <Leaf className="h-8 w-8 text-secondary" />
-              <span className="text-2xl font-bold">{storeName}</span>
+            <div className="flex items-center mb-4">
+              <img src={logo} alt={storeName} className="h-16 w-auto" />
             </div>
             <p className="text-primary-foreground/80 mb-4 leading-relaxed">
               {storeDescription}

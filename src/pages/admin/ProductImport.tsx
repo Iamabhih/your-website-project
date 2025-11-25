@@ -6,6 +6,7 @@ import { supabase } from '@/integrations/supabase/client';
 import { toast } from 'sonner';
 import { AdminLayout } from '@/components/admin/AdminLayout';
 import { Upload, CheckCircle, XCircle } from 'lucide-react';
+import { importProductsData } from '@/data/importProductsData';
 
 export default function ProductImport() {
   const navigate = useNavigate();
@@ -17,12 +18,10 @@ export default function ProductImport() {
     setResult(null);
 
     try {
-      console.log('Loading product data...');
-      const products = await fetch('/productsData.json').then(r => r.json());
-      console.log(`Loaded ${products.length} products from JSON`);
+      console.log(`Starting import of ${importProductsData.length} products...`);
 
       const { data, error } = await supabase.functions.invoke('import-products', {
-        body: { products }
+        body: { products: importProductsData }
       });
 
       if (error) throw error;

@@ -1,4 +1,4 @@
-import { useState, useEffect, useRef, useCallback } from 'react';
+import React, { useState, useEffect, useRef, useCallback } from 'react';
 import {
   MessageCircle, X, Send, Paperclip, ImageIcon, Smile,
   Clock, CheckCheck, Volume2, VolumeX, Minimize2, Maximize2,

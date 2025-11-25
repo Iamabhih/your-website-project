@@ -214,8 +214,16 @@ export function generateThemeCss(config: ThemeConfig): string {
   return `${lightVars}\n${darkVars}\n${spacingVars}\n${buttonVars}\n${cardVars}\n${config.customCss || ''}`;
 }
 
-// Inject CSS into document
+// Inject CSS into document with duplicate prevention
 export function injectThemeCss(css: string, styleId: string = 'dynamic-theme'): void {
+  // Generate hash of CSS content to detect duplicates
+  const cssHash = css.length.toString();
+  
+  // Check if this exact CSS was just applied
+  if (appliedThemeId.current === cssHash) {
+    return;
+  }
+
   // Remove existing style element if present
   const existingStyle = document.getElementById(styleId);
   if (existingStyle) {
@@ -227,20 +235,34 @@ export function injectThemeCss(css: string, styleId: string = 'dynamic-theme'): 
   styleElement.id = styleId;
   styleElement.textContent = css;
   document.head.appendChild(styleElement);
+  
+  // Update applied theme ID
+  appliedThemeId.current = cssHash;
 }
 
-// Load Google Font
+// Global registry to prevent duplicate resource loading
+const loadedFonts = new Set<string>();
+const appliedThemeId = { current: '' };
+
+// Load Google Font with duplicate prevention
 export function loadGoogleFont(fontFamily: string): void {
+  // Check global registry first
+  if (loadedFonts.has(fontFamily)) return;
+
   const fontUrl = `https://fonts.googleapis.com/css2?family=${fontFamily.replace(/ /g, '+')}:wght@300;400;500;600;700;800&display=swap`;
 
-  // Check if font is already loaded
+  // Check if font is already loaded in DOM
   const existingLink = document.querySelector(`link[href*="${fontFamily.replace(/ /g, '+')}"]`);
-  if (existingLink) return;
+  if (existingLink) {
+    loadedFonts.add(fontFamily);
+    return;
+  }
 
   const linkElement = document.createElement('link');
   linkElement.rel = 'stylesheet';
   linkElement.href = fontUrl;
   document.head.appendChild(linkElement);
+  loadedFonts.add(fontFamily);
 }
 
 // Load multiple Google Fonts

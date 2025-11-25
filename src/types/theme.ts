@@ -183,25 +183,28 @@ export interface ThemePreset {
   createdAt: string;
 }
 
-// Default Theme Configuration
+// Default Theme Configuration - Ideal Smoke Supply Brand Colors
+// Primary: Sage/Olive Green (#8B9A6D) from logo "SMOKE" text
+// Secondary: Warm brown accent
+// Background: Off-white/cream
 export const defaultThemeColors: ThemeColors = {
-  primary: { h: 142, s: 71, l: 45 },
-  secondary: { h: 38, s: 90, l: 65 },
-  accent: { h: 25, s: 85, l: 60 },
-  background: { h: 42, s: 47, l: 97 },
-  foreground: { h: 150, s: 20, l: 15 },
+  primary: { h: 85, s: 20, l: 52 },      // Sage green from logo
+  secondary: { h: 35, s: 30, l: 45 },    // Warm brown accent
+  accent: { h: 85, s: 20, l: 52 },       // Sage green
+  background: { h: 40, s: 20, l: 98 },   // Off-white cream
+  foreground: { h: 0, s: 0, l: 12 },     // Near black for text
   card: { h: 0, s: 0, l: 100 },
-  cardForeground: { h: 150, s: 20, l: 15 },
+  cardForeground: { h: 0, s: 0, l: 12 },
   popover: { h: 0, s: 0, l: 100 },
-  popoverForeground: { h: 150, s: 20, l: 15 },
-  muted: { h: 42, s: 30, l: 92 },
-  mutedForeground: { h: 150, s: 10, l: 40 },
-  border: { h: 42, s: 25, l: 85 },
-  input: { h: 42, s: 25, l: 85 },
-  ring: { h: 142, s: 71, l: 45 },
+  popoverForeground: { h: 0, s: 0, l: 12 },
+  muted: { h: 40, s: 15, l: 94 },
+  mutedForeground: { h: 0, s: 0, l: 40 },
+  border: { h: 40, s: 15, l: 88 },
+  input: { h: 40, s: 15, l: 88 },
+  ring: { h: 85, s: 20, l: 52 },
   destructive: { h: 0, s: 84, l: 60 },
   destructiveForeground: { h: 0, s: 0, l: 100 },
-  success: { h: 142, s: 71, l: 45 },
+  success: { h: 85, s: 20, l: 52 },      // Use brand sage green
   successForeground: { h: 0, s: 0, l: 100 },
   warning: { h: 38, s: 92, l: 50 },
   warningForeground: { h: 0, s: 0, l: 100 },
@@ -209,24 +212,25 @@ export const defaultThemeColors: ThemeColors = {
   infoForeground: { h: 0, s: 0, l: 100 },
 };
 
+// Dark mode theme - Ideal Smoke Supply
 export const defaultDarkThemeColors: ThemeColors = {
-  primary: { h: 142, s: 71, l: 45 },
-  secondary: { h: 38, s: 90, l: 65 },
-  accent: { h: 25, s: 85, l: 60 },
-  background: { h: 222, s: 84, l: 5 },
-  foreground: { h: 210, s: 40, l: 98 },
-  card: { h: 222, s: 84, l: 8 },
-  cardForeground: { h: 210, s: 40, l: 98 },
-  popover: { h: 222, s: 84, l: 8 },
-  popoverForeground: { h: 210, s: 40, l: 98 },
-  muted: { h: 217, s: 32, l: 17 },
-  mutedForeground: { h: 215, s: 20, l: 65 },
-  border: { h: 217, s: 32, l: 17 },
-  input: { h: 217, s: 32, l: 17 },
-  ring: { h: 142, s: 71, l: 45 },
+  primary: { h: 85, s: 25, l: 55 },      // Slightly lighter sage for dark mode
+  secondary: { h: 35, s: 25, l: 50 },
+  accent: { h: 85, s: 25, l: 55 },
+  background: { h: 85, s: 15, l: 8 },    // Dark with sage undertone
+  foreground: { h: 0, s: 0, l: 95 },
+  card: { h: 85, s: 12, l: 12 },
+  cardForeground: { h: 0, s: 0, l: 95 },
+  popover: { h: 85, s: 12, l: 12 },
+  popoverForeground: { h: 0, s: 0, l: 95 },
+  muted: { h: 85, s: 10, l: 18 },
+  mutedForeground: { h: 85, s: 8, l: 65 },
+  border: { h: 85, s: 10, l: 22 },
+  input: { h: 85, s: 10, l: 22 },
+  ring: { h: 85, s: 25, l: 55 },
   destructive: { h: 0, s: 62, l: 50 },
   destructiveForeground: { h: 0, s: 0, l: 100 },
-  success: { h: 142, s: 71, l: 45 },
+  success: { h: 85, s: 25, l: 55 },
   successForeground: { h: 0, s: 0, l: 100 },
   warning: { h: 38, s: 92, l: 50 },
   warningForeground: { h: 0, s: 0, l: 100 },
@@ -273,7 +277,7 @@ export const defaultHeaderConfig: HeaderConfig = {
   height: 72,
   showAnnouncementBar: false,
   announcementText: '',
-  announcementBgColor: { h: 142, s: 71, l: 45 },
+  announcementBgColor: { h: 85, s: 20, l: 52 },  // Sage green
   searchStyle: 'dropdown',
   cartStyle: 'count',
 };
@@ -284,7 +288,7 @@ export const defaultFooterConfig: FooterConfig = {
   showNewsletter: true,
   showSocial: true,
   showPaymentIcons: true,
-  backgroundColor: { h: 150, s: 45, l: 25 },
+  backgroundColor: { h: 85, s: 25, l: 20 },  // Dark sage green
 };
 
 export const defaultProductGridConfig: ProductGridConfig = {

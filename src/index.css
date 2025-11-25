@@ -8,93 +8,103 @@ All colors MUST be HSL.
 
 @layer base {
   :root {
-    --background: 240 10% 98%;
-    --foreground: 240 15% 12%;
+    /* Ideal Smoke Supply Brand Colors - Based on Logo */
+    /* Primary: Sage/Olive Green (#8B9A6D) - "SMOKE" text */
+    /* Secondary: Black (#1a1a1a) - "IDEAL" & "SUPPLY" text */
+    /* Background: White/Off-white */
+
+    --background: 40 20% 98%;
+    --foreground: 0 0% 12%;
 
     --card: 0 0% 100%;
-    --card-foreground: 240 15% 12%;
+    --card-foreground: 0 0% 12%;
 
     --popover: 0 0% 100%;
-    --popover-foreground: 240 15% 12%;
+    --popover-foreground: 0 0% 12%;
 
-    --primary: 260 55% 35%;
+    /* Sage Green - Primary brand color from logo */
+    --primary: 85 20% 52%;
     --primary-foreground: 0 0% 100%;
-    
-    --primary-light: 260 45% 55%;
-    --primary-dark: 260 65% 25%;
 
-    --secondary: 38 90% 55%;
+    --primary-light: 85 25% 65%;
+    --primary-dark: 85 25% 38%;
+
+    /* Warm neutral accent */
+    --secondary: 35 30% 45%;
     --secondary-foreground: 0 0% 100%;
 
-    --muted: 240 10% 94%;
-    --muted-foreground: 240 10% 40%;
+    --muted: 40 15% 94%;
+    --muted-foreground: 0 0% 40%;
 
-    --accent: 260 50% 45%;
+    /* Sage green accent */
+    --accent: 85 20% 52%;
     --accent-foreground: 0 0% 100%;
 
     --destructive: 0 84.2% 60.2%;
     --destructive-foreground: 0 0% 100%;
 
-    --border: 240 10% 88%;
-    --input: 240 10% 88%;
-    --ring: 260 55% 35%;
+    --border: 40 15% 88%;
+    --input: 40 15% 88%;
+    --ring: 85 20% 52%;
 
     --radius: 0.75rem;
 
-    /* Custom design tokens for smoke shop */
-    --natural-cream: 240 10% 98%;
-    --earth-brown: 28 45% 35%;
-    --sage-green: 260 30% 55%;
-    --deep-green: 260 65% 20%;
-    
-    /* Gradients */
-    --gradient-hero: linear-gradient(135deg, hsl(260 55% 35% / 0.95), hsl(260 65% 20% / 0.95));
-    --gradient-card: linear-gradient(to bottom, hsl(0 0% 100%), hsl(240 10% 96%));
-    
-    /* Shadows */
-    --shadow-soft: 0 4px 20px hsl(260 55% 35% / 0.08);
-    --shadow-card: 0 8px 30px hsl(260 40% 25% / 0.12);
-    
+    /* Custom design tokens for Ideal Smoke Supply */
+    --natural-cream: 40 20% 98%;
+    --earth-brown: 35 30% 35%;
+    --sage-green: 85 20% 52%;
+    --deep-green: 85 30% 30%;
+
+    /* Gradients - using sage green */
+    --gradient-hero: linear-gradient(135deg, hsl(85 20% 52% / 0.95), hsl(85 30% 30% / 0.95));
+    --gradient-card: linear-gradient(to bottom, hsl(0 0% 100%), hsl(40 15% 96%));
+
+    /* Shadows - using sage green undertones */
+    --shadow-soft: 0 4px 20px hsl(85 20% 40% / 0.08);
+    --shadow-card: 0 8px 30px hsl(85 25% 30% / 0.12);
+
     /* Transitions */
     --transition-smooth: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
   }
 
   .dark {
-    --background: 240 20% 10%;
+    /* Dark mode - Ideal Smoke Supply theme */
+    --background: 85 15% 8%;
     --foreground: 0 0% 95%;
 
-    --card: 240 18% 14%;
+    --card: 85 12% 12%;
     --card-foreground: 0 0% 95%;
 
-    --popover: 240 18% 14%;
+    --popover: 85 12% 12%;
     --popover-foreground: 0 0% 95%;
 
-    --primary: 260 55% 45%;
+    /* Sage green - slightly lighter for dark mode */
+    --primary: 85 25% 55%;
     --primary-foreground: 0 0% 100%;
 
-    --secondary: 38 90% 55%;
+    --secondary: 35 25% 50%;
     --secondary-foreground: 0 0% 100%;
 
-    --muted: 240 15% 20%;
-    --muted-foreground: 240 8% 65%;
+    --muted: 85 10% 18%;
+    --muted-foreground: 85 8% 65%;
 
-    --accent: 260 50% 50%;
+    --accent: 85 25% 55%;
     --accent-foreground: 0 0% 100%;
 
-    --destructive: 0 62.8% 30.6%;
+    --destructive: 0 62.8% 50%;
     --destructive-foreground: 0 0% 95%;
 
-    --border: 240 12% 25%;
-    --input: 240 12% 25%;
-    --ring: 260 55% 45%;
-    --sidebar-background: 240 5.9% 10%;
-    --sidebar-foreground: 240 4.8% 95.9%;
-    --sidebar-primary: 260 55% 45%;
+    --border: 85 10% 22%;
+    --input: 85 10% 22%;
+    --ring: 85 25% 55%;
+    --sidebar-background: 85 12% 8%;
+    --sidebar-foreground: 0 0% 95%;
+    --sidebar-primary: 85 25% 55%;
     --sidebar-primary-foreground: 0 0% 100%;
-    --sidebar-accent: 240 3.7% 15.9%;
-    --sidebar-accent-foreground: 240 4.8% 95.9%;
-    --sidebar-border: 240 3.7% 15.9%;
-    --sidebar-ring: 260 55% 45%;
+    --sidebar-accent: 85 10% 15%;
+    --sidebar-accent-foreground: 0 0% 95%;
+    --sidebar-border: 85 10% 15%;
+    --sidebar-ring: 85 25% 55%;
   }
 }
 

@@ -105,7 +105,12 @@ export default function ChatWidget() {
 
   // Initialize audio and load saved settings
   useEffect(() => {
-    audioRef.current = new Audio('/notification.mp3');
+    try {
+      audioRef.current = new Audio('/notification.mp3');
+      audioRef.current.load();
+    } catch (e) {
+      console.warn('Failed to load notification sound:', e);
+    }
     const savedSound = localStorage.getItem(CHAT_SOUND_KEY);
     if (savedSound !== null) {
       setSoundEnabled(savedSound === 'true');
@@ -497,7 +502,7 @@ export default function ChatWidget() {
       {!isOpen && (
         <Button
           onClick={() => setIsOpen(true)}
-          className="fixed bottom-6 right-6 h-14 w-14 rounded-full shadow-lg z-50 relative"
+          className="fixed bottom-6 right-6 h-14 w-14 rounded-full shadow-lg z-50"
           size="icon"
         >
           <MessageCircle className="h-6 w-6" />

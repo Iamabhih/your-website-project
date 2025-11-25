@@ -208,7 +208,6 @@ export default function ProductDetail() {
                 </Button>
                 <WishlistButton
                   productId={product.id}
-                  variantId={selectedVariant?.id}
                   size="lg"
                 />
               </div>

@@ -1,4 +1,4 @@
-import { useState, useEffect, forwardRef, ElementRef, ComponentPropsWithoutRef } from "react";
+import React, { useState, useEffect, forwardRef, ElementRef, ComponentPropsWithoutRef } from "react";
 import * as TooltipPrimitive from "@radix-ui/react-tooltip";
 
 import { cn } from "@/lib/utils";

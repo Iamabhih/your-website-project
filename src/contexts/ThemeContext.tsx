@@ -53,12 +53,6 @@ interface ThemeProviderProps {
 }
 
 export function ThemeProvider({ children }: ThemeProviderProps) {
-  // Safety check for React instance
-  if (!React || typeof React.useState !== 'function') {
-    console.error('React is not properly loaded. This indicates a bundler cache issue.');
-    throw new Error('React initialization failed. Please clear cache and rebuild.');
-  }
-
   const [theme, setThemeState] = useState<ThemeConfig>(defaultThemeConfig);
   const [savedTheme, setSavedTheme] = useState<ThemeConfig>(defaultThemeConfig);
   const [isLoading, setIsLoading] = useState(true);

@@ -8,93 +8,93 @@ All colors MUST be HSL.
 
 @layer base {
   :root {
-    --background: 42 47% 97%;
-    --foreground: 150 20% 15%;
+    --background: 240 10% 98%;
+    --foreground: 240 15% 12%;
 
     --card: 0 0% 100%;
-    --card-foreground: 150 20% 15%;
+    --card-foreground: 240 15% 12%;
 
     --popover: 0 0% 100%;
-    --popover-foreground: 150 20% 15%;
+    --popover-foreground: 240 15% 12%;
 
-    --primary: 142 71% 45%;
+    --primary: 260 55% 35%;
     --primary-foreground: 0 0% 100%;
     
-    --primary-light: 142 65% 55%;
-    --primary-dark: 142 75% 35%;
+    --primary-light: 260 45% 55%;
+    --primary-dark: 260 65% 25%;
 
-    --secondary: 38 90% 65%;
-    --secondary-foreground: 150 20% 15%;
+    --secondary: 38 90% 55%;
+    --secondary-foreground: 0 0% 100%;
 
-    --muted: 42 35% 92%;
-    --muted-foreground: 150 15% 45%;
+    --muted: 240 10% 94%;
+    --muted-foreground: 240 10% 40%;
 
-    --accent: 25 85% 60%;
+    --accent: 260 50% 45%;
     --accent-foreground: 0 0% 100%;
 
     --destructive: 0 84.2% 60.2%;
     --destructive-foreground: 0 0% 100%;
 
-    --border: 42 25% 88%;
-    --input: 42 25% 88%;
-    --ring: 142 71% 45%;
+    --border: 240 10% 88%;
+    --input: 240 10% 88%;
+    --ring: 260 55% 35%;
 
     --radius: 0.75rem;
 
-    /* Custom design tokens for vaping/smoking shop */
-    --natural-cream: 42 47% 97%;
-    --earth-brown: 25 45% 37%;
-    --sage-green: 142 35% 65%;
-    --deep-green: 150 45% 25%;
+    /* Custom design tokens for smoke shop */
+    --natural-cream: 240 10% 98%;
+    --earth-brown: 28 45% 35%;
+    --sage-green: 260 30% 55%;
+    --deep-green: 260 65% 20%;
     
     /* Gradients */
-    --gradient-hero: linear-gradient(135deg, hsl(142 71% 45% / 0.95), hsl(150 45% 25% / 0.95));
-    --gradient-card: linear-gradient(to bottom, hsl(0 0% 100%), hsl(42 35% 96%));
+    --gradient-hero: linear-gradient(135deg, hsl(260 55% 35% / 0.95), hsl(260 65% 20% / 0.95));
+    --gradient-card: linear-gradient(to bottom, hsl(0 0% 100%), hsl(240 10% 96%));
     
     /* Shadows */
-    --shadow-soft: 0 4px 20px hsl(142 71% 45% / 0.08);
-    --shadow-card: 0 8px 30px hsl(142 40% 25% / 0.12);
+    --shadow-soft: 0 4px 20px hsl(260 55% 35% / 0.08);
+    --shadow-card: 0 8px 30px hsl(260 40% 25% / 0.12);
     
     /* Transitions */
     --transition-smooth: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
   }
 
   .dark {
-    --background: 222.2 84% 4.9%;
-    --foreground: 210 40% 98%;
+    --background: 240 20% 10%;
+    --foreground: 0 0% 95%;
 
-    --card: 222.2 84% 4.9%;
-    --card-foreground: 210 40% 98%;
+    --card: 240 18% 14%;
+    --card-foreground: 0 0% 95%;
 
-    --popover: 222.2 84% 4.9%;
-    --popover-foreground: 210 40% 98%;
+    --popover: 240 18% 14%;
+    --popover-foreground: 0 0% 95%;
 
-    --primary: 210 40% 98%;
-    --primary-foreground: 222.2 47.4% 11.2%;
+    --primary: 260 55% 45%;
+    --primary-foreground: 0 0% 100%;
 
-    --secondary: 217.2 32.6% 17.5%;
-    --secondary-foreground: 210 40% 98%;
+    --secondary: 38 90% 55%;
+    --secondary-foreground: 0 0% 100%;
 
-    --muted: 217.2 32.6% 17.5%;
-    --muted-foreground: 215 20.2% 65.1%;
+    --muted: 240 15% 20%;
+    --muted-foreground: 240 8% 65%;
 
-    --accent: 217.2 32.6% 17.5%;
-    --accent-foreground: 210 40% 98%;
+    --accent: 260 50% 50%;
+    --accent-foreground: 0 0% 100%;
 
     --destructive: 0 62.8% 30.6%;
-    --destructive-foreground: 210 40% 98%;
+    --destructive-foreground: 0 0% 95%;
 
-    --border: 217.2 32.6% 17.5%;
-    --input: 217.2 32.6% 17.5%;
-    --ring: 212.7 26.8% 83.9%;
+    --border: 240 12% 25%;
+    --input: 240 12% 25%;
+    --ring: 260 55% 45%;
     --sidebar-background: 240 5.9% 10%;
     --sidebar-foreground: 240 4.8% 95.9%;
-    --sidebar-primary: 224.3 76.3% 48%;
+    --sidebar-primary: 260 55% 45%;
     --sidebar-primary-foreground: 0 0% 100%;
     --sidebar-accent: 240 3.7% 15.9%;
     --sidebar-accent-foreground: 240 4.8% 95.9%;
     --sidebar-border: 240 3.7% 15.9%;
-    --sidebar-ring: 217.2 91.2% 59.8%;
+    --sidebar-ring: 260 55% 45%;
   }
 }
 

@@ -206,14 +206,16 @@ export default function TelegramBroadcast() {
     // Apply targeting filter
     const now = new Date();
     switch (targetFilter) {
-      case 'active_week':
+      case 'active_week': {
         const weekAgo = new Date(now.getTime() - 7 * 24 * 60 * 60 * 1000);
         filtered = filtered.filter(c => new Date(c.last_interaction) >= weekAgo);
         break;
-      case 'active_month':
+      }
+      case 'active_month': {
         const monthAgo = new Date(now.getTime() - 30 * 24 * 60 * 60 * 1000);
         filtered = filtered.filter(c => new Date(c.last_interaction) >= monthAgo);
         break;
+      }
       case 'with_email':
         filtered = filtered.filter(c => c.email || c.customer_email);
         break;

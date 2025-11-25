@@ -41,6 +41,34 @@ serve(async (req) => {
     );
 
     const body = await req.json();
+    console.log('send-to-telegram received request:', JSON.stringify(body));
+    
+    // Handle webhook registration
+    if (body.event === 'register_webhook') {
+      console.log('Registering webhook with Telegram');
+      const response = await fetch(`${TELEGRAM_API}/setWebhook`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          url: body.webhookUrl,
+        }),
+      });
+
+      const result = await response.json();
+      console.log('Webhook registration response:', result);
+      
+      if (!result.ok) {
+        throw new Error(`Failed to register webhook: ${JSON.stringify(result)}`);
+      }
+      
+      return new Response(
+        JSON.stringify({ success: true, message: 'Webhook registered successfully', result }),
+        {
+          status: 200,
+          headers: { ...corsHeaders, "Content-Type": "application/json" },
+        }
+      );
+    }
     
     // Handle test message from admin settings
     if (body.event === 'test') {
@@ -135,18 +163,32 @@ serve(async (req) => {
         `<i>Session ID: ${session.id.slice(0, 8)}</i>`;
 
       const telegramResponse = await sendTelegramMessage(telegramMessage);
+      console.log('Telegram API response for new session:', JSON.stringify(telegramResponse));
       
       if (telegramResponse.ok) {
-        // Store the thread ID
-        await supabase
+        const messageId = telegramResponse.result.message_id.toString();
+        console.log(`Storing telegram_thread_id: ${messageId} for session: ${session.id}`);
+        
+        // Store the message ID and chat ID for reply matching
+        const { error: updateError } = await supabase
           .from("chat_sessions")
-          .update({ telegram_thread_id: telegramResponse.result.message_id.toString() })
+          .update({ 
+            telegram_thread_id: messageId,
+          })
           .eq("id", session.id);
+        
+        if (updateError) {
+          console.error('Error storing telegram_thread_id:', updateError);
+        }
+      } else {
+        console.error('Telegram API error:', telegramResponse);
       }
     } else {
       // Send message to existing thread
       const telegramMessage = `💬 <b>${visitorName || "Visitor"}:</b>\n${message}`;
-      await sendTelegramMessage(telegramMessage, session.telegram_thread_id);
+      console.log(`Sending to existing thread: ${session.telegram_thread_id}`);
+      const response = await sendTelegramMessage(telegramMessage, session.telegram_thread_id);
+      console.log('Telegram response for existing thread:', JSON.stringify(response));
     }
 
     // Store message in database

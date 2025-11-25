@@ -21,6 +21,7 @@ serve(async (req) => {
 
     const message = update.message;
     if (!message || !message.text) {
+      console.log("No message or text in update, skipping");
       return new Response(JSON.stringify({ success: true }), {
         status: 200,
         headers: { ...corsHeaders, "Content-Type": "application/json" },
@@ -29,27 +30,48 @@ serve(async (req) => {
 
     const chatId = message.chat.id.toString();
     const text = message.text;
-    const threadId = message.message_thread_id?.toString();
+    const replyToMessageId = message.reply_to_message?.message_id?.toString();
+    
+    console.log("Processing message:", { chatId, text, replyToMessageId });
 
-    // If this is a reply in a thread, update the chat session
-    if (threadId) {
-      const { data: session } = await supabase
+    // Check if this is a reply to a previous message (admin replying to customer)
+    if (replyToMessageId) {
+      console.log(`Looking for session with telegram_thread_id: ${replyToMessageId}`);
+      
+      const { data: session, error: sessionError } = await supabase
         .from("chat_sessions")
         .select("*")
-        .eq("telegram_thread_id", threadId)
+        .eq("telegram_thread_id", replyToMessageId)
         .maybeSingle();
 
+      if (sessionError) {
+        console.error("Error querying chat_sessions:", sessionError);
+      }
+
       if (session) {
+        console.log(`Found session ${session.id}, storing admin reply`);
+        
         // Store admin's reply
-        await supabase.from("chat_messages").insert({
+        const { error: insertError } = await supabase.from("chat_messages").insert({
           session_id: session.id,
           sender_type: "admin",
           message_text: text,
           telegram_message_id: message.message_id.toString(),
         });
 
-        // You could implement websocket notification here to show the reply on the website
-        console.log(`Admin replied to session ${session.id}: ${text}`);
+        if (insertError) {
+          console.error("Error inserting admin reply:", insertError);
+        } else {
+          console.log(`Admin replied to session ${session.id}: ${text}`);
+        }
+        
+        // Don't forward to telegram-bot since this is an admin reply
+        return new Response(JSON.stringify({ success: true, handled: true }), {
+          status: 200,
+          headers: { ...corsHeaders, "Content-Type": "application/json" },
+        });
+      } else {
+        console.log("No matching session found for reply_to_message_id:", replyToMessageId);
       }
     }
 

@@ -159,15 +159,15 @@ export default function TelegramChats() {
   const typingTimeoutRef = useRef<NodeJS.Timeout | null>(null);
 
   useEffect(() => {
-    if (!isAdmin) {
-      navigate('/');
-      return;
-    }
+    // Initialize audio and load data
     audioRef.current = new Audio('/notification.mp3');
     loadSessions();
     loadStats();
-    subscribeToNewSessions();
-  }, [isAdmin]);
+
+    // Subscribe to new sessions and return cleanup function
+    const unsubscribe = subscribeToNewSessions();
+    return () => unsubscribe?.();
+  }, []);
 
   useEffect(() => {
     if (selectedSession) {

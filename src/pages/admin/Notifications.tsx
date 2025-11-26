@@ -144,9 +144,9 @@ export default function Notifications() {
           id: c.id,
           title: c.title,
           message: c.message,
-          type: c.type,
-          status: c.status,
-          targetAudience: c.target_audience,
+          type: c.type as 'push' | 'banner' | 'popup' | 'email',
+          status: c.status as 'draft' | 'scheduled' | 'active' | 'completed',
+          targetAudience: c.target_audience as 'all' | 'customers' | 'new_users' | 'inactive',
           scheduledAt: c.scheduled_at,
           sentCount: c.sent_count || 0,
           openCount: c.open_count || 0,
@@ -174,7 +174,7 @@ export default function Notifications() {
           showCountdown: b.show_countdown,
           expiresAt: b.expires_at,
           isActive: b.is_active,
-          position: b.position,
+          position: b.position as 'top' | 'bottom' | 'popup',
         })));
       }
 

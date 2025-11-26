@@ -346,12 +346,18 @@ export function NotificationProvider({ children }: { children: ReactNode }) {
   const sendNativeNotification = (title: string, body: string, icon?: string) => {
     if (Notification.permission === 'granted') {
       try {
-        new Notification(title, {
+        const notificationOptions: NotificationOptions = {
           body,
           icon: icon || '/icon-192x192.png',
           badge: '/icon-72x72.png',
-          vibrate: preferences.vibrate ? [200, 100, 200] : undefined,
-        });
+        };
+        
+        new Notification(title, notificationOptions);
+        
+        // Handle vibration separately (not part of NotificationOptions)
+        if (preferences.vibrate && 'vibrate' in navigator) {
+          navigator.vibrate([200, 100, 200]);
+        }
       } catch (e) {
         // Fallback for service worker notification
         if ('serviceWorker' in navigator && navigator.serviceWorker.controller) {

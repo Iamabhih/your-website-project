@@ -1,5 +1,6 @@
 import { Button } from "@/components/ui/button";
 import { ArrowRight } from "lucide-react";
+import { Link } from "react-router-dom";
 
 const Hero = () => {
   return (
@@ -23,19 +24,25 @@ const Hero = () => {
             Your one-stop shop for all your smoking needs.
           </p>
           <div className="flex flex-col sm:flex-row gap-4">
-            <Button 
-              size="lg" 
+            <Button
+              size="lg"
               className="bg-secondary text-secondary-foreground hover:bg-secondary/90 text-lg px-8 py-6 shadow-lg hover:shadow-xl transition-all duration-300"
+              asChild
             >
-              Shop Now
-              <ArrowRight className="ml-2 h-5 w-5" />
+              <Link to="/shop">
+                Shop Now
+                <ArrowRight className="ml-2 h-5 w-5" />
+              </Link>
             </Button>
-            <Button 
-              size="lg" 
-              variant="outline" 
+            <Button
+              size="lg"
+              variant="outline"
               className="bg-primary-foreground/10 text-primary-foreground border-primary-foreground hover:bg-primary-foreground hover:text-primary text-lg px-8 py-6 backdrop-blur-sm"
+              asChild
             >
-              Learn More
+              <Link to="/about">
+                Learn More
+              </Link>
             </Button>
           </div>
         </div>

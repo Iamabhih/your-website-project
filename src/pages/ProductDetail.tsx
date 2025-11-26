@@ -133,14 +133,14 @@ export default function ProductDetail() {
       <Header />
       <ProductStructuredData product={product} />
 
-      <main className="flex-1 py-12">
+      <main className="flex-1 py-6 sm:py-8 md:py-12">
         <div className="container mx-auto px-4 sm:px-6 lg:px-8">
-          <Link to="/shop" className="inline-flex items-center text-muted-foreground hover:text-foreground mb-8">
+          <Link to="/shop" className="inline-flex items-center text-muted-foreground hover:text-foreground mb-4 sm:mb-6 md:mb-8 text-sm sm:text-base">
             <ArrowLeft className="mr-2 h-4 w-4" />
             Back to Shop
           </Link>
 
-          <div className="grid md:grid-cols-2 gap-12">
+          <div className="grid md:grid-cols-2 gap-6 sm:gap-8 md:gap-12">
             <div>
               {product.image_url ? (
                 <img
@@ -149,20 +149,20 @@ export default function ProductDetail() {
                   className="w-full rounded-lg shadow-lg"
                 />
               ) : (
-                <div className="w-full h-96 bg-muted rounded-lg flex items-center justify-center">
+                <div className="w-full h-64 sm:h-80 md:h-96 bg-muted rounded-lg flex items-center justify-center">
                   <span className="text-muted-foreground">No image available</span>
                 </div>
               )}
             </div>
 
-            <div className="space-y-6">
+            <div className="space-y-4 sm:space-y-5 md:space-y-6">
               <div>
-                <span className="inline-block px-3 py-1 bg-primary/10 text-primary text-sm font-medium rounded-full mb-4">
+                <span className="inline-block px-2 sm:px-3 py-1 bg-primary/10 text-primary text-xs sm:text-sm font-medium rounded-full mb-2 sm:mb-4">
                   {product.category}
                 </span>
-                <h1 className="text-4xl font-bold text-foreground mb-2">{product.name}</h1>
+                <h1 className="text-2xl sm:text-3xl md:text-4xl font-bold text-foreground mb-1 sm:mb-2">{product.name}</h1>
                 {product.pack_info && (
-                  <p className="text-muted-foreground">{product.pack_info}</p>
+                  <p className="text-sm sm:text-base text-muted-foreground">{product.pack_info}</p>
                 )}
               </div>
 
@@ -175,35 +175,35 @@ export default function ProductDetail() {
                 />
               ) : (
                 <div>
-                  <span className="text-4xl font-bold text-primary">
+                  <span className="text-2xl sm:text-3xl md:text-4xl font-bold text-primary">
                     R {product.price.toFixed(2)}
                   </span>
                 </div>
               )}
 
               <div>
-                <h2 className="text-lg font-semibold mb-2">Description</h2>
-                <p className="text-muted-foreground leading-relaxed">
+                <h2 className="text-base sm:text-lg font-semibold mb-1 sm:mb-2">Description</h2>
+                <p className="text-sm sm:text-base text-muted-foreground leading-relaxed">
                   {product.description}
                 </p>
               </div>
 
               {product.min_quantity > 1 && (
-                <div className="p-4 bg-muted/50 rounded-lg">
-                  <p className="text-sm text-muted-foreground">
+                <div className="p-3 sm:p-4 bg-muted/50 rounded-lg">
+                  <p className="text-xs sm:text-sm text-muted-foreground">
                     Minimum order quantity: <span className="font-semibold">{product.min_quantity}</span>
                   </p>
                 </div>
               )}
 
-              <div className="flex gap-3">
+              <div className="flex gap-2 sm:gap-3">
                 <Button
                   size="lg"
-                  className="flex-1"
+                  className="flex-1 text-sm sm:text-base"
                   onClick={handleAddToCart}
                   disabled={!canAddToCart()}
                 >
-                  <ShoppingCart className="mr-2 h-5 w-5" />
+                  <ShoppingCart className="mr-2 h-4 w-4 sm:h-5 sm:w-5" />
                   {canAddToCart() ? 'Add to Cart' : 'Out of Stock'}
                 </Button>
                 <WishlistButton

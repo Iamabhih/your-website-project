@@ -1,4 +1,5 @@
 import { Button } from "@/components/ui/button";
+import { Link } from "react-router-dom";
 
 const About = () => {
   return (
@@ -23,11 +24,14 @@ const About = () => {
                 rigorous standards for quality, performance, and safety. We partner with trusted manufacturers
                 and use best practices because we care about your satisfaction and experience.
               </p>
-              <Button 
+              <Button
                 size="lg"
                 className="bg-primary text-primary-foreground hover:bg-primary/90"
+                asChild
               >
-                Read Our Full Story
+                <Link to="/about">
+                  Read Our Full Story
+                </Link>
               </Button>
             </div>
             

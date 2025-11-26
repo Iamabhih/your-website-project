@@ -172,19 +172,24 @@ export default function Shop() {
           </div>
 
           <Tabs value={selectedCategory} onValueChange={handleCategoryChange} className="mb-8">
-            <div className="w-full overflow-x-auto">
-              <TabsList className="inline-flex h-auto flex-wrap gap-2 bg-transparent p-1 justify-center min-w-full">
+            {/* Mobile: Horizontal scroll with visible scrollbar hint */}
+            <div className="w-full overflow-x-auto pb-2 -mb-2 scrollbar-thin scrollbar-thumb-muted-foreground/20">
+              <TabsList className="inline-flex h-auto gap-2 bg-muted/50 p-1.5 rounded-lg min-w-max sm:min-w-0 sm:flex-wrap sm:justify-center">
                 {categories.map((category) => (
-                  <TabsTrigger 
-                    key={category} 
-                    value={category} 
-                    className="capitalize whitespace-nowrap"
+                  <TabsTrigger
+                    key={category}
+                    value={category}
+                    className="capitalize whitespace-nowrap px-4 py-2 text-sm data-[state=active]:bg-background data-[state=active]:shadow-sm"
                   >
                     {category}
                   </TabsTrigger>
                 ))}
               </TabsList>
             </div>
+            {/* Mobile scroll hint */}
+            <p className="text-xs text-muted-foreground text-center mt-2 sm:hidden">
+              Swipe to see more categories →
+            </p>
           </Tabs>
 
           {loading ? (
@@ -220,8 +225,8 @@ export default function Shop() {
                 </div>
               </div>
 
-              {/* Product grid */}
-              <div className="grid sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+              {/* Product grid - 2 columns on mobile for better browsing */}
+              <div className="grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-3 sm:gap-6">
                 {paginatedProducts.map((product) => (
                   <ProductCard key={product.id} {...product} />
                 ))}
@@ -229,8 +234,36 @@ export default function Shop() {
 
               {/* Pagination controls */}
               {totalPages > 1 && (
-                <div className="flex flex-col sm:flex-row items-center justify-center gap-4 mt-12">
-                  <div className="flex items-center gap-1">
+                <div className="flex flex-col items-center gap-4 mt-8 sm:mt-12">
+                  {/* Mobile: Simplified pagination */}
+                  <div className="flex sm:hidden items-center gap-3">
+                    <Button
+                      variant="outline"
+                      size="sm"
+                      onClick={() => handlePageChange(currentPage - 1)}
+                      disabled={currentPage === 1}
+                      className="px-3"
+                    >
+                      <ChevronLeft className="h-4 w-4 mr-1" />
+                      Prev
+                    </Button>
+                    <span className="text-sm font-medium px-3 py-1 bg-muted rounded-md">
+                      {currentPage} / {totalPages}
+                    </span>
+                    <Button
+                      variant="outline"
+                      size="sm"
+                      onClick={() => handlePageChange(currentPage + 1)}
+                      disabled={currentPage === totalPages}
+                      className="px-3"
+                    >
+                      Next
+                      <ChevronRight className="h-4 w-4 ml-1" />
+                    </Button>
+                  </div>
+
+                  {/* Desktop: Full pagination */}
+                  <div className="hidden sm:flex items-center gap-1">
                     {/* First page button */}
                     <Button
                       variant="outline"
@@ -302,11 +335,6 @@ export default function Shop() {
                       <ChevronsRight className="h-4 w-4" />
                     </Button>
                   </div>
-
-                  {/* Page info for mobile */}
-                  <p className="text-sm text-muted-foreground sm:hidden">
-                    Page {currentPage} of {totalPages}
-                  </p>
                 </div>
               )}
             </>

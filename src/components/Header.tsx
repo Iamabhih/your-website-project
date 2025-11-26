@@ -46,28 +46,28 @@ export default function Header() {
             </nav>
 
             {/* Right Side Actions */}
-            <div className="flex items-center space-x-4">
+            <div className="flex items-center space-x-1 sm:space-x-2 md:space-x-4">
               {user ? (
                 <>
                   {isAdmin && (
-                    <Link to="/admin">
+                    <Link to="/admin" className="hidden sm:block">
                       <Button variant="ghost" size="sm">
                         Admin
                       </Button>
                     </Link>
                   )}
                   <Link to="/my-orders">
-                    <Button variant="ghost" size="sm">
+                    <Button variant="ghost" size="sm" className="h-9 w-9 p-0 sm:h-auto sm:w-auto sm:p-2">
                       <User className="h-5 w-5" />
                     </Button>
                   </Link>
-                  <Button variant="ghost" size="sm" onClick={signOut}>
+                  <Button variant="ghost" size="sm" onClick={signOut} className="hidden sm:flex">
                     <LogOut className="h-5 w-5" />
                   </Button>
                 </>
               ) : (
                 <Link to="/auth">
-                  <Button variant="ghost" size="sm">
+                  <Button variant="ghost" size="sm" className="text-xs sm:text-sm px-2 sm:px-3">
                     Login
                   </Button>
                 </Link>
@@ -75,10 +75,10 @@ export default function Header() {
 
               {/* Wishlist Button */}
               <Link to="/wishlist">
-                <Button variant="ghost" size="sm" className="relative">
+                <Button variant="ghost" size="sm" className="relative h-9 w-9 p-0 sm:h-auto sm:w-auto sm:p-2">
                   <Heart className="h-5 w-5" />
                   {wishlistItems.length > 0 && (
-                    <span className="absolute -top-1 -right-1 h-5 w-5 rounded-full bg-primary text-xs text-primary-foreground flex items-center justify-center">
+                    <span className="absolute -top-1 -right-1 h-4 w-4 sm:h-5 sm:w-5 rounded-full bg-primary text-[10px] sm:text-xs text-primary-foreground flex items-center justify-center">
                       {wishlistItems.length}
                     </span>
                   )}
@@ -89,12 +89,12 @@ export default function Header() {
               <Button
                 variant="ghost"
                 size="sm"
-                className="relative"
+                className="relative h-9 w-9 p-0 sm:h-auto sm:w-auto sm:p-2"
                 onClick={() => setCartOpen(true)}
               >
                 <ShoppingCart className="h-5 w-5" />
                 {getTotalItems() > 0 && (
-                  <span className="absolute -top-1 -right-1 h-5 w-5 rounded-full bg-primary text-xs text-primary-foreground flex items-center justify-center">
+                  <span className="absolute -top-1 -right-1 h-4 w-4 sm:h-5 sm:w-5 rounded-full bg-primary text-[10px] sm:text-xs text-primary-foreground flex items-center justify-center">
                     {getTotalItems()}
                   </span>
                 )}
@@ -129,6 +129,29 @@ export default function Header() {
                   {item.name}
                 </Link>
               ))}
+              {/* Mobile-only: Admin link and Logout for logged-in users */}
+              {user && (
+                <>
+                  {isAdmin && (
+                    <Link
+                      to="/admin"
+                      className="block px-3 py-2 text-base font-medium text-foreground hover:text-primary transition-colors sm:hidden"
+                      onClick={() => setMobileMenuOpen(false)}
+                    >
+                      Admin Dashboard
+                    </Link>
+                  )}
+                  <button
+                    className="block w-full text-left px-3 py-2 text-base font-medium text-foreground hover:text-primary transition-colors sm:hidden"
+                    onClick={() => {
+                      signOut();
+                      setMobileMenuOpen(false);
+                    }}
+                  >
+                    Logout
+                  </button>
+                </>
+              )}
             </div>
           )}
         </div>

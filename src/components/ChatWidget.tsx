@@ -502,10 +502,21 @@ export default function ChatWidget() {
       {!isOpen && (
         <Button
           onClick={() => setIsOpen(true)}
-          className="fixed bottom-6 right-6 h-14 w-14 rounded-full shadow-lg z-50"
+          className="fixed bottom-6 right-6 h-14 w-14 rounded-full shadow-lg z-50 group"
           size="icon"
         >
           <MessageCircle className="h-6 w-6" />
+          {/* Online/Offline light indicator */}
+          <span
+            className={cn(
+              "absolute bottom-0 right-0 h-4 w-4 rounded-full border-2 border-background transition-colors",
+              isOnline
+                ? "bg-success animate-pulse"
+                : "bg-gray-400"
+            )}
+            aria-label={isOnline ? "Support is online" : "Support is offline"}
+          />
+          {/* Unread count badge */}
           {unreadCount > 0 && (
             <Badge
               className="absolute -top-1 -right-1 h-5 w-5 p-0 flex items-center justify-center text-xs"
@@ -520,11 +531,13 @@ export default function ChatWidget() {
       {/* Chat Window */}
       {isOpen && (
         <Card className={cn(
-          "fixed bottom-6 right-6 shadow-2xl z-50 flex flex-col transition-all duration-300",
-          isMinimized ? "w-80 h-14" : "w-96 h-[600px]"
+          "fixed shadow-2xl z-50 flex flex-col transition-all duration-300",
+          isMinimized
+            ? "bottom-6 right-6 w-72 sm:w-80 h-14"
+            : "bottom-0 right-0 w-full h-full sm:bottom-6 sm:right-6 sm:w-96 sm:h-[600px] sm:rounded-lg rounded-none"
         )}>
           {/* Header */}
-          <div className="flex items-center justify-between p-4 border-b bg-primary text-primary-foreground rounded-t-lg">
+          <div className="flex items-center justify-between p-4 border-b bg-primary text-primary-foreground sm:rounded-t-lg">
             <div className="flex items-center gap-2">
               <div className="relative">
                 <MessageCircle className="h-5 w-5" />

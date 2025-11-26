@@ -19,14 +19,14 @@ const Footer = () => {
   ].filter(Boolean).join(', ');
 
   return (
-    <footer className="bg-natural-deep text-primary-foreground py-12">
+    <footer className="bg-natural-deep text-primary-foreground py-8 sm:py-10 md:py-12">
       <div className="container mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="grid md:grid-cols-5 gap-8 mb-8">
-          <div className="md:col-span-2">
+        <div className="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-5 gap-6 sm:gap-8 mb-8">
+          <div className="col-span-2 md:col-span-2">
             <div className="flex items-center mb-4">
-              <img src={logo} alt={storeName} className="h-16 w-auto" />
+              <img src={logo} alt={storeName} className="h-12 sm:h-14 md:h-16 w-auto" />
             </div>
-            <p className="text-primary-foreground/80 mb-4 leading-relaxed">
+            <p className="text-primary-foreground/80 mb-4 leading-relaxed text-sm sm:text-base">
               {storeDescription}
             </p>
 
@@ -79,8 +79,8 @@ const Footer = () => {
           </div>
 
           <div>
-            <h3 className="font-bold text-lg mb-4">Quick Links</h3>
-            <ul className="space-y-2 text-primary-foreground/80">
+            <h3 className="font-bold text-base sm:text-lg mb-3 sm:mb-4">Quick Links</h3>
+            <ul className="space-y-2 text-primary-foreground/80 text-sm sm:text-base">
               <li><Link to="/shop" className="hover:text-secondary transition-colors">Shop All</Link></li>
               <li><Link to="/about" className="hover:text-secondary transition-colors">About Us</Link></li>
               <li><Link to="/support" className="hover:text-secondary transition-colors">Contact</Link></li>
@@ -88,17 +88,17 @@ const Footer = () => {
           </div>
 
           <div>
-            <h3 className="font-bold text-lg mb-4">Support</h3>
-            <ul className="space-y-2 text-primary-foreground/80">
+            <h3 className="font-bold text-base sm:text-lg mb-3 sm:mb-4">Support</h3>
+            <ul className="space-y-2 text-primary-foreground/80 text-sm sm:text-base">
               <li><Link to="/support" className="hover:text-secondary transition-colors">FAQ</Link></li>
               <li><Link to="/delivery" className="hover:text-secondary transition-colors">Shipping</Link></li>
               <li><Link to="/return-policy" className="hover:text-secondary transition-colors">Returns</Link></li>
             </ul>
           </div>
 
-          <div>
-            <h3 className="font-bold text-lg mb-4">Legal</h3>
-            <ul className="space-y-2 text-primary-foreground/80">
+          <div className="col-span-2 sm:col-span-1">
+            <h3 className="font-bold text-base sm:text-lg mb-3 sm:mb-4">Legal</h3>
+            <ul className="space-y-2 text-primary-foreground/80 text-sm sm:text-base">
               <li><Link to="/privacy-policy" className="hover:text-secondary transition-colors">Privacy Policy</Link></li>
               <li><Link to="/terms-of-service" className="hover:text-secondary transition-colors">Terms of Service</Link></li>
               <li><Link to="/cookie-policy" className="hover:text-secondary transition-colors">Cookie Policy</Link></li>
@@ -106,7 +106,7 @@ const Footer = () => {
           </div>
         </div>
 
-        <div className="border-t border-primary-foreground/20 pt-8 text-center text-primary-foreground/70">
+        <div className="border-t border-primary-foreground/20 pt-6 sm:pt-8 text-center text-primary-foreground/70 text-sm sm:text-base">
           <p>&copy; {currentYear} {storeName}. All rights reserved.</p>
         </div>
       </div>

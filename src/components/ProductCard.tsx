@@ -38,7 +38,7 @@ export default function ProductCard({
       <Card className="h-full hover:shadow-lg transition-shadow duration-300 group">
         <CardContent className="p-0">
           {image_url ? (
-            <div className="relative overflow-hidden rounded-t-lg h-64">
+            <div className="relative overflow-hidden rounded-t-lg h-48 sm:h-56 md:h-64">
               <img
                 src={image_url}
                 alt={name}
@@ -49,38 +49,38 @@ export default function ProductCard({
               </div>
             </div>
           ) : (
-            <div className="relative h-64 bg-muted rounded-t-lg flex items-center justify-center">
+            <div className="relative h-48 sm:h-56 md:h-64 bg-muted rounded-t-lg flex items-center justify-center">
               <span className="text-muted-foreground">No image</span>
               <div className="absolute top-2 right-2 z-10">
                 <WishlistButton productId={id} />
               </div>
             </div>
           )}
-          
-          <div className="p-6">
-            <h3 className="text-xl font-bold mb-2 text-foreground">{name}</h3>
+
+          <div className="p-4 sm:p-5 md:p-6">
+            <h3 className="text-lg sm:text-xl font-bold mb-1 sm:mb-2 text-foreground line-clamp-2">{name}</h3>
             {pack_info && (
-              <p className="text-sm text-muted-foreground mb-2">{pack_info}</p>
+              <p className="text-xs sm:text-sm text-muted-foreground mb-1 sm:mb-2">{pack_info}</p>
             )}
-            <p className="text-muted-foreground line-clamp-2 mb-4">
+            <p className="text-sm text-muted-foreground line-clamp-2 mb-3 sm:mb-4 hidden sm:block">
               {description}
             </p>
             <div className="flex items-center justify-between">
-              <span className="text-2xl font-bold text-primary">
+              <span className="text-xl sm:text-2xl font-bold text-primary">
                 R {price.toFixed(2)}
               </span>
               {min_quantity > 1 && (
-                <span className="text-sm text-muted-foreground">
+                <span className="text-xs sm:text-sm text-muted-foreground">
                   Min: {min_quantity}
                 </span>
               )}
             </div>
           </div>
         </CardContent>
-        
-        <CardFooter className="p-6 pt-0">
+
+        <CardFooter className="p-4 sm:p-5 md:p-6 pt-0">
           <Button
-            className="w-full"
+            className="w-full text-sm sm:text-base"
             onClick={handleAddToCart}
           >
             <ShoppingCart className="mr-2 h-4 w-4" />

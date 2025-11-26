@@ -24,23 +24,24 @@ export default function Header() {
 
   return (
     <>
-      <header className="sticky top-0 z-50 w-full border-b bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
+      <header className="sticky top-0 z-50 w-full border-b bg-background/95 backdrop-blur-md supports-[backdrop-filter]:bg-background/60 shadow-sm">
         <div className="container mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex h-16 items-center justify-between">
             {/* Logo */}
-            <Link to="/" className="flex items-center">
-              <img src={logo} alt="Ideal Smoke Supply" className="h-12 w-auto" />
+            <Link to="/" className="flex items-center group">
+              <img src={logo} alt="Ideal Smoke Supply" className="h-12 w-auto transition-transform duration-300 group-hover:scale-105" />
             </Link>
 
             {/* Desktop Navigation */}
-            <nav className="hidden md:flex items-center space-x-6">
+            <nav className="hidden md:flex items-center space-x-1">
               {navigation.map((item) => (
                 <Link
                   key={item.name}
                   to={item.href}
-                  className="text-sm font-medium text-foreground hover:text-primary transition-colors"
+                  className="relative px-4 py-2 text-sm font-medium text-foreground hover:text-primary transition-colors group"
                 >
                   {item.name}
+                  <span className="absolute bottom-0 left-1/2 -translate-x-1/2 w-0 h-0.5 bg-primary rounded-full transition-all duration-300 group-hover:w-3/4" />
                 </Link>
               ))}
             </nav>
@@ -75,10 +76,10 @@ export default function Header() {
 
               {/* Wishlist Button */}
               <Link to="/wishlist">
-                <Button variant="ghost" size="sm" className="relative h-9 w-9 p-0 sm:h-auto sm:w-auto sm:p-2">
-                  <Heart className="h-5 w-5" />
+                <Button variant="ghost" size="sm" className="relative h-9 w-9 p-0 sm:h-auto sm:w-auto sm:p-2 hover:bg-primary/10 transition-colors">
+                  <Heart className="h-5 w-5 transition-transform hover:scale-110" />
                   {wishlistItems.length > 0 && (
-                    <span className="absolute -top-1 -right-1 h-4 w-4 sm:h-5 sm:w-5 rounded-full bg-primary text-[10px] sm:text-xs text-primary-foreground flex items-center justify-center">
+                    <span className="absolute -top-1 -right-1 h-4 w-4 sm:h-5 sm:w-5 rounded-full bg-primary text-[10px] sm:text-xs text-primary-foreground flex items-center justify-center animate-scale-in shadow-sm">
                       {wishlistItems.length}
                     </span>
                   )}
@@ -89,12 +90,12 @@ export default function Header() {
               <Button
                 variant="ghost"
                 size="sm"
-                className="relative h-9 w-9 p-0 sm:h-auto sm:w-auto sm:p-2"
+                className="relative h-9 w-9 p-0 sm:h-auto sm:w-auto sm:p-2 hover:bg-primary/10 transition-colors"
                 onClick={() => setCartOpen(true)}
               >
-                <ShoppingCart className="h-5 w-5" />
+                <ShoppingCart className="h-5 w-5 transition-transform hover:scale-110" />
                 {getTotalItems() > 0 && (
-                  <span className="absolute -top-1 -right-1 h-4 w-4 sm:h-5 sm:w-5 rounded-full bg-primary text-[10px] sm:text-xs text-primary-foreground flex items-center justify-center">
+                  <span className="absolute -top-1 -right-1 h-4 w-4 sm:h-5 sm:w-5 rounded-full bg-primary text-[10px] sm:text-xs text-primary-foreground flex items-center justify-center animate-scale-in shadow-sm">
                     {getTotalItems()}
                   </span>
                 )}

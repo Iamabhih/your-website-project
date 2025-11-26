@@ -90,7 +90,6 @@ const menuItems = [
     icon: Megaphone,
     items: [
       { title: "Banner Management", url: "/admin/banner", icon: Megaphone },
-      { title: "PWA Settings", url: "/admin/pwa", icon: Smartphone },
     ],
   },
   {
@@ -110,6 +109,7 @@ const menuItems = [
     icon: Settings,
     items: [
       { title: "Store Settings", url: "/admin/store-settings", icon: Store },
+      { title: "PWA Management", url: "/admin/pwa", icon: Smartphone },
       { title: "Theme Builder", url: "/admin/theme", icon: Palette },
       { title: "Branding", url: "/admin/branding", icon: Image },
       { title: "Custom Icons", url: "/admin/icons", icon: Smile },

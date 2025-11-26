@@ -1,7 +1,7 @@
 // Service Worker for Ideal Smoke Supply PWA
-const CACHE_NAME = 'ideal-smoke-supply-v1';
-const RUNTIME_CACHE = 'runtime-cache-v1';
-const IMAGE_CACHE = 'image-cache-v1';
+const CACHE_NAME = 'ideal-smoke-supply-v2';
+const RUNTIME_CACHE = 'runtime-cache-v2';
+const IMAGE_CACHE = 'image-cache-v2';
 
 // Assets to cache on install
 const PRECACHE_ASSETS = [
@@ -99,20 +99,22 @@ self.addEventListener('fetch', (event) => {
     return;
   }
 
-  // Handle navigation - network first, cache fallback, offline page
+  // Handle navigation - for SPA, always return index.html (app shell)
+  // React Router will handle client-side routing
   if (request.mode === 'navigate') {
     event.respondWith(
-      fetch(request)
+      fetch('/')
         .then((response) => {
-          // Clone and cache successful page loads
+          // Cache the app shell
           const responseClone = response.clone();
-          caches.open(RUNTIME_CACHE).then((cache) => {
-            cache.put(request, responseClone);
+          caches.open(CACHE_NAME).then((cache) => {
+            cache.put('/', responseClone);
           });
           return response;
         })
         .catch(() => {
-          return caches.match(request).then((response) => {
+          // Offline - try to serve cached app shell, then offline page
+          return caches.match('/').then((response) => {
             return response || caches.match('/offline.html');
           });
         })

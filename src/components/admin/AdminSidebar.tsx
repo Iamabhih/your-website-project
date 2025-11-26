@@ -25,6 +25,7 @@ import {
   Palette,
   Image,
   Smile,
+  Bell,
 } from "lucide-react";
 import {
   Sidebar,
@@ -77,6 +78,7 @@ const menuItems = [
     title: "Communication",
     icon: MessageSquare,
     items: [
+      { title: "Notifications", url: "/admin/notifications", icon: Bell },
       { title: "Newsletter", url: "/admin/newsletter", icon: Megaphone },
       { title: "Telegram Chats", url: "/admin/telegram-chats", icon: MessageSquare },
       { title: "Telegram Support", url: "/admin/telegram-support", icon: MessageSquare },

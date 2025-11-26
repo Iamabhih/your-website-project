@@ -108,48 +108,35 @@ const STATUS_COLORS: Record<string, string> = {
   refunded: 'bg-emerald-100 text-emerald-800',
 };
 
-// Mock data since we don't have a returns table
-const MOCK_RETURNS: ReturnRequest[] = [
-  {
-    id: '1',
-    order_id: 'ORD-001',
-    customer_name: 'John Doe',
-    customer_email: 'john@example.com',
-    status: 'pending',
-    reason: 'damaged',
-    reason_details: 'Package was crushed during shipping',
-    items: [
-      { product_id: '1', product_name: 'Premium Vape Kit', quantity: 1, price: 599, condition: 'damaged' }
-    ],
-    refund_amount: 599,
-    refund_method: 'original_payment',
-    created_at: new Date().toISOString(),
-    updated_at: new Date().toISOString(),
-    admin_notes: '',
-  },
-  {
-    id: '2',
-    order_id: 'ORD-002',
-    customer_name: 'Jane Smith',
-    customer_email: 'jane@example.com',
-    status: 'approved',
-    reason: 'wrong_item',
-    reason_details: 'Received wrong flavor',
-    items: [
-      { product_id: '2', product_name: 'E-Liquid 50ml', variant_name: 'Mint', quantity: 2, price: 149, condition: 'unopened' }
-    ],
-    refund_amount: 298,
-    refund_method: 'store_credit',
-    created_at: new Date(Date.now() - 86400000).toISOString(),
-    updated_at: new Date().toISOString(),
-    admin_notes: 'Customer will ship back items',
-  },
-];
+// Storage key for returns data
+const RETURNS_STORAGE_KEY = 'admin_returns_data';
+
+// Load returns from localStorage
+const loadStoredReturns = (): ReturnRequest[] => {
+  try {
+    const stored = localStorage.getItem(RETURNS_STORAGE_KEY);
+    if (stored) {
+      return JSON.parse(stored);
+    }
+  } catch (e) {
+    console.error('Error loading stored returns:', e);
+  }
+  return [];
+};
+
+// Save returns to localStorage
+const saveStoredReturns = (returns: ReturnRequest[]) => {
+  try {
+    localStorage.setItem(RETURNS_STORAGE_KEY, JSON.stringify(returns));
+  } catch (e) {
+    console.error('Error saving returns:', e);
+  }
+};
 
 export default function Returns() {
   const navigate = useNavigate();
-  const [returns, setReturns] = useState<ReturnRequest[]>(MOCK_RETURNS);
-  const [filteredReturns, setFilteredReturns] = useState<ReturnRequest[]>(MOCK_RETURNS);
+  const [returns, setReturns] = useState<ReturnRequest[]>(() => loadStoredReturns());
+  const [filteredReturns, setFilteredReturns] = useState<ReturnRequest[]>([]);
   const [loading, setLoading] = useState(false);
   const [searchQuery, setSearchQuery] = useState('');
   const [statusFilter, setStatusFilter] = useState<string>('all');
@@ -227,9 +214,13 @@ export default function Returns() {
   };
 
   const updateReturnStatus = (returnId: string, newStatus: ReturnRequest['status']) => {
-    setReturns(prev => prev.map(r =>
-      r.id === returnId ? { ...r, status: newStatus, updated_at: new Date().toISOString() } : r
-    ));
+    setReturns(prev => {
+      const updated = prev.map(r =>
+        r.id === returnId ? { ...r, status: newStatus, updated_at: new Date().toISOString() } : r
+      );
+      saveStoredReturns(updated);
+      return updated;
+    });
     toast.success(`Return status updated to ${newStatus}`);
   };
 
@@ -264,7 +255,11 @@ export default function Returns() {
       admin_notes: adminNotes,
     };
 
-    setReturns(prev => [newReturn, ...prev]);
+    setReturns(prev => {
+      const updated = [newReturn, ...prev];
+      saveStoredReturns(updated);
+      return updated;
+    });
     setShowCreateDialog(false);
     resetForm();
     toast.success('Return request created');

@@ -509,9 +509,9 @@ export default function ChatWidget() {
           {/* Online/Offline light indicator */}
           <span
             className={cn(
-              "absolute bottom-0 right-0 h-4 w-4 rounded-full border-2 border-background transition-colors",
+              "absolute bottom-0.5 right-0.5 h-3.5 w-3.5 rounded-full border-2 border-white shadow-sm",
               isOnline
-                ? "bg-success animate-pulse"
+                ? "bg-green-500 animate-pulse"
                 : "bg-gray-400"
             )}
             aria-label={isOnline ? "Support is online" : "Support is offline"}
@@ -542,8 +542,8 @@ export default function ChatWidget() {
               <div className="relative">
                 <MessageCircle className="h-5 w-5" />
                 <span className={cn(
-                  "absolute -bottom-0.5 -right-0.5 h-2.5 w-2.5 rounded-full border-2 border-primary",
-                  isOnline ? "bg-success" : "bg-gray-400"
+                  "absolute -bottom-0.5 -right-0.5 h-2.5 w-2.5 rounded-full border-2 border-white",
+                  isOnline ? "bg-green-500" : "bg-gray-400"
                 )} />
               </div>
               <div>

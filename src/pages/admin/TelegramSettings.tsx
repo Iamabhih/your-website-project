@@ -478,7 +478,7 @@ export default function TelegramSettings() {
               <CardContent className="space-y-4">
                 {notificationSettings.length === 0 ? (
                   <p className="text-center text-muted-foreground py-8">
-                    No notification settings configured
+                    No notification settings configured. Enable features in the Features tab.
                   </p>
                 ) : (
                   notificationSettings.map((setting) => (
@@ -503,62 +503,6 @@ export default function TelegramSettings() {
                     </div>
                   ))
                 )}
-
-                <Separator className="my-6" />
-
-                <div className="space-y-4">
-                  <h4 className="font-medium">Default Notification Preferences</h4>
-                  <div className="grid gap-4 md:grid-cols-2">
-                    <div className="flex items-center justify-between p-4 border rounded-lg">
-                      <div className="space-y-0.5">
-                        <Label>Order Tracking</Label>
-                        <p className="text-xs text-muted-foreground">
-                          Send order status updates
-                        </p>
-                      </div>
-                      <Switch
-                        checked={settings.features.order_tracking}
-                        onCheckedChange={(checked) => handleChange('features.order_tracking', checked)}
-                      />
-                    </div>
-                    <div className="flex items-center justify-between p-4 border rounded-lg">
-                      <div className="space-y-0.5">
-                        <Label>Stock Alerts</Label>
-                        <p className="text-xs text-muted-foreground">
-                          Notify when items back in stock
-                        </p>
-                      </div>
-                      <Switch
-                        checked={settings.features.stock_alerts}
-                        onCheckedChange={(checked) => handleChange('features.stock_alerts', checked)}
-                      />
-                    </div>
-                    <div className="flex items-center justify-between p-4 border rounded-lg">
-                      <div className="space-y-0.5">
-                        <Label>Promotions</Label>
-                        <p className="text-xs text-muted-foreground">
-                          Allow promotional messages
-                        </p>
-                      </div>
-                      <Switch
-                        checked={settings.features.promotions}
-                        onCheckedChange={(checked) => handleChange('features.promotions', checked)}
-                      />
-                    </div>
-                    <div className="flex items-center justify-between p-4 border rounded-lg">
-                      <div className="space-y-0.5">
-                        <Label>Support Chat</Label>
-                        <p className="text-xs text-muted-foreground">
-                          Enable customer support via bot
-                        </p>
-                      </div>
-                      <Switch
-                        checked={settings.features.support_chat}
-                        onCheckedChange={(checked) => handleChange('features.support_chat', checked)}
-                      />
-                    </div>
-                  </div>
-                </div>
               </CardContent>
             </Card>
           </TabsContent>

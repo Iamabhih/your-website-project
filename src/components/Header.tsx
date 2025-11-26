@@ -5,6 +5,7 @@ import { Button } from '@/components/ui/button';
 import { useCartStore } from '@/stores/cartStore';
 import { useAuth } from '@/hooks/useAuth';
 import { useWishlist } from '@/hooks/useWishlist';
+import { NotificationBell } from '@/components/notifications/NotificationCenter';
 import CartDrawer from './CartDrawer';
 import logo from '@/assets/logo.png';
 
@@ -73,6 +74,9 @@ export default function Header() {
                   </Button>
                 </Link>
               )}
+
+              {/* Notification Bell */}
+              <NotificationBell />
 
               {/* Wishlist Button */}
               <Link to="/wishlist">

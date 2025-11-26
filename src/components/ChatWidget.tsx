@@ -533,11 +533,13 @@ export default function ChatWidget() {
         <Card className={cn(
           "fixed shadow-2xl z-50 flex flex-col transition-all duration-300",
           isMinimized
-            ? "bottom-6 right-6 w-72 sm:w-80 h-14"
-            : "bottom-0 right-0 w-full h-full sm:bottom-6 sm:right-6 sm:w-96 sm:h-[600px] sm:rounded-lg rounded-none"
+            ? "bottom-6 right-6 w-72 sm:w-80 h-14 rounded-lg"
+            : "bottom-0 right-0 w-full sm:bottom-6 sm:right-6 sm:w-96 sm:h-[600px] sm:rounded-lg rounded-none",
+          // Mobile: Account for safe area and don't cover entire screen
+          !isMinimized && "h-[calc(100vh-env(safe-area-inset-top))] sm:h-[600px] max-h-[100dvh]"
         )}>
-          {/* Header */}
-          <div className="flex items-center justify-between p-4 border-b bg-primary text-primary-foreground sm:rounded-t-lg">
+          {/* Header - with safe area padding on mobile */}
+          <div className="flex items-center justify-between p-4 pt-[calc(1rem+env(safe-area-inset-top))] sm:pt-4 border-b bg-primary text-primary-foreground sm:rounded-t-lg shrink-0">
             <div className="flex items-center gap-2">
               <div className="relative">
                 <MessageCircle className="h-5 w-5" />
@@ -573,34 +575,26 @@ export default function ChatWidget() {
                   </TooltipContent>
                 </Tooltip>
               )}
-              <Tooltip>
-                <TooltipTrigger asChild>
-                  <Button
-                    variant="ghost"
-                    size="icon"
-                    onClick={() => setIsMinimized(!isMinimized)}
-                    className="h-8 w-8 text-primary-foreground hover:bg-primary-foreground/20"
-                  >
-                    {isMinimized ? <Maximize2 className="h-4 w-4" /> : <Minimize2 className="h-4 w-4" />}
-                  </Button>
-                </TooltipTrigger>
-                <TooltipContent>
-                  {isMinimized ? 'Expand' : 'Minimize'}
-                </TooltipContent>
-              </Tooltip>
-              <Tooltip>
-                <TooltipTrigger asChild>
-                  <Button
-                    variant="ghost"
-                    size="icon"
-                    onClick={() => setIsOpen(false)}
-                    className="h-8 w-8 text-primary-foreground hover:bg-primary-foreground/20"
-                  >
-                    <X className="h-4 w-4" />
-                  </Button>
-                </TooltipTrigger>
-                <TooltipContent>Close</TooltipContent>
-              </Tooltip>
+              {/* Minimize button - more visible on mobile */}
+              <Button
+                variant="ghost"
+                size="icon"
+                onClick={() => setIsMinimized(!isMinimized)}
+                className="h-9 w-9 sm:h-8 sm:w-8 text-primary-foreground hover:bg-primary-foreground/20"
+                aria-label={isMinimized ? 'Expand chat' : 'Minimize chat'}
+              >
+                {isMinimized ? <Maximize2 className="h-5 w-5 sm:h-4 sm:w-4" /> : <Minimize2 className="h-5 w-5 sm:h-4 sm:w-4" />}
+              </Button>
+              {/* Close button */}
+              <Button
+                variant="ghost"
+                size="icon"
+                onClick={() => setIsOpen(false)}
+                className="h-9 w-9 sm:h-8 sm:w-8 text-primary-foreground hover:bg-primary-foreground/20"
+                aria-label="Close chat"
+              >
+                <X className="h-5 w-5 sm:h-4 sm:w-4" />
+              </Button>
             </div>
           </div>
 
@@ -818,8 +812,8 @@ export default function ChatWidget() {
                     </div>
                   )}
 
-                  {/* Input */}
-                  <div className="p-4 border-t space-y-2">
+                  {/* Input - with safe area padding on mobile */}
+                  <div className="p-4 pb-[calc(1rem+env(safe-area-inset-bottom))] sm:pb-4 border-t space-y-2 shrink-0 bg-background">
                     <div className="flex gap-2">
                       <div className="flex-1 relative">
                         <Input
@@ -828,7 +822,7 @@ export default function ChatWidget() {
                           onChange={handleMessageChange}
                           onKeyPress={(e) => e.key === 'Enter' && sendMessage()}
                           disabled={loading}
-                          className="pr-20"
+                          className="pr-20 h-11 sm:h-10"
                         />
                         <div className="absolute right-2 top-1/2 -translate-y-1/2 flex gap-1">
                           <input

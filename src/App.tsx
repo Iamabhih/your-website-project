@@ -6,8 +6,10 @@ import { BrowserRouter, Routes, Route } from "react-router-dom";
 import { ErrorBoundary } from "@/components/ErrorBoundary";
 import { LoadingProvider } from "@/contexts/LoadingContext";
 import { ThemeProvider } from "@/contexts/ThemeContext";
+import { PWAProvider } from "@/contexts/PWAContext";
 import ProtectedRoute from "@/components/ProtectedRoute";
 import { AgeVerificationModal } from "@/components/AgeVerificationModal";
+import PWAInstallPrompt from "@/components/PWAInstallPrompt";
 import Index from "./pages/Index";
 import NotFound from "./pages/NotFound";
 import Shop from "./pages/Shop";
@@ -75,14 +77,16 @@ const App = () => (
   <ErrorBoundary>
     <QueryClientProvider client={queryClient}>
       <ThemeProvider>
-        <LoadingProvider>
-          <TooltipProvider>
-            <AgeVerificationModal />
-            <Toaster />
-            <ThemeAwareToaster />
-            <BrowserRouter>
-              <ChatWidget />
-              <Routes>
+        <PWAProvider>
+          <LoadingProvider>
+            <TooltipProvider>
+              <AgeVerificationModal />
+              <Toaster />
+              <ThemeAwareToaster />
+              <PWAInstallPrompt />
+              <BrowserRouter>
+                <ChatWidget />
+                <Routes>
                 <Route path="/" element={<Index />} />
                 <Route path="/shop" element={<Shop />} />
                 <Route path="/about" element={<About />} />
@@ -131,9 +135,10 @@ const App = () => (
                 <Route path="/admin/system-logs" element={<ProtectedRoute requireAdmin><SystemLogs /></ProtectedRoute>} />
                 <Route path="*" element={<NotFound />} />
               </Routes>
-            </BrowserRouter>
-          </TooltipProvider>
-        </LoadingProvider>
+              </BrowserRouter>
+            </TooltipProvider>
+          </LoadingProvider>
+        </PWAProvider>
       </ThemeProvider>
     </QueryClientProvider>
   </ErrorBoundary>

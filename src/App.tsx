@@ -1,3 +1,4 @@
+import { lazy, Suspense } from "react";
 import { Toaster } from "@/components/ui/toaster";
 import { ThemeAwareToaster } from "@/components/ThemeAwareToaster";
 import { TooltipProvider } from "@/components/ui/tooltip";
@@ -14,6 +15,9 @@ import PWAInstallPrompt from "@/components/PWAInstallPrompt";
 import NotificationToastContainer from "@/components/notifications/NotificationToast";
 import NotificationCenter from "@/components/notifications/NotificationCenter";
 import PromoBanner from "@/components/notifications/PromoBanner";
+import { Loader2 } from "lucide-react";
+
+// Customer pages - loaded immediately
 import Index from "./pages/Index";
 import NotFound from "./pages/NotFound";
 import Shop from "./pages/Shop";
@@ -28,47 +32,60 @@ import Support from "./pages/Support";
 import PaymentSuccess from "./pages/PaymentSuccess";
 import PaymentCancelled from "./pages/PaymentCancelled";
 import Wishlist from "./pages/Wishlist";
-import AdminDashboard from "./pages/admin/Dashboard";
-import AdminProducts from "./pages/admin/Products";
-import AdminOrders from "./pages/admin/Orders";
-import AdminAbandonedCarts from "./pages/admin/AbandonedCarts";
-import AdminCustomers from "./pages/admin/Customers";
-import AdminDeliveryOptions from "./pages/admin/DeliveryOptions";
-import AdminSettings from "./pages/admin/Settings";
-import AdminAnalytics from "./pages/admin/Analytics";
-import AdminCoupons from "./pages/admin/Coupons";
-import AdminReviews from "./pages/admin/Reviews";
-import AdminNotifications from "./pages/admin/Notifications";
-import TelegramChats from "./pages/admin/TelegramChats";
-import TelegramCustomers from "./pages/admin/TelegramCustomers";
-import TelegramBroadcast from "./pages/admin/TelegramBroadcast";
-import TelegramSupport from "./pages/admin/TelegramSupport";
-import TelegramSettings from "./pages/admin/TelegramSettings";
-import ProductImport from "./pages/admin/ProductImport";
-import BannerManagement from "./pages/admin/BannerManagement";
-import PWASettings from "./pages/admin/PWASettings";
-import SystemLogs from "./pages/admin/SystemLogs";
-import StoreSettings from "./pages/admin/StoreSettings";
 import TelegramLink from "./pages/TelegramLink";
 import ChatWidget from "./components/ChatWidget";
-import Newsletter from "./pages/admin/Newsletter";
-import Categories from "./pages/admin/Categories";
-import Returns from "./pages/admin/Returns";
-import Inventory from "./pages/admin/Inventory";
 import AccountProfile from "./pages/AccountProfile";
-import ThemeBuilder from "./pages/admin/ThemeBuilder";
-import CustomIcons from "./pages/admin/CustomIcons";
-import Branding from "./pages/admin/Branding";
 import PrivacyPolicy from "./pages/PrivacyPolicy";
 import TermsOfService from "./pages/TermsOfService";
 import ReturnPolicy from "./pages/ReturnPolicy";
 import CookiePolicy from "./pages/CookiePolicy";
 
+// Admin pages - lazy loaded for better performance
+const AdminDashboard = lazy(() => import("./pages/admin/Dashboard"));
+const AdminProducts = lazy(() => import("./pages/admin/Products"));
+const AdminOrders = lazy(() => import("./pages/admin/Orders"));
+const AdminAbandonedCarts = lazy(() => import("./pages/admin/AbandonedCarts"));
+const AdminCustomers = lazy(() => import("./pages/admin/Customers"));
+const AdminDeliveryOptions = lazy(() => import("./pages/admin/DeliveryOptions"));
+const AdminSettings = lazy(() => import("./pages/admin/Settings"));
+const AdminAnalytics = lazy(() => import("./pages/admin/Analytics"));
+const AdminCoupons = lazy(() => import("./pages/admin/Coupons"));
+const AdminReviews = lazy(() => import("./pages/admin/Reviews"));
+const AdminNotifications = lazy(() => import("./pages/admin/Notifications"));
+const TelegramChats = lazy(() => import("./pages/admin/TelegramChats"));
+const TelegramCustomers = lazy(() => import("./pages/admin/TelegramCustomers"));
+const TelegramBroadcast = lazy(() => import("./pages/admin/TelegramBroadcast"));
+const TelegramSupport = lazy(() => import("./pages/admin/TelegramSupport"));
+const TelegramSettings = lazy(() => import("./pages/admin/TelegramSettings"));
+const ProductImport = lazy(() => import("./pages/admin/ProductImport"));
+const BannerManagement = lazy(() => import("./pages/admin/BannerManagement"));
+const PWASettings = lazy(() => import("./pages/admin/PWASettings"));
+const SystemLogs = lazy(() => import("./pages/admin/SystemLogs"));
+const StoreSettings = lazy(() => import("./pages/admin/StoreSettings"));
+const Newsletter = lazy(() => import("./pages/admin/Newsletter"));
+const Categories = lazy(() => import("./pages/admin/Categories"));
+const Returns = lazy(() => import("./pages/admin/Returns"));
+const Inventory = lazy(() => import("./pages/admin/Inventory"));
+const ThemeBuilder = lazy(() => import("./pages/admin/ThemeBuilder"));
+const CustomIcons = lazy(() => import("./pages/admin/CustomIcons"));
+const Branding = lazy(() => import("./pages/admin/Branding"));
+
+// Loading fallback for lazy-loaded admin pages
+const AdminLoadingFallback = () => (
+  <div className="flex items-center justify-center min-h-screen">
+    <div className="flex flex-col items-center gap-4">
+      <Loader2 className="h-8 w-8 animate-spin text-primary" />
+      <p className="text-muted-foreground">Loading admin panel...</p>
+    </div>
+  </div>
+);
+
 const queryClient = new QueryClient({
   defaultOptions: {
     queries: {
       staleTime: 1000 * 60 * 5, // 5 minutes
-      retry: 3,
+      gcTime: 1000 * 60 * 10, // 10 minutes garbage collection
+      retry: 1, // Reduced from 3 for better performance
       retryDelay: (attemptIndex) => Math.min(1000 * 2 ** attemptIndex, 30000),
       refetchOnWindowFocus: false,
     },
@@ -114,35 +131,36 @@ const App = () => (
                 <Route path="/terms-of-service" element={<TermsOfService />} />
                 <Route path="/return-policy" element={<ReturnPolicy />} />
                 <Route path="/cookie-policy" element={<CookiePolicy />} />
-                <Route path="/admin" element={<ProtectedRoute requireAdmin><AdminDashboard /></ProtectedRoute>} />
-                <Route path="/admin/analytics" element={<ProtectedRoute requireAdmin><AdminAnalytics /></ProtectedRoute>} />
-                <Route path="/admin/products" element={<ProtectedRoute requireAdmin><AdminProducts /></ProtectedRoute>} />
-                <Route path="/admin/products/import" element={<ProtectedRoute requireAdmin><ProductImport /></ProtectedRoute>} />
-                <Route path="/admin/orders" element={<ProtectedRoute requireAdmin><AdminOrders /></ProtectedRoute>} />
-                <Route path="/admin/abandoned-carts" element={<ProtectedRoute requireAdmin><AdminAbandonedCarts /></ProtectedRoute>} />
-                <Route path="/admin/customers" element={<ProtectedRoute requireAdmin><AdminCustomers /></ProtectedRoute>} />
-                <Route path="/admin/coupons" element={<ProtectedRoute requireAdmin><AdminCoupons /></ProtectedRoute>} />
-                <Route path="/admin/reviews" element={<ProtectedRoute requireAdmin><AdminReviews /></ProtectedRoute>} />
-                <Route path="/admin/delivery-options" element={<ProtectedRoute requireAdmin><AdminDeliveryOptions /></ProtectedRoute>} />
-                <Route path="/admin/settings" element={<ProtectedRoute requireAdmin><AdminSettings /></ProtectedRoute>} />
-                <Route path="/admin/store-settings" element={<ProtectedRoute requireAdmin><StoreSettings /></ProtectedRoute>} />
-                <Route path="/admin/newsletter" element={<ProtectedRoute requireAdmin><Newsletter /></ProtectedRoute>} />
-                <Route path="/admin/categories" element={<ProtectedRoute requireAdmin><Categories /></ProtectedRoute>} />
-                <Route path="/admin/returns" element={<ProtectedRoute requireAdmin><Returns /></ProtectedRoute>} />
-                <Route path="/admin/inventory" element={<ProtectedRoute requireAdmin><Inventory /></ProtectedRoute>} />
-                <Route path="/admin/telegram-chats" element={<ProtectedRoute requireAdmin><TelegramChats /></ProtectedRoute>} />
-                <Route path="/admin/telegram-customers" element={<ProtectedRoute requireAdmin><TelegramCustomers /></ProtectedRoute>} />
-                <Route path="/admin/telegram-broadcast" element={<ProtectedRoute requireAdmin><TelegramBroadcast /></ProtectedRoute>} />
-                <Route path="/admin/telegram-support" element={<ProtectedRoute requireAdmin><TelegramSupport /></ProtectedRoute>} />
-                <Route path="/admin/telegram-settings" element={<ProtectedRoute requireAdmin><TelegramSettings /></ProtectedRoute>} />
                 <Route path="/account/telegram" element={<TelegramLink />} />
-                <Route path="/admin/banner" element={<ProtectedRoute requireAdmin><BannerManagement /></ProtectedRoute>} />
-                <Route path="/admin/pwa" element={<ProtectedRoute requireAdmin><PWASettings /></ProtectedRoute>} />
-                <Route path="/admin/theme" element={<ProtectedRoute requireAdmin><ThemeBuilder /></ProtectedRoute>} />
-                <Route path="/admin/branding" element={<ProtectedRoute requireAdmin><Branding /></ProtectedRoute>} />
-                <Route path="/admin/icons" element={<ProtectedRoute requireAdmin><CustomIcons /></ProtectedRoute>} />
-                <Route path="/admin/system-logs" element={<ProtectedRoute requireAdmin><SystemLogs /></ProtectedRoute>} />
-                <Route path="/admin/notifications" element={<ProtectedRoute requireAdmin><AdminNotifications /></ProtectedRoute>} />
+                {/* Admin routes - lazy loaded with Suspense */}
+                <Route path="/admin" element={<ProtectedRoute requireAdmin><Suspense fallback={<AdminLoadingFallback />}><AdminDashboard /></Suspense></ProtectedRoute>} />
+                <Route path="/admin/analytics" element={<ProtectedRoute requireAdmin><Suspense fallback={<AdminLoadingFallback />}><AdminAnalytics /></Suspense></ProtectedRoute>} />
+                <Route path="/admin/products" element={<ProtectedRoute requireAdmin><Suspense fallback={<AdminLoadingFallback />}><AdminProducts /></Suspense></ProtectedRoute>} />
+                <Route path="/admin/products/import" element={<ProtectedRoute requireAdmin><Suspense fallback={<AdminLoadingFallback />}><ProductImport /></Suspense></ProtectedRoute>} />
+                <Route path="/admin/orders" element={<ProtectedRoute requireAdmin><Suspense fallback={<AdminLoadingFallback />}><AdminOrders /></Suspense></ProtectedRoute>} />
+                <Route path="/admin/abandoned-carts" element={<ProtectedRoute requireAdmin><Suspense fallback={<AdminLoadingFallback />}><AdminAbandonedCarts /></Suspense></ProtectedRoute>} />
+                <Route path="/admin/customers" element={<ProtectedRoute requireAdmin><Suspense fallback={<AdminLoadingFallback />}><AdminCustomers /></Suspense></ProtectedRoute>} />
+                <Route path="/admin/coupons" element={<ProtectedRoute requireAdmin><Suspense fallback={<AdminLoadingFallback />}><AdminCoupons /></Suspense></ProtectedRoute>} />
+                <Route path="/admin/reviews" element={<ProtectedRoute requireAdmin><Suspense fallback={<AdminLoadingFallback />}><AdminReviews /></Suspense></ProtectedRoute>} />
+                <Route path="/admin/delivery-options" element={<ProtectedRoute requireAdmin><Suspense fallback={<AdminLoadingFallback />}><AdminDeliveryOptions /></Suspense></ProtectedRoute>} />
+                <Route path="/admin/settings" element={<ProtectedRoute requireAdmin><Suspense fallback={<AdminLoadingFallback />}><AdminSettings /></Suspense></ProtectedRoute>} />
+                <Route path="/admin/store-settings" element={<ProtectedRoute requireAdmin><Suspense fallback={<AdminLoadingFallback />}><StoreSettings /></Suspense></ProtectedRoute>} />
+                <Route path="/admin/newsletter" element={<ProtectedRoute requireAdmin><Suspense fallback={<AdminLoadingFallback />}><Newsletter /></Suspense></ProtectedRoute>} />
+                <Route path="/admin/categories" element={<ProtectedRoute requireAdmin><Suspense fallback={<AdminLoadingFallback />}><Categories /></Suspense></ProtectedRoute>} />
+                <Route path="/admin/returns" element={<ProtectedRoute requireAdmin><Suspense fallback={<AdminLoadingFallback />}><Returns /></Suspense></ProtectedRoute>} />
+                <Route path="/admin/inventory" element={<ProtectedRoute requireAdmin><Suspense fallback={<AdminLoadingFallback />}><Inventory /></Suspense></ProtectedRoute>} />
+                <Route path="/admin/telegram-chats" element={<ProtectedRoute requireAdmin><Suspense fallback={<AdminLoadingFallback />}><TelegramChats /></Suspense></ProtectedRoute>} />
+                <Route path="/admin/telegram-customers" element={<ProtectedRoute requireAdmin><Suspense fallback={<AdminLoadingFallback />}><TelegramCustomers /></Suspense></ProtectedRoute>} />
+                <Route path="/admin/telegram-broadcast" element={<ProtectedRoute requireAdmin><Suspense fallback={<AdminLoadingFallback />}><TelegramBroadcast /></Suspense></ProtectedRoute>} />
+                <Route path="/admin/telegram-support" element={<ProtectedRoute requireAdmin><Suspense fallback={<AdminLoadingFallback />}><TelegramSupport /></Suspense></ProtectedRoute>} />
+                <Route path="/admin/telegram-settings" element={<ProtectedRoute requireAdmin><Suspense fallback={<AdminLoadingFallback />}><TelegramSettings /></Suspense></ProtectedRoute>} />
+                <Route path="/admin/banner" element={<ProtectedRoute requireAdmin><Suspense fallback={<AdminLoadingFallback />}><BannerManagement /></Suspense></ProtectedRoute>} />
+                <Route path="/admin/pwa" element={<ProtectedRoute requireAdmin><Suspense fallback={<AdminLoadingFallback />}><PWASettings /></Suspense></ProtectedRoute>} />
+                <Route path="/admin/theme" element={<ProtectedRoute requireAdmin><Suspense fallback={<AdminLoadingFallback />}><ThemeBuilder /></Suspense></ProtectedRoute>} />
+                <Route path="/admin/branding" element={<ProtectedRoute requireAdmin><Suspense fallback={<AdminLoadingFallback />}><Branding /></Suspense></ProtectedRoute>} />
+                <Route path="/admin/icons" element={<ProtectedRoute requireAdmin><Suspense fallback={<AdminLoadingFallback />}><CustomIcons /></Suspense></ProtectedRoute>} />
+                <Route path="/admin/system-logs" element={<ProtectedRoute requireAdmin><Suspense fallback={<AdminLoadingFallback />}><SystemLogs /></Suspense></ProtectedRoute>} />
+                <Route path="/admin/notifications" element={<ProtectedRoute requireAdmin><Suspense fallback={<AdminLoadingFallback />}><AdminNotifications /></Suspense></ProtectedRoute>} />
                 <Route path="*" element={<NotFound />} />
                 </Routes>
                 </BrowserRouter>

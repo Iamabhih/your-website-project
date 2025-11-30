@@ -1,3 +1,4 @@
+import { memo, useCallback } from 'react';
 import { Link } from 'react-router-dom';
 import { ShoppingCart, Eye } from 'lucide-react';
 import { Button } from '@/components/ui/button';
@@ -16,7 +17,7 @@ interface ProductCardProps {
   min_quantity: number;
 }
 
-export default function ProductCard({
+const ProductCard = memo(function ProductCard({
   id,
   name,
   description,
@@ -27,11 +28,11 @@ export default function ProductCard({
 }: ProductCardProps) {
   const addItem = useCartStore((state) => state.addItem);
 
-  const handleAddToCart = (e: React.MouseEvent) => {
+  const handleAddToCart = useCallback((e: React.MouseEvent) => {
     e.preventDefault();
     addItem({ id, productId: id, name, price, image_url, min_quantity });
     toast.success(`${name} added to cart`);
-  };
+  }, [id, name, price, image_url, min_quantity, addItem]);
 
   return (
     <Link to={`/product/${id}`}>
@@ -42,6 +43,8 @@ export default function ProductCard({
               <img
                 src={image_url}
                 alt={name}
+                loading="lazy"
+                decoding="async"
                 className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500 ease-out"
               />
               {/* Gradient overlay on hover */}
@@ -105,4 +108,6 @@ export default function ProductCard({
       </Card>
     </Link>
   );
-}
+});
+
+export default ProductCard;

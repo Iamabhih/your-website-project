@@ -34,7 +34,7 @@ export default function Header() {
             </Link>
 
             {/* Desktop Navigation */}
-            <nav className="hidden md:flex items-center space-x-1">
+            <nav className="hidden md:flex items-center space-x-1" aria-label="Main navigation">
               {navigation.map((item) => (
                 <Link
                   key={item.name}
@@ -80,10 +80,15 @@ export default function Header() {
 
               {/* Wishlist Button */}
               <Link to="/wishlist">
-                <Button variant="ghost" size="sm" className="relative h-9 w-9 p-0 sm:h-auto sm:w-auto sm:p-2 hover:bg-primary/10 transition-colors">
+                <Button
+                  variant="ghost"
+                  size="sm"
+                  className="relative h-9 w-9 p-0 sm:h-auto sm:w-auto sm:p-2 hover:bg-primary/10 transition-colors"
+                  aria-label={`Wishlist${wishlistItems.length > 0 ? ` with ${wishlistItems.length} item${wishlistItems.length > 1 ? 's' : ''}` : ''}`}
+                >
                   <Heart className="h-5 w-5 transition-transform hover:scale-110" />
                   {wishlistItems.length > 0 && (
-                    <span className="absolute -top-1 -right-1 h-4 w-4 sm:h-5 sm:w-5 rounded-full bg-primary text-[10px] sm:text-xs text-primary-foreground flex items-center justify-center animate-scale-in shadow-sm">
+                    <span className="absolute -top-1 -right-1 h-4 w-4 sm:h-5 sm:w-5 rounded-full bg-primary text-[10px] sm:text-xs text-primary-foreground flex items-center justify-center animate-scale-in shadow-sm" aria-hidden="true">
                       {wishlistItems.length}
                     </span>
                   )}
@@ -96,10 +101,11 @@ export default function Header() {
                 size="sm"
                 className="relative h-9 w-9 p-0 sm:h-auto sm:w-auto sm:p-2 hover:bg-primary/10 transition-colors"
                 onClick={() => setCartOpen(true)}
+                aria-label={`Shopping cart${getTotalItems() > 0 ? ` with ${getTotalItems()} item${getTotalItems() > 1 ? 's' : ''}` : ''}`}
               >
                 <ShoppingCart className="h-5 w-5 transition-transform hover:scale-110" />
                 {getTotalItems() > 0 && (
-                  <span className="absolute -top-1 -right-1 h-4 w-4 sm:h-5 sm:w-5 rounded-full bg-primary text-[10px] sm:text-xs text-primary-foreground flex items-center justify-center animate-scale-in shadow-sm">
+                  <span className="absolute -top-1 -right-1 h-4 w-4 sm:h-5 sm:w-5 rounded-full bg-primary text-[10px] sm:text-xs text-primary-foreground flex items-center justify-center animate-scale-in shadow-sm" aria-hidden="true">
                     {getTotalItems()}
                   </span>
                 )}
@@ -111,6 +117,8 @@ export default function Header() {
                 size="sm"
                 className="md:hidden"
                 onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
+                aria-label={mobileMenuOpen ? "Close navigation menu" : "Open navigation menu"}
+                aria-expanded={mobileMenuOpen}
               >
                 {mobileMenuOpen ? (
                   <X className="h-6 w-6" />
@@ -123,7 +131,7 @@ export default function Header() {
 
           {/* Mobile Navigation */}
           {mobileMenuOpen && (
-            <div className="md:hidden py-4 space-y-2 border-t">
+            <nav className="md:hidden py-4 space-y-2 border-t" aria-label="Mobile navigation">
               {navigation.map((item) => (
                 <Link
                   key={item.name}
@@ -157,7 +165,7 @@ export default function Header() {
                   </button>
                 </>
               )}
-            </div>
+            </nav>
           )}
         </div>
       </header>

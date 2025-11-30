@@ -42,8 +42,8 @@ Disallow: /wishlist
 Disallow: /payment-*
 Disallow: /order-confirmation/*
 
-# Sitemap location (update with your actual domain)
-Sitemap: https://your-domain.com/sitemap.xml
+# Sitemap location
+Sitemap: https://idealsupply.online/sitemap.xml
 
 # Crawl-delay (adjust based on server capacity)
 Crawl-delay: 1

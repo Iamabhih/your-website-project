@@ -71,10 +71,18 @@ export default function Shop() {
     setLoading(false);
   };
 
-  const categories = ['all', ...Array.from(new Set(products.map(p => p.category)))];
-  const filteredProducts = selectedCategory === 'all'
-    ? products
-    : products.filter(p => p.category === selectedCategory);
+  // Memoize categories and filtered products for performance
+  const categories = useMemo(() =>
+    ['all', ...Array.from(new Set(products.map(p => p.category)))],
+    [products]
+  );
+
+  const filteredProducts = useMemo(() =>
+    selectedCategory === 'all'
+      ? products
+      : products.filter(p => p.category === selectedCategory),
+    [products, selectedCategory]
+  );
 
   // Pagination calculations
   const totalItems = filteredProducts.length;

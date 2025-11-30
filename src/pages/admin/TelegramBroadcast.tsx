@@ -1,4 +1,5 @@
 import { useState, useEffect, useMemo } from 'react';
+import DOMPurify from 'dompurify';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
@@ -737,9 +738,12 @@ export default function TelegramBroadcast() {
             <div
               className="whitespace-pre-wrap"
               dangerouslySetInnerHTML={{
-                __html: message
-                  .replace(/{name}/g, '<span class="text-blue-400">Customer</span>')
-                  .replace(/{store}/g, '<span class="text-blue-400">Your Store</span>')
+                __html: DOMPurify.sanitize(
+                  message
+                    .replace(/{name}/g, '<span class="text-blue-400">Customer</span>')
+                    .replace(/{store}/g, '<span class="text-blue-400">Your Store</span>'),
+                  { ALLOWED_TAGS: ['b', 'i', 'a', 'span', 'br', 'strong', 'em'], ALLOWED_ATTR: ['href', 'target', 'class'] }
+                )
               }}
             />
           </div>

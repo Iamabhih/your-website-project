@@ -1,4 +1,5 @@
 import { useState, useEffect, useMemo } from "react";
+import DOMPurify from "dompurify";
 import { supabase } from "@/integrations/supabase/client";
 import { AdminLayout } from "@/components/admin/AdminLayout";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
@@ -907,7 +908,12 @@ export default function Newsletter() {
               <div className="border-t pt-4">
                 <div
                   className="prose prose-sm max-w-none"
-                  dangerouslySetInnerHTML={{ __html: emailContent }}
+                  dangerouslySetInnerHTML={{
+                    __html: DOMPurify.sanitize(emailContent, {
+                      ALLOWED_TAGS: ['b', 'i', 'p', 'br', 'a', 'strong', 'em', 'ul', 'ol', 'li', 'h1', 'h2', 'h3', 'span', 'div'],
+                      ALLOWED_ATTR: ['href', 'target', 'class', 'style']
+                    })
+                  }}
                 />
               </div>
             </div>

@@ -502,14 +502,17 @@ export default function ChatWidget() {
       {!isOpen && (
         <Button
           onClick={() => setIsOpen(true)}
-          className="fixed bottom-6 right-6 h-14 w-14 rounded-full shadow-lg z-50 group"
+          className="fixed bottom-6 right-6 h-14 w-14 rounded-full shadow-lg z-50 group hover:scale-110 transition-transform duration-200"
           size="icon"
         >
-          <MessageCircle className="h-6 w-6" />
+          {/* Pulsating ring effect */}
+          <span className="absolute inset-0 rounded-full bg-primary animate-ping opacity-30" />
+          <span className="absolute inset-0 rounded-full bg-primary/20 animate-pulse" />
+          <MessageCircle className="h-6 w-6 relative z-10" />
           {/* Online/Offline light indicator */}
           <span
             className={cn(
-              "absolute bottom-0.5 right-0.5 h-3.5 w-3.5 rounded-full border-2 border-white shadow-sm",
+              "absolute bottom-0.5 right-0.5 h-3.5 w-3.5 rounded-full border-2 border-white shadow-sm z-10",
               isOnline
                 ? "bg-green-500 animate-pulse"
                 : "bg-gray-400"
@@ -519,7 +522,7 @@ export default function ChatWidget() {
           {/* Unread count badge */}
           {unreadCount > 0 && (
             <Badge
-              className="absolute -top-1 -right-1 h-5 w-5 p-0 flex items-center justify-center text-xs"
+              className="absolute -top-1 -right-1 h-5 w-5 p-0 flex items-center justify-center text-xs z-10"
               variant="destructive"
             >
               {unreadCount > 9 ? '9+' : unreadCount}

@@ -19,6 +19,7 @@
 8. [Database & API Patterns](#database--api-patterns)
 9. [Recommendations Summary](#recommendations-summary)
 10. [Implementation Roadmap](#implementation-roadmap)
+11. [Database Migrations Reference](#database-migrations-reference)
 
 ---
 
@@ -838,6 +839,43 @@ useEffect(() => {
 
 ---
 
+## Database Migrations Reference
+
+A comprehensive database migrations document has been created to support deployment and database management.
+
+**See:** [`SUPABASE_MIGRATIONS.md`](./SUPABASE_MIGRATIONS.md)
+
+### Quick Reference
+
+The migrations file contains:
+
+| Section | Description |
+|---------|-------------|
+| Migration Execution Order | All 19 migrations in recommended execution sequence |
+| Key Tables by Feature | Tables grouped by functionality (products, orders, users, etc.) |
+| Database Functions | All 16 RPC functions with parameters and return types |
+| RLS Policies | Row-Level Security policies for all tables |
+| Realtime Subscriptions | Tables with realtime enabled |
+| Storage Buckets | Configured storage buckets and policies |
+| Troubleshooting | Common migration issues and solutions |
+
+### Migration Statistics
+
+- **Total Migrations:** 19
+- **Database Tables:** 25+
+- **Database Functions:** 16
+- **RLS Policies:** 50+
+- **Storage Buckets:** 2
+
+### Important Notes
+
+1. Migrations must be run in sequence (numbered order)
+2. Some migrations depend on previous ones completing successfully
+3. RLS policies require authentication to be configured first
+4. Edge functions should be deployed after database migrations
+
+---
+
 ## Appendix
 
 ### Files Requiring Immediate Attention
@@ -949,6 +987,15 @@ The following recommendations from this audit have been implemented:
   - `og:url`, `og:site_name`, `og:locale` Open Graph tags
   - Twitter title and description meta tags
   - Full absolute URLs for images
+
+### Documentation
+- [x] **SUPABASE_MIGRATIONS.md** - Created comprehensive database migrations documentation
+  - All 19 migrations with complete SQL schemas
+  - Database functions reference (16 functions)
+  - RLS policy summary for all tables
+  - Realtime subscription configuration
+  - Storage bucket policies
+  - Troubleshooting guide for common migration issues
 
 ### Remaining Items (Not Implemented)
 The following items were identified but NOT implemented per user request:

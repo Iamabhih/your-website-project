@@ -1,4 +1,4 @@
-import { lazy, Suspense } from "react";
+import React, { lazy, Suspense } from "react";
 import { Toaster } from "@/components/ui/toaster";
 import { ThemeAwareToaster } from "@/components/ThemeAwareToaster";
 import { TooltipProvider } from "@/components/ui/tooltip";

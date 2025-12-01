@@ -6,7 +6,6 @@ verify_jwt = false
 [functions.send-order-email]
 verify_jwt = false
 
-
 [functions.telegram-bot]
 verify_jwt = false
 
@@ -26,4 +25,7 @@ verify_jwt = false
 verify_jwt = false
 
 [functions.payfast-notify]
+verify_jwt = false
+
+[functions.send-newsletter]
 verify_jwt = false
